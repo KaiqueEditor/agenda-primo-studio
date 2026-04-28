@@ -1,0 +1,93 @@
+export type FaseType = 'planejamento' | 'gravacao' | 'edicao' | 'publicacao';
+
+export interface FasePeriodo {
+  inicio?: Date;
+  fim?: Date;
+  aoVivo?: boolean;
+}
+
+export interface Projeto {
+  id: string;
+  numero: number;
+  titulo: string;
+  canal: string;
+  tipo: 'video' | 'podcast';
+  episodios?: number;
+  casting: string[];
+  responsavel?: string[];
+  fases: {
+    planejamento?: FasePeriodo;
+    gravacao?: FasePeriodo;
+    edicao?: FasePeriodo;
+    publicacao?: { data?: Date };
+  };
+}
+
+export interface CalendarEvent {
+  projeto: Projeto;
+  fase: FaseType;
+  date: Date;
+  isStart?: boolean;
+  isEnd?: boolean;
+  isSingle?: boolean;
+}
+
+export type ViewMode = 'calendar' | 'timeline' | 'list';
+
+export interface FilterState {
+  fases: FaseType[];
+  canal: string;
+  search: string;
+  tipo: 'all' | 'video' | 'podcast';
+}
+
+export type TeamRole = 'editor' | 'supervisor_edicao' | 'motion' | 'designer' | 'supervisor_producao' | 'cinegrafista' | 'filmmaker' | 'gerente_producao' | 'produtora';
+
+export interface TeamMember {
+  name: string;
+  role: TeamRole;
+  canMultitask: boolean;
+}
+
+export const TEAM_MEMBERS: TeamMember[] = [
+  { name: 'Cristiano', role: 'editor', canMultitask: false },
+  { name: 'Leonardo', role: 'editor', canMultitask: false },
+  { name: 'Leandro', role: 'editor', canMultitask: false },
+  { name: 'Davi', role: 'editor', canMultitask: false },
+  { name: 'Ana Luiza', role: 'editor', canMultitask: false },
+  { name: 'Luiza', role: 'editor', canMultitask: false },
+  { name: 'Renan', role: 'supervisor_edicao', canMultitask: true },
+  { name: 'Juan', role: 'motion', canMultitask: false },
+  { name: 'Gianluca', role: 'motion', canMultitask: false },
+  { name: 'Fernanda', role: 'designer', canMultitask: true },
+  { name: 'Isadora', role: 'supervisor_producao', canMultitask: true },
+  { name: 'Gabriel', role: 'cinegrafista', canMultitask: false },
+  { name: 'Gustavo', role: 'filmmaker', canMultitask: false },
+  { name: 'Nathan', role: 'filmmaker', canMultitask: false },
+  { name: 'Itala', role: 'gerente_producao', canMultitask: true },
+  { name: 'Ana Paula', role: 'produtora', canMultitask: true },
+  { name: 'Caroline', role: 'produtora', canMultitask: true },
+];
+
+export const FASE_CONFIG: Record<FaseType, { label: string; color: string; colorLight: string; icon?: string }> = {
+  planejamento: {
+    label: 'Planejamento',
+    color: '#5856D6',
+    colorLight: 'rgba(88, 86, 214, 0.1)',
+  },
+  gravacao: {
+    label: 'Gravação',
+    color: '#007AFF',
+    colorLight: 'rgba(0, 122, 255, 0.1)',
+  },
+  edicao: {
+    label: 'Edição',
+    color: '#FF9500',
+    colorLight: 'rgba(255, 149, 0, 0.1)',
+  },
+  publicacao: {
+    label: 'Publicação',
+    color: '#34C759',
+    colorLight: 'rgba(52, 199, 89, 0.1)',
+  },
+};
