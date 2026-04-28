@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { ViewMode, CalendarEvent as CalEvent, Projeto } from './types';
+import type { ViewMode, CalendarEvent as CalEvent, Projeto, FaseType } from './types';
 import { useProjects } from './hooks/useProjects';
 import { Sidebar } from './components/Sidebar/Filters';
 import { MetricsHeader } from './components/Dashboard/MetricsHeader';
@@ -37,9 +37,10 @@ function App() {
     if (fase === 'publicacao') {
       updated.fases.publicacao = { data: newDate };
     } else {
-      const periodo = updated.fases[fase];
+      const f = fase as 'gravacao' | 'edicao';
+      const periodo = updated.fases[f];
       if (periodo && periodo.inicio && periodo.fim) {
-        updated.fases[fase] = {
+        updated.fases[f] = {
           ...periodo,
           inicio: new Date(periodo.inicio.getTime() + diffTime),
           fim: new Date(periodo.fim.getTime() + diffTime),

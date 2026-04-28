@@ -275,6 +275,13 @@ export const projetosAGF: Projeto[] = [
 ];
 
 export const getAllCanais = (): string[] => {
-  const canais = new Set(projetosAGF.map((p) => p.canal));
+  const canais = new Set<string>();
+  projetosAGF.forEach((p) => {
+    if (Array.isArray(p.canal)) {
+      p.canal.forEach(c => canais.add(c));
+    } else if (p.canal) {
+      canais.add(p.canal);
+    }
+  });
   return Array.from(canais).sort();
 };
