@@ -11,8 +11,6 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect }) => {
   // Find global date range
   const allDates: Date[] = [];
   projetos.forEach((p) => {
-    if (p.fases.planejamento?.inicio) allDates.push(p.fases.planejamento.inicio);
-    if (p.fases.planejamento?.fim) allDates.push(p.fases.planejamento.fim);
     if (p.fases.gravacao?.inicio) allDates.push(p.fases.gravacao.inicio);
     if (p.fases.gravacao?.fim) allDates.push(p.fases.gravacao.fim);
     if (p.fases.edicao?.inicio) allDates.push(p.fases.edicao.inicio);
@@ -29,7 +27,7 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect }) => {
   const getPos = (date: Date) => ((differenceInDays(date, minDate) / totalDays) * 100);
   const getWidth = (start: Date, end: Date) => Math.max(((differenceInDays(end, start) / totalDays) * 100), 1.5);
 
-  const faseOrder: FaseType[] = ['planejamento', 'gravacao', 'edicao', 'publicacao'];
+  const faseOrder: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
 
   // Generate month markers
   const months: { label: string; pos: number }[] = [];

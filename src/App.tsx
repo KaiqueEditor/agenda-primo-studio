@@ -24,6 +24,32 @@ function App() {
     setSelectedProjeto(projeto);
   }, []);
 
+  const handleDropEvent = useCallback((projetoId: string, fase: FaseType, oldDateStr: string, newDateStr: string) => {
+    const p = allProjetos.find(p => p.id === projetoId);
+    if (!p) return;
+
+    const oldDate = new Date(oldDateStr);
+    const newDate = new Date(newDateStr);
+    const diffTime = newDate.getTime() - oldDate.getTime();
+
+    const updated = { ...p, fases: { ...p.fases } };
+
+    if (fase === 'publicacao') {
+      updated.fases.publicacao = { data: newDate };
+    } else {
+      const periodo = updated.fases[fase];
+      if (periodo && periodo.inicio && periodo.fim) {
+        updated.fases[fase] = {
+          ...periodo,
+          inicio: new Date(periodo.inicio.getTime() + diffTime),
+          fim: new Date(periodo.fim.getTime() + diffTime),
+        };
+      }
+    }
+    
+    updateProjeto(updated);
+  }, [allProjetos, updateProjeto]);
+
   const handleAddProjeto = useCallback(() => {
     const novo: Projeto = {
       id: `p${Date.now()}`,
@@ -53,7 +79,7 @@ function App() {
         <MetricsHeader projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={saveAll} />
         <div className="view-area">
           {viewMode === 'calendar' && (
-            <CalendarGrid projetos={projetos} fases={filters.fases} onSelectEvent={handleEventClick} />
+            <CalendarGrid projetos={projetos} fases={filters.fases} onSelectEvent={handleEventClick} onDropEvent={handleDropEvent} />
           )}
           {viewMode === 'timeline' && (
             <TimelineView projetos={projetos} onSelect={handleProjectClick} />

@@ -27,7 +27,7 @@ export const Sidebar: React.FC<Props> = ({
     'Os Sócios Podcast',
     'Você Mais Rico'
   ];
-  const faseKeys: FaseType[] = ['planejamento', 'gravacao', 'edicao', 'publicacao'];
+  const faseKeys: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
 
   return (
     <aside className="sidebar">

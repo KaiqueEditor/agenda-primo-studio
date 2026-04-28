@@ -3,6 +3,7 @@ import { X, Users, Zap, Save, Trash2, Briefcase } from 'lucide-react';
 import { type Projeto, FASE_CONFIG, type FaseType, type TeamMember } from '../../types';
 import { getProjectProgress } from '../../utils/dateHelpers';
 import { format } from 'date-fns';
+import { AutocompleteTagInput } from './AutocompleteTagInput';
 
 interface Props {
   projeto: Projeto;
@@ -17,7 +18,7 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
   const [edited, setEdited] = useState<Projeto>({ ...projeto });
   const progress = getProjectProgress(edited);
 
-  const faseOrder: FaseType[] = ['planejamento', 'gravacao', 'edicao', 'publicacao'];
+  const faseOrder: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
 
   const handleChange = (field: keyof Projeto, value: any) => {
     setEdited({ ...edited, [field]: value });
@@ -74,12 +75,14 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
             onChange={e => handleChange('titulo', e.target.value)}
             placeholder="Nome do Projeto"
           />
-          <input 
-            className="modal-canal-input" 
-            value={edited.canal} 
-            onChange={e => handleChange('canal', e.target.value)}
-            placeholder="Canal / Collab"
-          />
+          <div className="modal-badge" style={{ flex: 1 }}>
+            <AutocompleteTagInput
+              tags={Array.isArray(edited.canal) ? edited.canal : (edited.canal ? [edited.canal] : [])}
+              onChange={tags => handleChange('canal', tags)}
+              suggestions={['O Primo Rico', 'Você Mais Rico', 'PrimoCast', 'Finclass', 'Os Sócios', 'AGF', 'PrimoTech']}
+              placeholder="Adicionar canal/tag..."
+            />
+          </div>
         </div>
 
         <div className="modal-progress-section">
@@ -146,11 +149,11 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
         <div style={{ display: 'flex', gap: '24px', marginBottom: '40px' }}>
           <div className="modal-casting" style={{ flex: 1, margin: 0 }}>
             <h3><Users size={16} /> Casting (separado por vírgula)</h3>
-            <input 
-              className="casting-input" 
-              value={edited.casting.join(', ')} 
-              onChange={e => handleChange('casting', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
-              placeholder="Ex: Louise, Barsi..."
+            <AutocompleteTagInput
+              tags={edited.casting || []}
+              onChange={tags => handleChange('casting', tags)}
+              suggestions={['Thiago Nigro', 'Bruno Perini', 'Malu', 'Lucão', 'Kaique', 'Louise', 'Luis Barsi', 'Time AGF']}
+              placeholder="Adicionar casting..."
             />
           </div>
 
@@ -158,38 +161,12 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <h3><Briefcase size={16} /> Equipe Alocada</h3>
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', maxHeight: '120px', overflowY: 'auto', paddingRight: '4px' }}>
-              {team.map(m => {
-                const isSelected = (edited.responsavel || []).includes(m.name);
-                return (
-                  <button
-                    key={m.name}
-                    style={{
-                      padding: '4px 8px',
-                      borderRadius: '4px',
-                      fontSize: '12px',
-                      border: `1px solid ${isSelected ? '#007AFF' : 'var(--border)'}`,
-                      background: isSelected ? 'rgba(0,122,255,0.1)' : 'transparent',
-                      color: isSelected ? '#007AFF' : 'var(--text-secondary)',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}
-                    onClick={() => {
-                      const current = edited.responsavel || [];
-                      if (isSelected) {
-                        handleChange('responsavel', current.filter(n => n !== m.name));
-                      } else {
-                        handleChange('responsavel', [...current, m.name]);
-                      }
-                    }}
-                  >
-                    {m.name}
-                  </button>
-                )
-              })}
-            </div>
+            <AutocompleteTagInput
+              tags={edited.responsavel || []}
+              onChange={tags => handleChange('responsavel', tags)}
+              suggestions={team.map(m => m.name)}
+              placeholder="Adicionar membro da equipe..."
+            />
           </div>
         </div>
 

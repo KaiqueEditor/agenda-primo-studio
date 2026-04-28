@@ -51,7 +51,7 @@ export const getEventsForDay = (
     const fases = projeto.fases;
 
     // Check each fase
-    (['planejamento', 'gravacao', 'edicao'] as const).forEach((fase) => {
+    (['gravacao', 'edicao'] as const).forEach((fase) => {
       const periodo = fases[fase];
       if (!periodo || !periodo.inicio || !periodo.fim) return;
       if (!fasesFilter.includes(fase)) return;
@@ -88,9 +88,6 @@ export const getProjectProgress = (projeto: Projeto): number => {
   const now = new Date();
   const phases: { start: Date; end: Date }[] = [];
 
-  if (projeto.fases.planejamento?.inicio && projeto.fases.planejamento?.fim) {
-    phases.push({ start: projeto.fases.planejamento.inicio, end: projeto.fases.planejamento.fim });
-  }
   if (projeto.fases.gravacao?.inicio && projeto.fases.gravacao?.fim) {
     phases.push({ start: projeto.fases.gravacao.inicio, end: projeto.fases.gravacao.fim });
   }
@@ -123,12 +120,6 @@ export const getProjectProgress = (projeto: Projeto): number => {
 export const getCurrentFase = (projeto: Projeto): FaseType | null => {
   const now = new Date();
 
-  if (
-    projeto.fases.planejamento?.inicio && projeto.fases.planejamento?.fim &&
-    isWithinInterval(now, { start: projeto.fases.planejamento.inicio, end: projeto.fases.planejamento.fim })
-  ) {
-    return 'planejamento';
-  }
   if (
     projeto.fases.gravacao?.inicio && projeto.fases.gravacao?.fim &&
     isWithinInterval(now, { start: projeto.fases.gravacao.inicio, end: projeto.fases.gravacao.fim })
@@ -211,7 +202,6 @@ export const detectConflicts = (
         });
 
         if (strictTeam.length > 0) {
-          checkOverlap(p1, p2, 'planejamento', strictTeam, true);
           checkOverlap(p1, p2, 'gravacao', strictTeam, true);
           checkOverlap(p1, p2, 'edicao', strictTeam, true);
         }

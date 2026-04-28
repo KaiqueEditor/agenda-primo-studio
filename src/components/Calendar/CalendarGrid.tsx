@@ -9,9 +9,10 @@ interface Props {
   projetos: Projeto[];
   fases: FaseType[];
   onSelectEvent: (event: CalEvent) => void;
+  onDropEvent?: (projetoId: string, fase: FaseType, oldDate: string, newDate: string) => void;
 }
 
-export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent }) => {
+export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, onDropEvent }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date('2026-05-01'));
   const days = getCalendarDays(currentMonth);
   const weekDays = getWeekDayNames();
@@ -34,6 +35,16 @@ export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent }
             <div
               key={i}
               className={`calendar-cell ${!inMonth ? 'other-month' : ''} ${today ? 'today' : ''}`}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                const data = e.dataTransfer.getData('application/json');
+                if (!data || !onDropEvent) return;
+                try {
+                  const { projetoId, fase, date } = JSON.parse(data);
+                  onDropEvent(projetoId, fase, date, day.toISOString());
+                } catch(err) {}
+              }}
             >
               <span className={`cell-day ${today ? 'today-number' : ''}`}>
                 {format(day, 'd')}

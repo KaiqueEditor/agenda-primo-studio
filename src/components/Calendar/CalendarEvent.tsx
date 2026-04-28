@@ -14,9 +14,18 @@ export const CalendarEventItem: React.FC<Props> = ({ event, onClick }) => {
   return (
     <button
       className="cal-event"
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData('application/json', JSON.stringify({
+          projetoId: event.projeto.id,
+          fase: event.fase,
+          date: event.date.toISOString(),
+        }));
+      }}
       style={{
         '--event-color': config.color,
         '--event-bg': config.colorLight,
+        cursor: 'grab'
       } as React.CSSProperties}
       onClick={() => onClick(event)}
       title={`${event.projeto.titulo} (${config.label})`}

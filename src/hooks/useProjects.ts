@@ -8,7 +8,7 @@ export const useProjects = () => {
   const [projetos, setProjetos] = useState<Projeto[]>(projetosAGF);
   const [team, setTeam] = useState<TeamMember[]>(TEAM_MEMBERS);
   const [filters, setFilters] = useState<FilterState>({
-    fases: ['planejamento', 'gravacao', 'edicao', 'publicacao'],
+    fases: ['gravacao', 'edicao', 'publicacao'],
     canal: '',
     search: '',
     tipo: 'all',
@@ -22,10 +22,6 @@ export const useProjects = () => {
         // Parse dates from JSON
         const parsedProj = projData.map(row => {
           const p = row.data as Projeto;
-          if (p.fases.planejamento) {
-            if (p.fases.planejamento.inicio) p.fases.planejamento.inicio = new Date(p.fases.planejamento.inicio);
-            if (p.fases.planejamento.fim) p.fases.planejamento.fim = new Date(p.fases.planejamento.fim);
-          }
           if (p.fases.gravacao) {
             if (p.fases.gravacao.inicio) p.fases.gravacao.inicio = new Date(p.fases.gravacao.inicio);
             if (p.fases.gravacao.fim) p.fases.gravacao.fim = new Date(p.fases.gravacao.fim);
@@ -63,7 +59,10 @@ export const useProjects = () => {
 
   const filtered = useMemo(() => {
     return projetos.filter((p) => {
-      if (filters.canal && !p.canal.toLowerCase().includes(filters.canal.toLowerCase())) return false;
+      if (filters.canal) {
+        const c = Array.isArray(p.canal) ? p.canal.join(', ') : p.canal;
+        if (!c.toLowerCase().includes(filters.canal.toLowerCase())) return false;
+      }
       if (filters.tipo !== 'all' && p.tipo !== filters.tipo) return false;
       if (filters.search && !p.titulo.toLowerCase().includes(filters.search.toLowerCase())) return false;
       return true;

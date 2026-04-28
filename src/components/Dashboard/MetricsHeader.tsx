@@ -10,11 +10,20 @@ interface Props {
 }
 
 export const MetricsHeader: React.FC<Props> = ({ projetos, onAddProjeto, onSaveAll }) => {
+  const [isSaving, setIsSaving] = React.useState(false);
   const totalVideos = projetos.filter((p) => p.tipo === 'video').length;
   const totalPodcasts = projetos.filter((p) => p.tipo === 'podcast').length;
   const conflicts = detectConflicts(projetos);
 
-
+  const handleSave = async () => {
+    if (!onSaveAll) return;
+    setIsSaving(true);
+    try {
+      await onSaveAll();
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <header className="metrics-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -63,11 +72,20 @@ export const MetricsHeader: React.FC<Props> = ({ projetos, onAddProjeto, onSaveA
         {onSaveAll && (
           <button 
             className="save-btn" 
-            onClick={onSaveAll}
-            style={{ height: 'fit-content', background: '#34C759', border: 'none' }}
+            onClick={handleSave}
+            disabled={isSaving}
+            style={{ height: 'fit-content', background: isSaving ? '#8E8E93' : '#34C759', border: 'none', cursor: isSaving ? 'not-allowed' : 'pointer' }}
             title="Sincronizar e salvar tudo na nuvem"
           >
-            <Cloud size={16} /> Salvar Tudo
+            {isSaving ? (
+              <>
+                <div className="spinner" /> Salvando...
+              </>
+            ) : (
+              <>
+                <Cloud size={16} /> Salvar Tudo
+              </>
+            )}
           </button>
         )}
         <button 

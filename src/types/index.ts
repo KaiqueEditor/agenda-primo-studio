@@ -1,4 +1,4 @@
-export type FaseType = 'planejamento' | 'gravacao' | 'edicao' | 'publicacao';
+export type FaseType = 'gravacao' | 'edicao' | 'publicacao';
 
 export interface FasePeriodo {
   inicio?: Date;
@@ -10,13 +10,12 @@ export interface Projeto {
   id: string;
   numero: number;
   titulo: string;
-  canal: string;
+  canal: string | string[];
   tipo: 'video' | 'podcast';
   episodios?: number;
   casting: string[];
   responsavel?: string[];
   fases: {
-    planejamento?: FasePeriodo;
     gravacao?: FasePeriodo;
     edicao?: FasePeriodo;
     publicacao?: { data?: Date };
@@ -70,11 +69,6 @@ export const TEAM_MEMBERS: TeamMember[] = [
 ];
 
 export const FASE_CONFIG: Record<FaseType, { label: string; color: string; colorLight: string; icon?: string }> = {
-  planejamento: {
-    label: 'Planejamento',
-    color: '#5856D6',
-    colorLight: 'rgba(88, 86, 214, 0.1)',
-  },
   gravacao: {
     label: 'Gravação',
     color: '#007AFF',
