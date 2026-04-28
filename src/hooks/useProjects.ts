@@ -1,7 +1,8 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import type { Projeto, FilterState, FaseType, TeamMember } from '../types';
 import { TEAM_MEMBERS } from '../types';
 import { projetosAGF } from '../data/projects';
+import { supabase } from '../lib/supabase';
 
 export const useProjects = () => {
   const [projetos, setProjetos] = useState<Projeto[]>(projetosAGF);
@@ -13,9 +14,56 @@ export const useProjects = () => {
     tipo: 'all',
   });
 
+  useEffect(() => {
+    const loadData = async () => {
+      // Load projects
+      const { data: projData } = await supabase.from('projetos').select('*');
+      if (projData && projData.length > 0) {
+        // Parse dates from JSON
+        const parsedProj = projData.map(row => {
+          const p = row.data as Projeto;
+          if (p.fases.planejamento) {
+            if (p.fases.planejamento.inicio) p.fases.planejamento.inicio = new Date(p.fases.planejamento.inicio);
+            if (p.fases.planejamento.fim) p.fases.planejamento.fim = new Date(p.fases.planejamento.fim);
+          }
+          if (p.fases.gravacao) {
+            if (p.fases.gravacao.inicio) p.fases.gravacao.inicio = new Date(p.fases.gravacao.inicio);
+            if (p.fases.gravacao.fim) p.fases.gravacao.fim = new Date(p.fases.gravacao.fim);
+          }
+          if (p.fases.edicao) {
+            if (p.fases.edicao.inicio) p.fases.edicao.inicio = new Date(p.fases.edicao.inicio);
+            if (p.fases.edicao.fim) p.fases.edicao.fim = new Date(p.fases.edicao.fim);
+          }
+          if (p.fases.publicacao?.data) {
+            p.fases.publicacao.data = new Date(p.fases.publicacao.data);
+          }
+          return p;
+        });
+        setProjetos(parsedProj);
+      } else {
+        // First run, populate DB with default projects
+        for (const p of projetosAGF) {
+          await supabase.from('projetos').insert({ id: p.id, data: p });
+        }
+      }
+
+      // Load team
+      const { data: teamData } = await supabase.from('team').select('*');
+      if (teamData && teamData.length > 0) {
+        setTeam(teamData.map(row => row.data as TeamMember));
+      } else {
+        // Populate DB with default team
+        for (const t of TEAM_MEMBERS) {
+          await supabase.from('team').insert({ id: t.name, data: t });
+        }
+      }
+    };
+    loadData();
+  }, []);
+
   const filtered = useMemo(() => {
     return projetos.filter((p) => {
-      if (filters.canal && p.canal !== filters.canal) return false;
+      if (filters.canal && !p.canal.toLowerCase().includes(filters.canal.toLowerCase())) return false;
       if (filters.tipo !== 'all' && p.tipo !== filters.tipo) return false;
       if (filters.search && !p.titulo.toLowerCase().includes(filters.search.toLowerCase())) return false;
       return true;
@@ -41,21 +89,31 @@ export const useProjects = () => {
     setFilters((f) => ({ ...f, tipo }));
   }, []);
 
-  const updateProjeto = useCallback((projetoAtualizado: Projeto) => {
+  const updateProjeto = useCallback(async (projetoAtualizado: Projeto) => {
     setProjetos((prev) => prev.map(p => p.id === projetoAtualizado.id ? projetoAtualizado : p));
+    await supabase.from('projetos').upsert({ id: projetoAtualizado.id, data: projetoAtualizado });
   }, []);
 
-  const addProjeto = useCallback((novoProjeto: Projeto) => {
+  const addProjeto = useCallback(async (novoProjeto: Projeto) => {
     setProjetos((prev) => [...prev, novoProjeto]);
+    await supabase.from('projetos').insert({ id: novoProjeto.id, data: novoProjeto });
   }, []);
 
-  const deleteProjeto = useCallback((id: string) => {
+  const deleteProjeto = useCallback(async (id: string) => {
     setProjetos((prev) => prev.filter(p => p.id !== id));
+    await supabase.from('projetos').delete().eq('id', id);
   }, []);
 
-  const addTeamMember = useCallback((member: TeamMember) => {
+  const addTeamMember = useCallback(async (member: TeamMember) => {
     setTeam((prev) => [...prev, member]);
+    await supabase.from('team').insert({ id: member.name, data: member });
   }, []);
+
+  const saveAll = useCallback(async () => {
+    const projPromises = projetos.map(p => supabase.from('projetos').upsert({ id: p.id, data: p }));
+    const teamPromises = team.map(t => supabase.from('team').upsert({ id: t.name, data: t }));
+    await Promise.all([...projPromises, ...teamPromises]);
+  }, [projetos, team]);
 
   return { 
     projetos: filtered, 
@@ -69,8 +127,8 @@ export const useProjects = () => {
     toggleFase, 
     setCanal, 
     setSearch, 
-    setSearch, 
     setTipo,
-    addTeamMember
+    addTeamMember,
+    saveAll
   };
 };

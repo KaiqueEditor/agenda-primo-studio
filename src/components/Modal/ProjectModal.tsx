@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Video, Mic, Users, Zap, Save, Trash2, Briefcase } from 'lucide-react';
+import { X, Users, Zap, Save, Trash2, Briefcase } from 'lucide-react';
 import { type Projeto, FASE_CONFIG, type FaseType, type TeamMember } from '../../types';
 import { getProjectProgress } from '../../utils/dateHelpers';
 import { format } from 'date-fns';
@@ -108,7 +108,7 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
                   <div className="timeline-info" style={{ width: '100%' }}>
                     <span className="timeline-fase" style={{ color: config.color }}>
                       {config.label}
-                      {isLive && <Zap size={12} className="live-badge" title="Ao Vivo" />}
+                      {isLive && <Zap size={12} className="live-badge" />}
                     </span>
                     <div className="timeline-date-inputs">
                       {isPubli ? (

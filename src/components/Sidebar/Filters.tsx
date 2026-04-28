@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search, Filter, Calendar, CalendarDays, BarChart, List, Video, Mic } from 'lucide-react';
 import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
-import { getAllCanais } from '../../data/projects';
+
 
 interface Props {
   filters: FilterState;
@@ -17,7 +17,16 @@ interface Props {
 export const Sidebar: React.FC<Props> = ({
   filters, viewMode, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetView, onOpenTeam
 }) => {
-  const canais = getAllCanais();
+  const canais = [
+    'AGF',
+    'Finclass',
+    'G4',
+    'PrimoCast',
+    'O Primo Rico',
+    'Os Economistas',
+    'Os Sócios Podcast',
+    'Você Mais Rico'
+  ];
   const faseKeys: FaseType[] = ['planejamento', 'gravacao', 'edicao', 'publicacao'];
 
   return (

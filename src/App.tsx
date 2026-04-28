@@ -11,7 +11,7 @@ import { TeamModal } from './components/Modal/TeamModal';
 import './index.css';
 
 function App() {
-  const { projetos, allProjetos, filters, toggleFase, setCanal, setSearch, setTipo, updateProjeto, addProjeto, deleteProjeto, team, addTeamMember } = useProjects();
+  const { projetos, allProjetos, filters, toggleFase, setCanal, setSearch, setTipo, updateProjeto, addProjeto, deleteProjeto, team, addTeamMember, saveAll } = useProjects();
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
   const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
@@ -50,7 +50,7 @@ function App() {
         onOpenTeam={() => setShowTeamModal(true)}
       />
       <main className="main-area">
-        <MetricsHeader projetos={allProjetos} onAddProjeto={handleAddProjeto} />
+        <MetricsHeader projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={saveAll} />
         <div className="view-area">
           {viewMode === 'calendar' && (
             <CalendarGrid projetos={projetos} fases={filters.fases} onSelectEvent={handleEventClick} />

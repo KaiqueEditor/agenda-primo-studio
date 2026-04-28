@@ -48,8 +48,9 @@ export const ProjectList: React.FC<Props> = ({ projetos, onSelect }) => {
                   
                   let dateStr = '';
                   if (fase === 'publicacao') {
-                    if (!data.data) return null;
-                    dateStr = formatDate(data.data as Date, 'dd/MM');
+                    const pubData = data as { data?: Date };
+                    if (!pubData.data) return null;
+                    dateStr = formatDate(pubData.data, 'dd/MM');
                   } else {
                     const start = (data as any).inicio;
                     const end = (data as any).fim;

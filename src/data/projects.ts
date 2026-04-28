@@ -172,25 +172,41 @@ export const projetosAGF: Projeto[] = [
     fases: { publicacao: { data: new Date('2026-08-05') } },
   },
 
-  // Vídeos de sustentação (sem datas fixas)
-  {
-    id: 'p19',
-    numero: 19,
-    titulo: 'Sustentação (10 - 15 vídeos)',
-    canal: 'O Primo Rico',
-    tipo: 'video',
-    casting: ['Thiago Nigro'],
-    fases: {},
-  },
-  {
-    id: 'p20',
-    numero: 20,
-    titulo: 'Sustentação (7 - 10 vídeos)',
-    canal: 'Você Mais Rico',
-    tipo: 'video',
-    casting: ['Bruno Perini'],
-    fases: {},
-  },
+  // Vídeos de Sustentação O Primo Rico
+  { id: 'opr-1', numero: 101, titulo: 'OPR: Vídeo 1', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-05T12:00:00') } } },
+  { id: 'opr-2', numero: 102, titulo: 'OPR: Vídeo 2', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-07T12:00:00') } } },
+  { id: 'opr-3', numero: 103, titulo: 'OPR: Vídeo 3', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-10T12:00:00') } } },
+  { id: 'opr-4', numero: 104, titulo: 'OPR: Vídeo 4', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-12T12:00:00') } } },
+  { id: 'opr-5', numero: 105, titulo: 'OPR: Vídeo 5', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-14T12:00:00') } } },
+  { id: 'opr-6', numero: 106, titulo: 'OPR: Vídeo 6', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-17T12:00:00') } } },
+  { id: 'opr-7', numero: 107, titulo: 'OPR: Vídeo 7', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-19T12:00:00') } } },
+  { id: 'opr-8', numero: 108, titulo: 'OPR: Vídeo 8', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-21T12:00:00') } } },
+  { id: 'opr-9', numero: 109, titulo: 'OPR: Vídeo 9', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-24T12:00:00') } } },
+  { id: 'opr-10', numero: 110, titulo: 'OPR: Vídeo 10', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-28T12:00:00') } } },
+  { id: 'opr-11', numero: 111, titulo: 'OPR: Vídeo 11', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-05-31T12:00:00') } } },
+  { id: 'opr-12', numero: 112, titulo: 'OPR: Vídeo 12', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-06-02T12:00:00') } } },
+  { id: 'opr-13', numero: 113, titulo: 'OPR: Vídeo 13', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-06-04T12:00:00') } } },
+  { id: 'opr-14', numero: 114, titulo: 'OPR: Vídeo 14', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-06-07T12:00:00') } } },
+  { id: 'opr-15', numero: 115, titulo: 'OPR: Vídeo 15', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-06-09T12:00:00') } } },
+  { id: 'opr-16', numero: 116, titulo: 'OPR: Vídeo 16', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-06-11T12:00:00') } } },
+  { id: 'opr-17', numero: 117, titulo: 'OPR: Vídeo 17', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-06-14T12:00:00') } } },
+  { id: 'opr-18', numero: 118, titulo: 'OPR: Vídeo 18', canal: 'O Primo Rico', tipo: 'video', casting: ['Thiago Nigro'], fases: { publicacao: { data: new Date('2026-06-16T12:00:00') } } },
+
+  // Vídeos de Sustentação Você Mais Rico
+  { id: 'vmr-1', numero: 201, titulo: 'VMR: Vídeo 1', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-05-06T12:00:00') } } },
+  { id: 'vmr-2', numero: 202, titulo: 'VMR: Vídeo 2', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-05-11T12:00:00') } } },
+  { id: 'vmr-3', numero: 203, titulo: 'VMR: Vídeo 3', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-05-13T12:00:00') } } },
+  { id: 'vmr-4', numero: 204, titulo: 'VMR: Vídeo 4', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-05-18T12:00:00') } } },
+  { id: 'vmr-5', numero: 205, titulo: 'VMR: Vídeo 5', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-05-25T12:00:00') } } },
+  { id: 'vmr-6', numero: 206, titulo: 'VMR: Vídeo 6', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-05-27T12:00:00') } } },
+  { id: 'vmr-7', numero: 207, titulo: 'VMR: Vídeo 7', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-06-01T12:00:00') } } },
+  { id: 'vmr-8', numero: 208, titulo: 'VMR: Vídeo 8', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-06-10T12:00:00') } } },
+  { id: 'vmr-9', numero: 209, titulo: 'VMR: Vídeo 9', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-06-15T12:00:00') } } },
+  { id: 'vmr-10', numero: 210, titulo: 'VMR: Vídeo 10', canal: 'Você Mais Rico', tipo: 'video', casting: ['Bruno Perini'], fases: { publicacao: { data: new Date('2026-06-17T12:00:00') } } },
+
+  // Especiais / Collabs
+  { id: 'finclass-agf-1', numero: 301, titulo: 'Vídeo Finclass + AGF', canal: 'Finclass', tipo: 'video', casting: [], fases: { publicacao: { data: new Date('2026-05-25T12:00:00') } } },
+  { id: 'p4-ep2', numero: 302, titulo: 'Ep. 2 - Visitando Empresas...', canal: 'Você Mais Rico + AGF', tipo: 'video', casting: ['Bruno Perini', 'Louise'], fases: { publicacao: { data: new Date('2026-06-03T12:00:00') } } },
 
   // Participação nos Podcasts (sem datas fixas ainda)
   {

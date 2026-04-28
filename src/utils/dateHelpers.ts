@@ -177,9 +177,9 @@ export const detectConflicts = (
             casting: person,
             isTeam,
             periodo: `${formatDate(
-              f1.inicio > f2.inicio ? f1.inicio : f2.inicio,
+              f1.inicio! > f2.inicio! ? f1.inicio! : f2.inicio!,
               'dd/MM'
-            )} - ${formatDate(f1.fim < f2.fim ? f1.fim : f2.fim, 'dd/MM')}`,
+            )} - ${formatDate(f1.fim! < f2.fim! ? f1.fim! : f2.fim!, 'dd/MM')}`,
           });
         });
       }

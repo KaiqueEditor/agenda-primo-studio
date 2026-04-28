@@ -1,6 +1,6 @@
 import React from 'react';
 import { type CalendarEvent, FASE_CONFIG } from '../../types';
-import { Radio, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 interface Props {
   event: CalendarEvent;

@@ -1,22 +1,20 @@
 import React from 'react';
 import type { Projeto } from '../../types';
 import { detectConflicts } from '../../utils/dateHelpers';
-import { AlertTriangle, Video, Mic, Clock, Plus } from 'lucide-react';
+import { AlertTriangle, Video, Mic, Clock, Plus, Cloud } from 'lucide-react';
 
 interface Props {
   projetos: Projeto[];
   onAddProjeto: () => void;
+  onSaveAll?: () => void;
 }
 
-export const MetricsHeader: React.FC<Props> = ({ projetos, onAddProjeto }) => {
+export const MetricsHeader: React.FC<Props> = ({ projetos, onAddProjeto, onSaveAll }) => {
   const totalVideos = projetos.filter((p) => p.tipo === 'video').length;
   const totalPodcasts = projetos.filter((p) => p.tipo === 'podcast').length;
   const conflicts = detectConflicts(projetos);
 
-  const nextDeadline = projetos
-    .map((p) => ({ projeto: p, date: p.fases.publicacao?.data }))
-    .filter((d) => d.date && d.date >= new Date())
-    .sort((a, b) => (a.date as Date).getTime() - (b.date as Date).getTime())[0];
+
 
   return (
     <header className="metrics-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -61,13 +59,25 @@ export const MetricsHeader: React.FC<Props> = ({ projetos, onAddProjeto }) => {
         )}
       </div>
       
-      <button 
-        className="save-btn" 
-        onClick={onAddProjeto}
-        style={{ height: 'fit-content' }}
-      >
-        <Plus size={16} /> Novo Projeto
-      </button>
+      <div style={{ display: 'flex', gap: '12px' }}>
+        {onSaveAll && (
+          <button 
+            className="save-btn" 
+            onClick={onSaveAll}
+            style={{ height: 'fit-content', background: '#34C759', border: 'none' }}
+            title="Sincronizar e salvar tudo na nuvem"
+          >
+            <Cloud size={16} /> Salvar Tudo
+          </button>
+        )}
+        <button 
+          className="save-btn" 
+          onClick={onAddProjeto}
+          style={{ height: 'fit-content' }}
+        >
+          <Plus size={16} /> Novo Projeto
+        </button>
+      </div>
     </header>
   );
 };
