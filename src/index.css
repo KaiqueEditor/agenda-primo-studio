@@ -493,9 +493,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   flex-direction: column;
   gap: 4px;
   transition: background var(--transition);
-  overflow: visible; /* Let tooltip flow out */
+  overflow: hidden; /* Prevent visual leakage */
   border-right: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
+  position: relative;
 }
 
 .calendar-cell:hover { background: var(--bg-card-hover); }
@@ -546,7 +547,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   flex-direction: column;
   gap: 2px;
   flex: 1;
-  overflow: visible; /* Let tooltip flow out! */
+  overflow: hidden; /* Keep events strictly inside the cell */
 }
 
 .cal-event {

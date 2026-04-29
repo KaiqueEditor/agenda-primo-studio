@@ -4,6 +4,7 @@ import type { Projeto, FaseType, CalendarEvent as CalEvent } from '../../types';
 import { getCalendarDays, isCurrentMonth, isToday, getEventsForDay, getWeekDayNames, getNextMonth, getPrevMonth } from '../../utils/dateHelpers';
 import { CalendarNavigation } from './CalendarNavigation';
 import { CalendarEventItem } from './CalendarEvent';
+import { DayModal } from '../Modal/DayModal';
 
 interface Props {
   projetos: Projeto[];
@@ -15,6 +16,7 @@ interface Props {
 
 export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, onDropEvent, loading }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date('2026-05-01'));
+  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const days = getCalendarDays(currentMonth);
   const weekDays = getWeekDayNames();
 
@@ -71,10 +73,23 @@ export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, 
                   </>
                 )}
               </div>
+              <div 
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, cursor: 'pointer', zIndex: 0 }} 
+                onClick={() => setSelectedDay(day)}
+              />
             </div>
           );
         })}
       </div>
+      
+      {selectedDay && (
+        <DayModal
+          date={selectedDay}
+          events={getEventsForDay(projetos, selectedDay, fases)}
+          onClose={() => setSelectedDay(null)}
+          onSelectEvent={onSelectEvent}
+        />
+      )}
     </div>
   );
 };
