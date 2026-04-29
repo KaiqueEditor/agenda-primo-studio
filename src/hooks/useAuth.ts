@@ -68,6 +68,17 @@ export const useAuth = () => {
     setSession(null);
   };
 
+  const signInWithGoogle = async () => {
+    setError(null);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+    if (error) setError(error.message);
+  };
+
   const user: AppUser | null = session?.user ? {
     email: session.user.email || '',
     role: ADMIN_EMAILS.includes(session.user.email?.toLowerCase() || '') ? 'admin' : 'viewer',
@@ -82,6 +93,7 @@ export const useAuth = () => {
     signIn,
     signUp,
     signOut,
+    signInWithGoogle,
     isAdmin: user?.role === 'admin',
   };
 };
