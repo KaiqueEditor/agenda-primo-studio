@@ -38,16 +38,18 @@ export const AutocompleteTagInput: React.FC<Props> = ({ tags = [], onChange, sug
   };
 
   return (
-    <div className="tag-input-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', padding: '6px 8px', border: '1px solid var(--border)', borderRadius: '6px', background: 'var(--bg-main)', position: 'relative', alignItems: 'center' }}>
+    <div className="tag-input-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', padding: '8px 10px', border: '1px solid var(--border-subtle)', borderRadius: '8px', background: 'var(--bg-card)', position: 'relative', alignItems: 'center', boxShadow: '0 1px 2px rgba(0,0,0,0.01) inset', transition: 'border-color 0.2s' }}>
       {tags.map(tag => (
-        <span key={tag} className="tag-bubble" style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--border)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 500 }}>
+        <span key={tag} className="tag-bubble" style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--accent-light)', color: 'var(--accent)', padding: '4px 10px', borderRadius: '100px', fontSize: '12px', fontWeight: 600 }}>
           {tag}
           <button 
             type="button" 
             onClick={() => onChange(tags.filter(t => t !== tag))}
-            style={{ background: 'transparent', border: 'none', padding: 0, margin: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', color: 'var(--text-secondary)' }}
+            style={{ background: 'transparent', border: 'none', padding: 0, margin: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', color: 'var(--accent)', opacity: 0.7, transition: 'opacity 0.2s' }}
+            onMouseOver={e => e.currentTarget.style.opacity = '1'}
+            onMouseOut={e => e.currentTarget.style.opacity = '0.7'}
           >
-            <X size={12} />
+            <X size={12} strokeWidth={3} />
           </button>
         </span>
       ))}
