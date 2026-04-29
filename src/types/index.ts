@@ -31,13 +31,14 @@ export interface CalendarEvent {
   isSingle?: boolean;
 }
 
-export type ViewMode = 'calendar' | 'timeline' | 'list';
+export type ViewMode = 'calendar' | 'timeline' | 'list' | 'board';
 
 export interface FilterState {
   fases: FaseType[];
   canal: string;
   search: string;
   tipo: 'all' | 'video' | 'podcast';
+  responsavel: string;
 }
 
 export type TeamRole = 'editor' | 'supervisor_edicao' | 'motion' | 'designer' | 'supervisor_producao' | 'cinegrafista' | 'filmmaker' | 'gerente_producao' | 'produtora';

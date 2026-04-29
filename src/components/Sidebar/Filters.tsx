@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Filter, CalendarDays, BarChart, List, Video, Mic, Users, ChevronLeft, ChevronRight, LogOut } from 'lucide-react';
+import { Search, Filter, CalendarDays, BarChart, List, Video, Mic, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, User } from 'lucide-react';
 import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
 import type { AppUser } from '../../hooks/useAuth';
 import { getInitials, getAvatarColor } from '../../utils/displayHelpers';
@@ -13,14 +13,16 @@ interface Props {
   onSetCanal: (canal: string) => void;
   onSetSearch: (s: string) => void;
   onSetTipo: (t: 'all' | 'video' | 'podcast') => void;
+  onSetResponsavel: (r: string) => void;
   onSetView: (v: ViewMode) => void;
   onOpenTeam: () => void;
   onToggleCollapse: () => void;
   onSignOut: () => void;
+  teamMembers: string[];
 }
 
 export const Sidebar: React.FC<Props> = ({
-  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetView, onOpenTeam, onToggleCollapse, onSignOut
+  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers
 }) => {
   const canais = [
     'O Primo Rico',
@@ -40,14 +42,14 @@ export const Sidebar: React.FC<Props> = ({
           <ChevronRight size={18} />
         </button>
         <div className="sidebar-collapsed-icons">
-          {(['calendar', 'timeline', 'list'] as ViewMode[]).map((v) => (
+          {(['calendar', 'timeline', 'list', 'board'] as ViewMode[]).map((v) => (
             <button
               key={v}
               className={`collapsed-icon-btn ${viewMode === v ? 'active' : ''}`}
               onClick={() => onSetView(v)}
-              title={v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : 'Lista'}
+              title={v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista'}
             >
-              {v === 'calendar' ? <CalendarDays size={18} /> : v === 'timeline' ? <BarChart size={18} /> : <List size={18} />}
+              {v === 'calendar' ? <CalendarDays size={18} /> : v === 'timeline' ? <BarChart size={18} /> : v === 'board' ? <LayoutGrid size={18} /> : <List size={18} />}
             </button>
           ))}
         </div>
@@ -89,14 +91,14 @@ export const Sidebar: React.FC<Props> = ({
       <div className="sidebar-section">
         <label className="sidebar-label">Visualização</label>
         <div className="view-toggle">
-          {(['calendar', 'timeline', 'list'] as ViewMode[]).map((v) => (
+          {(['calendar', 'timeline', 'list', 'board'] as ViewMode[]).map((v) => (
             <button
               key={v}
               className={`view-btn ${viewMode === v ? 'active' : ''}`}
               onClick={() => onSetView(v)}
             >
-              {v === 'calendar' ? <CalendarDays size={14} /> : v === 'timeline' ? <BarChart size={14} /> : <List size={14} />}
-              <span>{v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : 'Lista'}</span>
+              {v === 'calendar' ? <CalendarDays size={14} /> : v === 'timeline' ? <BarChart size={14} /> : v === 'board' ? <LayoutGrid size={14} /> : <List size={14} />}
+              <span>{v === 'calendar' ? 'Calend.' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista'}</span>
             </button>
           ))}
         </div>
@@ -159,6 +161,20 @@ export const Sidebar: React.FC<Props> = ({
           <option value="">Todos os canais</option>
           {canais.map((c) => (
             <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="sidebar-section">
+        <label className="sidebar-label"><User size={14} /> Responsável</label>
+        <select
+          className="sidebar-select"
+          value={filters.responsavel}
+          onChange={(e) => onSetResponsavel(e.target.value)}
+        >
+          <option value="">Todos</option>
+          {teamMembers.map((m) => (
+            <option key={m} value={m}>{m}</option>
           ))}
         </select>
       </div>

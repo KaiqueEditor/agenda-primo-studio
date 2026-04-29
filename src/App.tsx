@@ -7,6 +7,7 @@ import { MetricsHeader } from './components/Dashboard/MetricsHeader';
 import { CalendarGrid } from './components/Calendar/CalendarGrid';
 import { TimelineView } from './components/Timeline/TimelineView';
 import { ProjectList } from './components/ListView/ProjectList';
+import { BoardView } from './components/Board/BoardView';
 import { ProjectModal } from './components/Modal/ProjectModal';
 import { TeamModal } from './components/Modal/TeamModal';
 import { LoginPage } from './components/Auth/LoginPage';
@@ -15,7 +16,7 @@ import './index.css';
 
 function App() {
   const { session, user, loading: authLoading, error: authError, signIn, signUp, signOut, signInWithGoogle, signInWithMagicLink, isAdmin } = useAuth();
-  const { projetos, allProjetos, filters, toggleFase, setCanal, setSearch, setTipo, updateProjeto, addProjeto, deleteProjeto, team, addTeamMember, saveAll } = useProjects();
+  const { projetos, allProjetos, filters, toggleFase, setCanal, setSearch, setTipo, setResponsavel, updateProjeto, addProjeto, deleteProjeto, team, addTeamMember, saveAll } = useProjects();
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
   const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
@@ -104,10 +105,12 @@ function App() {
         onSetCanal={setCanal}
         onSetSearch={setSearch}
         onSetTipo={setTipo}
+        onSetResponsavel={setResponsavel}
         onSetView={setViewMode}
         onOpenTeam={() => setShowTeamModal(true)}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
         onSignOut={signOut}
+        teamMembers={team.map(t => t.name)}
       />
       <main className="main-area">
         <MetricsHeader projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />
@@ -120,6 +123,9 @@ function App() {
           )}
           {viewMode === 'list' && (
             <ProjectList projetos={projetos} onSelect={handleProjectClick} />
+          )}
+          {viewMode === 'board' && (
+            <BoardView projetos={projetos} onSelect={handleProjectClick} />
           )}
         </div>
       </main>

@@ -12,6 +12,7 @@ export const useProjects = () => {
     canal: '',
     search: '',
     tipo: 'all',
+    responsavel: '',
   });
 
   useEffect(() => {
@@ -65,6 +66,10 @@ export const useProjects = () => {
       }
       if (filters.tipo !== 'all' && p.tipo !== filters.tipo) return false;
       if (filters.search && !p.titulo.toLowerCase().includes(filters.search.toLowerCase())) return false;
+      if (filters.responsavel) {
+        const members = [...(p.responsavel || []), ...p.casting];
+        if (!members.some(m => m.toLowerCase().includes(filters.responsavel.toLowerCase()))) return false;
+      }
       return true;
     });
   }, [projetos, filters]);
@@ -86,6 +91,10 @@ export const useProjects = () => {
 
   const setTipo = useCallback((tipo: 'all' | 'video' | 'podcast') => {
     setFilters((f) => ({ ...f, tipo }));
+  }, []);
+
+  const setResponsavel = useCallback((responsavel: string) => {
+    setFilters((f) => ({ ...f, responsavel }));
   }, []);
 
   const updateProjeto = useCallback(async (projetoAtualizado: Projeto) => {
@@ -127,6 +136,7 @@ export const useProjects = () => {
     setCanal, 
     setSearch, 
     setTipo,
+    setResponsavel,
     addTeamMember,
     saveAll
   };
