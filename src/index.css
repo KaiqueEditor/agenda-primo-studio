@@ -508,8 +508,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 4px; /* Reduced gap to prevent pushing */
-  flex-wrap: wrap; /* Wrap if too tight */
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 4px;
 }
 
 .today-label {
@@ -521,20 +522,22 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .cell-day {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-secondary);
-  margin-bottom: 4px;
   width: 24px;
   height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  flex-shrink: 0;
+  margin: 0; /* Reset any margins causing offsets */
+  padding: 0;
 }
 
 .today-number {
-  color: white;
-  background: var(--info);
+  color: #FFFFFF !important;
+  background: var(--info) !important;
   font-weight: 700;
 }
 
