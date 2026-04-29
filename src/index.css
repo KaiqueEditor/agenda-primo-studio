@@ -875,17 +875,15 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .modal-content {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-left: 1px solid var(--glass-border);
+  background: var(--bg-main);
+  border-left: 1px solid var(--border-subtle);
   width: 100%;
   max-width: 500px;
   height: 100vh;
   overflow-y: auto;
   position: relative;
   animation: slideLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: -10px 0 40px rgba(0,0,0,0.1);
+  box-shadow: -20px 0 60px rgba(0,0,0,0.15);
   padding: 40px 32px;
 }
 
@@ -912,7 +910,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .modal-close:hover { 
-  background: #E5E5EA; 
+  background: var(--border); 
   color: var(--text-primary); 
 }
 
@@ -934,7 +932,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   color: var(--text-primary);
   margin-bottom: 20px;
   border: 1px solid var(--border);
-  background: var(--bg-main);
+  background: var(--bg-card);
 }
 
 .modal-title-input {
@@ -1078,7 +1076,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .date-input {
-  background: var(--bg-main);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 8px 12px;
@@ -1091,8 +1089,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .date-input:focus {
-  border-color: var(--border-focus);
-  background: var(--bg-card);
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
 }
 
@@ -1106,7 +1103,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .casting-input {
   width: 100%;
-  background: var(--bg-main);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 14px 16px;
@@ -1118,8 +1115,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .casting-input:focus {
-  border-color: var(--border-focus);
-  background: var(--bg-card);
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
