@@ -29,8 +29,8 @@ export const MetricsHeader: React.FC<Props> = ({ projetos, onAddProjeto, onSaveA
     <header className="metrics-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', gap: '16px' }}>
         <div className="metric-card">
-          <div className="metric-icon" style={{ color: '#007AFF' }}>
-            <Video size={20} />
+          <div className="metric-icon">
+            <Video size={16} />
           </div>
           <div className="metric-info">
             <span className="metric-value">{totalVideos}</span>
@@ -38,8 +38,8 @@ export const MetricsHeader: React.FC<Props> = ({ projetos, onAddProjeto, onSaveA
           </div>
         </div>
         <div className="metric-card">
-          <div className="metric-icon" style={{ color: '#5856D6' }}>
-            <Mic size={20} />
+          <div className="metric-icon">
+            <Mic size={16} />
           </div>
           <div className="metric-info">
             <span className="metric-value">{totalPodcasts}</span>
@@ -47,8 +47,8 @@ export const MetricsHeader: React.FC<Props> = ({ projetos, onAddProjeto, onSaveA
           </div>
         </div>
         <div className="metric-card">
-          <div className="metric-icon" style={{ color: '#1D1D1F' }}>
-            <Clock size={20} />
+          <div className="metric-icon">
+            <Clock size={16} />
           </div>
           <div className="metric-info">
             <span className="metric-value">{projetos.length}</span>
