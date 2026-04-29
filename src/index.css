@@ -503,7 +503,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
+  gap: 4px; /* Reduced gap to prevent pushing */
+  flex-wrap: wrap; /* Wrap if too tight */
 }
 
 .today-label {
@@ -537,7 +538,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   flex-direction: column;
   gap: 2px;
   flex: 1;
-  overflow: hidden;
+  overflow: visible; /* Let tooltip flow out! */
 }
 
 .cal-event {
@@ -1510,6 +1511,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background: transparent;
 }
 .board-card {
+  flex-shrink: 0; /* Prevents card from squishing vertically when there are many items */
   background: var(--bg-card); border: 1px solid var(--border-subtle);
   border-radius: 14px; padding: 16px; cursor: pointer;
   transition: all var(--transition); box-shadow: 0 4px 16px rgba(0,0,0,0.03);
