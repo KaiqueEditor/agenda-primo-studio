@@ -12,6 +12,7 @@ export interface AppUser {
 
 // Define who is admin — everyone else is viewer
 const ADMIN_EMAILS = [
+  'kaiqueseditor@gmail.com',
   'kaique@primostudio.com.br',
   'kaique@agf.com.br',
   'isadora@primostudio.com.br',
@@ -79,6 +80,22 @@ export const useAuth = () => {
     if (error) setError(error.message);
   };
 
+  const signInWithMagicLink = async (email: string) => {
+    setError(null);
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.origin },
+    });
+    if (error) {
+      setError(error.message);
+    } else {
+      setError(null);
+    }
+    setLoading(false);
+    return !error;
+  };
+
   const user: AppUser | null = session?.user ? {
     email: session.user.email || '',
     role: ADMIN_EMAILS.includes(session.user.email?.toLowerCase() || '') ? 'admin' : 'viewer',
@@ -94,6 +111,7 @@ export const useAuth = () => {
     signUp,
     signOut,
     signInWithGoogle,
+    signInWithMagicLink,
     isAdmin: user?.role === 'admin',
   };
 };
