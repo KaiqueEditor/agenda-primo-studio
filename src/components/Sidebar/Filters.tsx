@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Filter, CalendarDays, BarChart, List, Video, Mic, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, User } from 'lucide-react';
+import { Search, Filter, CalendarDays, BarChart, List, Video, Mic, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, User, Moon, Sun } from 'lucide-react';
 import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
 import type { AppUser } from '../../hooks/useAuth';
 import { getInitials, getAvatarColor } from '../../utils/displayHelpers';
@@ -19,10 +19,12 @@ interface Props {
   onToggleCollapse: () => void;
   onSignOut: () => void;
   teamMembers: string[];
+  darkMode: boolean;
+  onToggleDarkMode: () => void;
 }
 
 export const Sidebar: React.FC<Props> = ({
-  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers
+  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers, darkMode, onToggleDarkMode
 }) => {
   const canais = [
     'O Primo Rico',
@@ -53,7 +55,10 @@ export const Sidebar: React.FC<Props> = ({
             </button>
           ))}
         </div>
-        <div style={{ marginTop: 'auto' }}>
+        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <button className="collapsed-icon-btn" onClick={onToggleDarkMode} title={darkMode ? 'Modo Claro' : 'Modo Escuro'}>
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           <button className="collapsed-icon-btn" onClick={onOpenTeam} title="Gerenciar Equipe">
             <Users size={18} />
           </button>
@@ -180,9 +185,14 @@ export const Sidebar: React.FC<Props> = ({
       </div>
 
       <div className="sidebar-section" style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
-        <button className="sidebar-team-btn" onClick={onOpenTeam}>
-          <Users size={16} /> Gerenciar Equipe
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button className="sidebar-team-btn" onClick={onOpenTeam} style={{ flex: 1 }}>
+            <Users size={16} /> Equipe
+          </button>
+          <button className="sidebar-team-btn" onClick={onToggleDarkMode} style={{ width: 'auto', padding: '10px 12px' }} title={darkMode ? 'Modo Claro' : 'Modo Escuro'}>
+            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+        </div>
       </div>
     </aside>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { ViewMode, CalendarEvent as CalEvent, Projeto, FaseType } from './types';
 import { useProjects } from './hooks/useProjects';
 import { useAuth } from './hooks/useAuth';
@@ -12,6 +12,7 @@ import { ProjectModal } from './components/Modal/ProjectModal';
 import { TeamModal } from './components/Modal/TeamModal';
 import { LoginPage } from './components/Auth/LoginPage';
 import { ToastContainer, toast } from './components/UI/Toast';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import './index.css';
 
 function App() {
@@ -21,6 +22,23 @@ function App() {
   const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('agf-dark') === 'true');
+
+  // Apply dark mode to document
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+    localStorage.setItem('agf-dark', String(darkMode));
+  }, [darkMode]);
+
+  const toggleSidebar = useCallback(() => setSidebarCollapsed(prev => !prev), []);
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts({
+    onAddProjeto: () => handleAddProjeto(),
+    onOpenTeam: () => setShowTeamModal(true),
+    onSetView: setViewMode,
+    onToggleSidebar: toggleSidebar,
+  });
 
   // Show login if not authenticated
   if (!session) {
@@ -108,9 +126,11 @@ function App() {
         onSetResponsavel={setResponsavel}
         onSetView={setViewMode}
         onOpenTeam={() => setShowTeamModal(true)}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        onToggleCollapse={toggleSidebar}
         onSignOut={signOut}
         teamMembers={team.map(t => t.name)}
+        darkMode={darkMode}
+        onToggleDarkMode={() => setDarkMode(!darkMode)}
       />
       <main className="main-area">
         <MetricsHeader projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />
