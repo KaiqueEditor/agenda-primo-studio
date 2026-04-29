@@ -1,8 +1,7 @@
 import React from 'react';
-import { type CalendarEvent as CalEvent } from '../../types';
-import { getCanalColor, FASE_CONFIG } from '../../utils/displayHelpers';
+import { type CalendarEvent as CalEvent, FASE_CONFIG } from '../../types';
+import { getCanalColor } from '../../utils/displayHelpers';
 import { Zap } from 'lucide-react';
-import { format } from 'date-fns';
 
 interface Props {
   event: CalEvent;
