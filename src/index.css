@@ -884,7 +884,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   position: relative;
   animation: slideLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: -20px 0 60px rgba(0,0,0,0.15);
-  padding: 40px 32px;
+  padding: 24px 32px;
 }
 
 @keyframes slideLeft {
@@ -915,7 +915,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .modal-header { 
-  margin-bottom: 32px; 
+  margin-bottom: 20px; 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -930,15 +930,15 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   border: 1px solid var(--border);
   background: var(--bg-card);
 }
 
 .modal-title-input {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   width: 100%;
   background: transparent;
   border: none;
@@ -972,7 +972,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border-color: var(--border-focus);
 }
 
-.modal-progress-section { margin-bottom: 32px; }
+.modal-progress-section { margin-bottom: 20px; }
 
 .progress-label {
   display: flex;
@@ -1004,14 +1004,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   from { width: 0 !important; }
 }
 
-.modal-timeline { margin-bottom: 32px; }
+.modal-timeline { margin-bottom: 20px; }
 .modal-timeline h3, .modal-casting h3 {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1020,15 +1020,15 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .timeline-track {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   padding-left: 0;
 }
 
 .timeline-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
+  gap: 12px;
+  padding: 12px 16px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--bg-card);
@@ -1100,7 +1100,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-weight: 500;
 }
 
-.modal-casting { margin-top: 16px; margin-bottom: 40px; }
+.modal-casting { margin-top: 0; margin-bottom: 20px; }
 
 .casting-input {
   width: 100%;
@@ -1123,7 +1123,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  padding-top: 24px;
+  padding-top: 16px;
   border-top: 1px solid var(--border);
 }
 
