@@ -10,72 +10,72 @@ export interface CanalColor {
 
 const CANAL_COLORS: Record<string, CanalColor> = {
   'O Primo Rico': {
-    bg: 'rgba(0, 122, 255, 0.10)',
-    text: '#0062CC',
-    dot: '#007AFF',
-    border: 'rgba(0, 122, 255, 0.25)',
+    bg: '#EFF6FF',
+    text: '#2563EB',
+    dot: '#3B82F6',
+    border: '#BFDBFE',
   },
   'Você Mais Rico': {
-    bg: 'rgba(88, 86, 214, 0.10)',
-    text: '#4B49B6',
-    dot: '#5856D6',
-    border: 'rgba(88, 86, 214, 0.25)',
+    bg: '#F5F3FF',
+    text: '#7C3AED',
+    dot: '#8B5CF6',
+    border: '#DDD6FE',
   },
   'PrimoCast': {
-    bg: 'rgba(255, 149, 0, 0.10)',
-    text: '#CC7700',
-    dot: '#FF9500',
-    border: 'rgba(255, 149, 0, 0.25)',
+    bg: '#FFF7ED',
+    text: '#EA580C',
+    dot: '#F97316',
+    border: '#FED7AA',
   },
   'Finclass': {
-    bg: 'rgba(255, 59, 48, 0.10)',
-    text: '#CC2F26',
-    dot: '#FF3B30',
-    border: 'rgba(255, 59, 48, 0.25)',
+    bg: '#FEF2F2',
+    text: '#DC2626',
+    dot: '#EF4444',
+    border: '#FECACA',
   },
   'Os Sócios Podcast': {
-    bg: 'rgba(52, 199, 89, 0.10)',
-    text: '#248A3D',
-    dot: '#34C759',
-    border: 'rgba(52, 199, 89, 0.25)',
+    bg: '#F0FDF4',
+    text: '#16A34A',
+    dot: '#22C55E',
+    border: '#BBF7D0',
   },
   'Os Economistas': {
-    bg: 'rgba(175, 82, 222, 0.10)',
-    text: '#8944AB',
-    dot: '#AF52DE',
-    border: 'rgba(175, 82, 222, 0.25)',
+    bg: '#FDF2F8',
+    text: '#DB2777',
+    dot: '#EC4899',
+    border: '#FBCFE8',
   },
   'G4 / PrimoCast': {
-    bg: 'rgba(255, 45, 85, 0.10)',
-    text: '#CC2445',
-    dot: '#FF2D55',
-    border: 'rgba(255, 45, 85, 0.25)',
+    bg: '#FEF2F2',
+    text: '#DC2626',
+    dot: '#EF4444',
+    border: '#FECACA',
   },
   'AGF + Finclass': {
-    bg: 'rgba(255, 59, 48, 0.10)',
-    text: '#CC2F26',
-    dot: '#FF3B30',
-    border: 'rgba(255, 59, 48, 0.25)',
+    bg: '#FEF2F2',
+    text: '#DC2626',
+    dot: '#EF4444',
+    border: '#FECACA',
   },
   'O Primo Rico + AGF': {
-    bg: 'rgba(0, 122, 255, 0.10)',
-    text: '#0062CC',
-    dot: '#007AFF',
-    border: 'rgba(0, 122, 255, 0.25)',
+    bg: '#EFF6FF',
+    text: '#2563EB',
+    dot: '#3B82F6',
+    border: '#BFDBFE',
   },
   'Você Mais Rico + AGF': {
-    bg: 'rgba(88, 86, 214, 0.10)',
-    text: '#4B49B6',
-    dot: '#5856D6',
-    border: 'rgba(88, 86, 214, 0.25)',
+    bg: '#F5F3FF',
+    text: '#7C3AED',
+    dot: '#8B5CF6',
+    border: '#DDD6FE',
   },
 };
 
 // Fallback colors for unknown channels
 const FALLBACK_COLORS: CanalColor[] = [
-  { bg: 'rgba(90, 200, 250, 0.10)', text: '#2DA8D8', dot: '#5AC8FA', border: 'rgba(90, 200, 250, 0.25)' },
-  { bg: 'rgba(255, 204, 0, 0.10)', text: '#BF9900', dot: '#FFCC00', border: 'rgba(255, 204, 0, 0.25)' },
-  { bg: 'rgba(0, 199, 190, 0.10)', text: '#009E97', dot: '#00C7BE', border: 'rgba(0, 199, 190, 0.25)' },
+  { bg: '#F0F9FF', text: '#0284C7', dot: '#0EA5E9', border: '#BAE6FD' }, // Sky
+  { bg: '#FEFCE8', text: '#CA8A04', dot: '#EAB308', border: '#FEF08A' }, // Yellow
+  { bg: '#F0FDFA', text: '#0D9488', dot: '#14B8A6', border: '#99F6E4' }, // Teal
 ];
 
 // Simple hash for consistent fallback color

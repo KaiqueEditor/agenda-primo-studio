@@ -43,8 +43,7 @@ export const CalendarEventItem: React.FC<Props> = ({ event, onClick }) => {
           '--event-bg': canalColor.bg,
           '--event-border': canalColor.border,
           cursor: 'grab',
-          borderColor: canalColor.border,
-          zIndex: 10 /* Higher z-index to be clickable over the cell overlay */
+          zIndex: 10
         } as React.CSSProperties}
         onClick={(e) => {
           e.stopPropagation();
