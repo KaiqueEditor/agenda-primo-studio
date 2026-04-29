@@ -23,12 +23,12 @@ function App() {
   const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('agf-dark') === 'true');
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('agf-theme-apple') === 'dark');
 
   // Apply dark mode to document
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-    localStorage.setItem('agf-dark', String(darkMode));
+    localStorage.setItem('agf-theme-apple', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
   const toggleSidebar = useCallback(() => setSidebarCollapsed(prev => !prev), []);
