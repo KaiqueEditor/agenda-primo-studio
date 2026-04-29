@@ -8,6 +8,7 @@ interface Props {
   projetos: Projeto[];
   onSelect: (p: Projeto) => void;
   onUpdateStatus?: (projeto: Projeto, newStatus: string) => void;
+  loading?: boolean;
 }
 
 interface Column {
@@ -38,11 +39,31 @@ const getStatusId = (status: StatusInfo): string => {
   return map[status.label] || 'a_definir';
 };
 
-export const BoardView: React.FC<Props> = ({ projetos, onSelect }) => {
+export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading }) => {
   const grouped = COLUMNS.map(col => ({
     ...col,
     projetos: projetos.filter(p => getStatusId(getProjectStatus(p)) === col.id),
   }));
+
+  if (loading) {
+    return (
+      <div className="board-container">
+        {COLUMNS.map(col => (
+          <div key={col.id} className="board-column" style={{ '--col-color': col.color } as React.CSSProperties}>
+            <div className="board-column-header">
+              <span className="board-col-title">{col.label}</span>
+              <span className="board-col-count">-</span>
+            </div>
+            <div className="board-column-body">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="skeleton skeleton-card" style={{ height: '90px' }} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="board-container">
@@ -88,7 +109,9 @@ export const BoardView: React.FC<Props> = ({ projetos, onSelect }) => {
               );
             })}
             {col.projetos.length === 0 && (
-              <div className="board-empty">Nenhum projeto</div>
+              <div className="board-empty">
+                <div style={{ opacity: 0.5 }}>Coluna Vazia</div>
+              </div>
             )}
           </div>
         </div>

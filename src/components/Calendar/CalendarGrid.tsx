@@ -10,9 +10,10 @@ interface Props {
   fases: FaseType[];
   onSelectEvent: (event: CalEvent) => void;
   onDropEvent?: (projetoId: string, fase: FaseType, oldDate: string, newDate: string) => void;
+  loading?: boolean;
 }
 
-export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, onDropEvent }) => {
+export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, onDropEvent, loading }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date('2026-05-01'));
   const days = getCalendarDays(currentMonth);
   const weekDays = getWeekDayNames();
@@ -31,8 +32,9 @@ export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, 
           const events = getEventsForDay(projetos, day, fases);
           const inMonth = isCurrentMonth(day, currentMonth);
           const today = isToday(day);
+          
           return (
-            <div
+            <div 
               key={i}
               className={`calendar-cell ${!inMonth ? 'other-month' : ''} ${today ? 'today' : ''}`}
               onDragOver={(e) => e.preventDefault()}
@@ -46,15 +48,27 @@ export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, 
                 } catch(err) {}
               }}
             >
-              <span className={`cell-day ${today ? 'today-number' : ''}`}>
-                {format(day, 'd')}
-              </span>
+              <div className="cell-header">
+                {today && <span className="today-label">Hoje</span>}
+                <span className={`cell-day ${today ? 'today-number' : ''}`}>
+                  {format(day, 'd')}
+                </span>
+              </div>
               <div className="cell-events">
-                {events.slice(0, 3).map((ev, j) => (
-                  <CalendarEventItem key={`${ev.projeto.id}-${ev.fase}-${j}`} event={ev} onClick={onSelectEvent} />
-                ))}
-                {events.length > 3 && (
-                  <span className="more-events">+{events.length - 3}</span>
+                {loading ? (
+                  <>
+                    <div className="skeleton skeleton-text" style={{ width: '80%', marginBottom: '4px' }} />
+                    <div className="skeleton skeleton-text" style={{ width: '50%' }} />
+                  </>
+                ) : (
+                  <>
+                    {events.slice(0, 3).map((ev, j) => (
+                      <CalendarEventItem key={`${ev.projeto.id}-${ev.fase}-${j}`} event={ev} onClick={onSelectEvent} />
+                    ))}
+                    {events.length > 3 && (
+                      <span className="more-events">+{events.length - 3} mais</span>
+                    )}
+                  </>
                 )}
               </div>
             </div>

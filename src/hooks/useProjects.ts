@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase';
 export const useProjects = () => {
   const [projetos, setProjetos] = useState<Projeto[]>(projetosAGF);
   const [team, setTeam] = useState<TeamMember[]>(TEAM_MEMBERS);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<FilterState>({
     fases: ['gravacao', 'edicao', 'publicacao'],
     canal: '',
@@ -17,8 +18,10 @@ export const useProjects = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      // Load projects
-      const { data: projData } = await supabase.from('projetos').select('*');
+      setLoading(true);
+      try {
+        // Load projects
+        const { data: projData } = await supabase.from('projetos').select('*');
       if (projData && projData.length > 0) {
         // Parse dates from JSON
         const parsedProj = projData.map(row => {
@@ -49,10 +52,15 @@ export const useProjects = () => {
       if (teamData && teamData.length > 0) {
         setTeam(teamData.map(row => row.data as TeamMember));
       } else {
-        // Populate DB with default team
-        for (const t of TEAM_MEMBERS) {
-          await supabase.from('team').insert({ id: t.name, data: t });
+        // Populate DB with default
+        for (const m of TEAM_MEMBERS) {
+          await supabase.from('team').insert({ id: m.name, data: m });
         }
+      }
+      } catch (err) {
+        console.error("Error loading data:", err);
+      } finally {
+        setLoading(false);
       }
     };
     loadData();
@@ -138,6 +146,7 @@ export const useProjects = () => {
     setTipo,
     setResponsavel,
     addTeamMember,
-    saveAll
+    saveAll,
+    loading
   };
 };

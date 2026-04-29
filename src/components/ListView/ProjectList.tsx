@@ -9,9 +9,10 @@ import { ptBR } from 'date-fns/locale';
 interface Props {
   projetos: Projeto[];
   onSelect: (p: Projeto) => void;
+  loading?: boolean;
 }
 
-export const ProjectList: React.FC<Props> = ({ projetos, onSelect }) => {
+export const ProjectList: React.FC<Props> = ({ projetos, onSelect, loading }) => {
   const sorted = [...projetos].sort((a, b) => {
     const timeA = a.fases.publicacao?.data?.getTime() || Infinity;
     const timeB = b.fases.publicacao?.data?.getTime() || Infinity;
@@ -39,6 +40,38 @@ export const ProjectList: React.FC<Props> = ({ projetos, onSelect }) => {
 
   if (noDate.length > 0) {
     groups.push({ label: 'Sem data definida', projetos: noDate });
+  }
+
+  if (loading) {
+    return (
+      <div className="list-container">
+        {[1, 2, 3, 4].map(i => (
+          <div key={i} className="list-card">
+            <div className="list-card-left" style={{ width: '60%' }}>
+              <div className="skeleton skeleton-text" style={{ width: '40%', height: '20px', marginBottom: '8px' }} />
+              <div className="skeleton skeleton-text" style={{ width: '20%' }} />
+            </div>
+            <div className="list-card-right">
+              <div className="skeleton skeleton-text" style={{ width: '120px' }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (projetos.length === 0) {
+    return (
+      <div className="empty-state">
+        <div className="empty-state-icon">
+          <Calendar size={24} />
+        </div>
+        <div>
+          <h3>Nenhum projeto encontrado</h3>
+          <p style={{ marginTop: '4px' }}>Tente ajustar os filtros na barra lateral</p>
+        </div>
+      </div>
+    );
   }
 
   return (

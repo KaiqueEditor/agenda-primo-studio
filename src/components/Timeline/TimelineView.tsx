@@ -5,9 +5,10 @@ import { type Projeto, FASE_CONFIG, type FaseType } from '../../types';
 interface Props {
   projetos: Projeto[];
   onSelect: (p: Projeto) => void;
+  loading?: boolean;
 }
 
-export const TimelineView: React.FC<Props> = ({ projetos, onSelect }) => {
+export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading }) => {
   // Filter out projects without any dates
   const withDates = projetos.filter(p => 
     p.fases.gravacao?.inicio || p.fases.edicao?.inicio || p.fases.publicacao?.data
@@ -22,7 +23,40 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect }) => {
     if (p.fases.publicacao?.data) allDates.push(p.fases.publicacao.data);
   });
 
-  if (allDates.length === 0) return <div className="empty-state">Nenhum projeto com data encontrado</div>;
+  if (loading) {
+    return (
+      <div className="timeline-container">
+        <div className="timeline-header-row">
+          <div className="timeline-label-col">Projeto</div>
+          <div className="timeline-bar-col"></div>
+        </div>
+        {[1, 2, 3, 4, 5].map(i => (
+          <div key={i} className="timeline-row" style={{ cursor: 'default' }}>
+            <div className="timeline-label-col">
+              <div className="skeleton skeleton-text" style={{ width: '60%' }} />
+            </div>
+            <div className="timeline-bar-col">
+              <div className="skeleton skeleton-text" style={{ width: `${Math.random() * 40 + 20}%`, left: `${Math.random() * 20}%`, position: 'absolute' }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (allDates.length === 0) {
+    return (
+      <div className="empty-state">
+        <div className="empty-state-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="M21 5l-4 4-2-2"/></svg>
+        </div>
+        <div>
+          <h3>Nenhuma data na Timeline</h3>
+          <p style={{ marginTop: '4px' }}>Adicione projetos com datas de gravação ou publicação</p>
+        </div>
+      </div>
+    );
+  }
 
   const minDate = new Date(Math.min(...allDates.map((d) => d.getTime())));
   const maxDate = new Date(Math.max(...allDates.map((d) => d.getTime())));

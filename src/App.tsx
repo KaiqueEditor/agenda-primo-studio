@@ -17,7 +17,7 @@ import './index.css';
 
 function App() {
   const { session, user, loading: authLoading, error: authError, signIn, signUp, signOut, signInWithGoogle, signInWithMagicLink, isAdmin } = useAuth();
-  const { projetos, allProjetos, filters, toggleFase, setCanal, setSearch, setTipo, setResponsavel, updateProjeto, addProjeto, deleteProjeto, team, addTeamMember, saveAll } = useProjects();
+  const { projetos, allProjetos, filters, toggleFase, setCanal, setSearch, setTipo, setResponsavel, updateProjeto, addProjeto, deleteProjeto, team, addTeamMember, saveAll, loading } = useProjects();
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
   const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
@@ -136,16 +136,16 @@ function App() {
         <MetricsHeader projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />
         <div className="view-area">
           {viewMode === 'calendar' && (
-            <CalendarGrid projetos={projetos} fases={filters.fases} onSelectEvent={handleEventClick} onDropEvent={handleDropEvent} />
+            <CalendarGrid projetos={projetos} fases={filters.fases} onSelectEvent={handleEventClick} onDropEvent={handleDropEvent} loading={loading} />
           )}
           {viewMode === 'timeline' && (
-            <TimelineView projetos={projetos} onSelect={handleProjectClick} />
+            <TimelineView projetos={projetos} onSelect={handleProjectClick} loading={loading} />
           )}
           {viewMode === 'list' && (
-            <ProjectList projetos={projetos} onSelect={handleProjectClick} />
+            <ProjectList projetos={projetos} onSelect={handleProjectClick} loading={loading} />
           )}
           {viewMode === 'board' && (
-            <BoardView projetos={projetos} onSelect={handleProjectClick} />
+            <BoardView projetos={projetos} onSelect={handleProjectClick} loading={loading} />
           )}
         </div>
       </main>
