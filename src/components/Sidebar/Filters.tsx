@@ -1,40 +1,90 @@
 import React from 'react';
-import { Search, Filter, Calendar, CalendarDays, BarChart, List, Video, Mic } from 'lucide-react';
+import { Search, Filter, CalendarDays, BarChart, List, Video, Mic, Users, ChevronLeft, ChevronRight, LogOut } from 'lucide-react';
 import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
-
+import type { AppUser } from '../../hooks/useAuth';
+import { getInitials, getAvatarColor } from '../../utils/displayHelpers';
 
 interface Props {
   filters: FilterState;
   viewMode: ViewMode;
+  collapsed: boolean;
+  user: AppUser | null;
   onToggleFase: (fase: FaseType) => void;
   onSetCanal: (canal: string) => void;
   onSetSearch: (s: string) => void;
   onSetTipo: (t: 'all' | 'video' | 'podcast') => void;
   onSetView: (v: ViewMode) => void;
   onOpenTeam: () => void;
+  onToggleCollapse: () => void;
+  onSignOut: () => void;
 }
 
 export const Sidebar: React.FC<Props> = ({
-  filters, viewMode, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetView, onOpenTeam
+  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetView, onOpenTeam, onToggleCollapse, onSignOut
 }) => {
   const canais = [
-    'AGF',
-    'Finclass',
-    'G4',
-    'PrimoCast',
     'O Primo Rico',
-    'Os Economistas',
+    'Você Mais Rico',
+    'PrimoCast',
+    'Finclass',
     'Os Sócios Podcast',
-    'Você Mais Rico'
+    'Os Economistas',
+    'G4 / PrimoCast',
   ];
   const faseKeys: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
 
+  if (collapsed) {
+    return (
+      <aside className="sidebar sidebar-collapsed">
+        <button className="sidebar-expand-btn" onClick={onToggleCollapse} title="Expandir menu">
+          <ChevronRight size={18} />
+        </button>
+        <div className="sidebar-collapsed-icons">
+          {(['calendar', 'timeline', 'list'] as ViewMode[]).map((v) => (
+            <button
+              key={v}
+              className={`collapsed-icon-btn ${viewMode === v ? 'active' : ''}`}
+              onClick={() => onSetView(v)}
+              title={v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : 'Lista'}
+            >
+              {v === 'calendar' ? <CalendarDays size={18} /> : v === 'timeline' ? <BarChart size={18} /> : <List size={18} />}
+            </button>
+          ))}
+        </div>
+        <div style={{ marginTop: 'auto' }}>
+          <button className="collapsed-icon-btn" onClick={onOpenTeam} title="Gerenciar Equipe">
+            <Users size={18} />
+          </button>
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo">
-        <span className="logo-icon"><Calendar size={22} /></span>
-        <span className="logo-text">Agenda Primo.Studio</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="sidebar-logo">
+          <span className="logo-text">Primo.Studio</span>
+        </div>
+        <button className="sidebar-collapse-btn" onClick={onToggleCollapse} title="Colapsar menu">
+          <ChevronLeft size={16} />
+        </button>
       </div>
+
+      {user && (
+        <div className="sidebar-user">
+          <div className="user-avatar" style={{ background: getAvatarColor(user.displayName) }}>
+            {getInitials(user.displayName)}
+          </div>
+          <div className="user-info">
+            <span className="user-name">{user.displayName}</span>
+            <span className="user-role">{user.role === 'admin' ? 'Admin' : 'Visualizador'}</span>
+          </div>
+          <button className="user-logout" onClick={onSignOut} title="Sair">
+            <LogOut size={14} />
+          </button>
+        </div>
+      )}
 
       <div className="sidebar-section">
         <label className="sidebar-label">Visualização</label>
@@ -113,9 +163,9 @@ export const Sidebar: React.FC<Props> = ({
         </select>
       </div>
 
-      <div className="sidebar-section" style={{ marginTop: 'auto', paddingTop: '24px', borderTop: '1px solid var(--border)' }}>
-        <button className="save-btn" style={{ width: '100%', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border)' }} onClick={onOpenTeam}>
-          👥 Gerenciar Equipe
+      <div className="sidebar-section" style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+        <button className="sidebar-team-btn" onClick={onOpenTeam}>
+          <Users size={16} /> Gerenciar Equipe
         </button>
       </div>
     </aside>

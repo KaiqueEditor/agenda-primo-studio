@@ -8,9 +8,13 @@ interface Props {
 }
 
 export const TimelineView: React.FC<Props> = ({ projetos, onSelect }) => {
+  // Filter out projects without any dates
+  const withDates = projetos.filter(p => 
+    p.fases.gravacao?.inicio || p.fases.edicao?.inicio || p.fases.publicacao?.data
+  );
   // Find global date range
   const allDates: Date[] = [];
-  projetos.forEach((p) => {
+  withDates.forEach((p) => {
     if (p.fases.gravacao?.inicio) allDates.push(p.fases.gravacao.inicio);
     if (p.fases.gravacao?.fim) allDates.push(p.fases.gravacao.fim);
     if (p.fases.edicao?.inicio) allDates.push(p.fases.edicao.inicio);
@@ -53,7 +57,7 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect }) => {
           </div>
         </div>
       </div>
-      {projetos.map((projeto) => (
+      {withDates.map((projeto) => (
         <div key={projeto.id} className="timeline-row" onClick={() => onSelect(projeto)}>
           <div className="timeline-label-col">
             <span className="tl-title">{projeto.titulo}</span>

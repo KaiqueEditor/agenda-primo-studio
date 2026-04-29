@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import type { ViewMode, CalendarEvent as CalEvent, Projeto, FaseType } from './types';
 import { useProjects } from './hooks/useProjects';
+import { useAuth } from './hooks/useAuth';
 import { Sidebar } from './components/Sidebar/Filters';
 import { MetricsHeader } from './components/Dashboard/MetricsHeader';
 import { CalendarGrid } from './components/Calendar/CalendarGrid';
@@ -8,23 +9,41 @@ import { TimelineView } from './components/Timeline/TimelineView';
 import { ProjectList } from './components/ListView/ProjectList';
 import { ProjectModal } from './components/Modal/ProjectModal';
 import { TeamModal } from './components/Modal/TeamModal';
+import { LoginPage } from './components/Auth/LoginPage';
+import { ToastContainer, toast } from './components/UI/Toast';
 import './index.css';
 
 function App() {
+  const { session, user, loading: authLoading, error: authError, signIn, signUp, signOut, isAdmin } = useAuth();
   const { projetos, allProjetos, filters, toggleFase, setCanal, setSearch, setTipo, updateProjeto, addProjeto, deleteProjeto, team, addTeamMember, saveAll } = useProjects();
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
   const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  const handleEventClick = useCallback((event: CalEvent) => {
+  // Show login if not authenticated
+  if (!session) {
+    return (
+      <>
+        <LoginPage onSignIn={signIn} onSignUp={signUp} error={authError} loading={authLoading} />
+        <ToastContainer />
+      </>
+    );
+  }
+
+  const handleEventClick = (event: CalEvent) => {
     setSelectedProjeto(event.projeto);
-  }, []);
+  };
 
-  const handleProjectClick = useCallback((projeto: Projeto) => {
+  const handleProjectClick = (projeto: Projeto) => {
     setSelectedProjeto(projeto);
-  }, []);
+  };
 
-  const handleDropEvent = useCallback((projetoId: string, fase: FaseType, oldDateStr: string, newDateStr: string) => {
+  const handleDropEvent = (projetoId: string, fase: FaseType, oldDateStr: string, newDateStr: string) => {
+    if (!isAdmin) {
+      toast.error('Apenas admins podem mover eventos');
+      return;
+    }
     const p = allProjetos.find(p => p.id === projetoId);
     if (!p) return;
 
@@ -49,9 +68,14 @@ function App() {
     }
     
     updateProjeto(updated);
-  }, [allProjetos, updateProjeto]);
+    toast.success('Evento movido com sucesso');
+  };
 
-  const handleAddProjeto = useCallback(() => {
+  const handleAddProjeto = () => {
+    if (!isAdmin) {
+      toast.error('Apenas admins podem criar projetos');
+      return;
+    }
     const novo: Projeto = {
       id: `p${Date.now()}`,
       numero: allProjetos.length + 1,
@@ -62,22 +86,31 @@ function App() {
       fases: {}
     };
     setSelectedProjeto(novo);
-  }, [allProjetos.length]);
+  };
+
+  const handleSaveAll = async () => {
+    await saveAll();
+    toast.success('Tudo sincronizado na nuvem');
+  };
 
   return (
     <div className="app-layout">
       <Sidebar
         filters={filters}
         viewMode={viewMode}
+        collapsed={sidebarCollapsed}
+        user={user}
         onToggleFase={toggleFase}
         onSetCanal={setCanal}
         onSetSearch={setSearch}
         onSetTipo={setTipo}
         onSetView={setViewMode}
         onOpenTeam={() => setShowTeamModal(true)}
+        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        onSignOut={signOut}
       />
       <main className="main-area">
-        <MetricsHeader projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={saveAll} />
+        <MetricsHeader projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />
         <div className="view-area">
           {viewMode === 'calendar' && (
             <CalendarGrid projetos={projetos} fases={filters.fases} onSelectEvent={handleEventClick} onDropEvent={handleDropEvent} />
@@ -96,6 +129,10 @@ function App() {
           team={team}
           onClose={() => setSelectedProjeto(null)} 
           onSave={(p) => {
+            if (!isAdmin) {
+              toast.error('Apenas admins podem editar projetos');
+              return;
+            }
             const exists = allProjetos.some(exist => exist.id === p.id);
             if (exists) {
               updateProjeto(p);
@@ -103,11 +140,13 @@ function App() {
               addProjeto(p);
             }
             setSelectedProjeto(null);
+            toast.success('Projeto salvo');
           }}
-          onDelete={(id) => {
+          onDelete={isAdmin ? (id) => {
             deleteProjeto(id);
             setSelectedProjeto(null);
-          }}
+            toast.success('Projeto excluído');
+          } : undefined}
         />
       )}
       {showTeamModal && (
@@ -118,6 +157,7 @@ function App() {
           onSave={addTeamMember} 
         />
       )}
+      <ToastContainer />
     </div>
   );
 }
