@@ -12,6 +12,7 @@ import { ProjectModal } from './components/Modal/ProjectModal';
 import { TeamModal } from './components/Modal/TeamModal';
 import { LoginPage } from './components/Auth/LoginPage';
 import { ToastContainer, toast } from './components/UI/Toast';
+import { CommandPalette } from './components/UI/CommandPalette';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import './index.css';
 
@@ -149,6 +150,10 @@ function App() {
           )}
         </div>
       </main>
+
+      {/* Modais */}
+      <CommandPalette projetos={allProjetos} onSelect={setSelectedProjeto} />
+
       {selectedProjeto && (
         <ProjectModal 
           projeto={selectedProjeto}
