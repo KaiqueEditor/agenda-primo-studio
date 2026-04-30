@@ -21,9 +21,12 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading }) =
   const scrollRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
 
-  const withDates = projetos.filter(p =>
-    p.fases.gravacao?.inicio || p.fases.edicao?.inicio || p.fases.publicacao?.data
-  );
+  const withDates = projetos
+    .filter(p =>
+      p.fases.gravacao?.inicio || p.fases.edicao?.inicio || p.fases.publicacao?.data
+    )
+    .sort((a, b) => a.numero - b.numero);
+
 
   // Collect all dates to build range
   const allDates: Date[] = [];

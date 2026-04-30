@@ -28,9 +28,12 @@ export const Sidebar: React.FC<Props> = ({
 }) => {
   const canais = [
     'O Primo Rico',
+    'O Primo Rico + AGF',
     'Você Mais Rico',
+    'Você Mais Rico + AGF',
     'PrimoCast',
     'Finclass',
+    'AGF + Finclass',
     'Os Sócios Podcast',
     'Os Economistas',
     'G4 / PrimoCast',

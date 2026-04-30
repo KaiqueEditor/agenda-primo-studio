@@ -81,6 +81,9 @@ export const getEventsForDay = (
     }
   });
 
+  // Sort by project number so EP.1 < EP.2, etc.
+  events.sort((a, b) => a.projeto.numero - b.projeto.numero);
+
   return events;
 };
 

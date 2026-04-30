@@ -16,7 +16,8 @@ export const ProjectList: React.FC<Props> = ({ projetos, onSelect, loading }) =>
   const sorted = [...projetos].sort((a, b) => {
     const timeA = a.fases.publicacao?.data?.getTime() || Infinity;
     const timeB = b.fases.publicacao?.data?.getTime() || Infinity;
-    return timeA - timeB;
+    if (timeA !== timeB) return timeA - timeB;
+    return a.numero - b.numero; // secondary: by project number
   });
 
   // Group by month
