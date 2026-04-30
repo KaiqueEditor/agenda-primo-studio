@@ -48,31 +48,31 @@ export const GlobalActions: React.FC<Props> = ({ projetos, onAddProjeto, onSaveA
   return (
     <>
       {showToast && (
-        <div style={{ position: 'fixed', bottom: 32, left: '50%', transform: 'translateX(-50%)', background: '#34C759', color: 'white', padding: '12px 24px', borderRadius: '100px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', zIndex: 9999, boxShadow: '0 8px 30px rgba(52,199,89,0.3)', animation: 'slideUp 0.3s ease' }}>
+        <div style={{ position: 'fixed', bottom: 32, left: '50%', transform: 'translateX(-50%)', background: '#34C759', color: 'white', padding: '10px 20px', borderRadius: '100px', fontWeight: 600, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', zIndex: 9999, boxShadow: '0 8px 30px rgba(52,199,89,0.3)' }}>
           <span>✅ Alterações salvas com sucesso!</span>
         </div>
       )}
 
       {conflicts.length > 0 && (
         <div style={{ position: 'relative' }}>
-          <button 
-            className="save-btn" 
-            style={{ background: 'rgba(255,59,48,0.1)', color: '#FF3B30', borderColor: 'transparent' }}
-            onClick={() => setShowConflicts(true)}
+          <button
+            className="save-btn"
+            style={{ background: 'rgba(255,59,48,0.08)', color: '#FF3B30', borderColor: 'rgba(255,59,48,0.2)' }}
+            onClick={() => setShowConflicts(v => !v)}
           >
-            <AlertTriangle size={16} />
+            <AlertTriangle size={13} />
             {conflicts.length} Conflitos
           </button>
-          
+
           {showConflicts && (
-            <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '8px', background: 'var(--bg-elevated)', borderRadius: '12px', padding: '16px', width: '320px', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border)', zIndex: 100 }}>
+            <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, background: 'var(--bg-elevated)', borderRadius: '12px', padding: '16px', width: '300px', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border)', zIndex: 200 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h4 style={{ margin: 0, color: '#FF3B30', display: 'flex', alignItems: 'center', gap: '6px' }}><AlertTriangle size={14}/> Conflitos Detectados</h4>
-                <button onClick={() => setShowConflicts(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}><X size={14}/></button>
+                <h4 style={{ margin: 0, color: '#FF3B30', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}><AlertTriangle size={13}/> Conflitos</h4>
+                <button onClick={() => setShowConflicts(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '2px' }}><X size={13}/></button>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '300px', overflowY: 'auto' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '280px', overflowY: 'auto' }}>
                 {conflicts.map((c, i) => (
-                  <div key={i} style={{ fontSize: '13px', background: 'var(--bg-main)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #FF3B30' }}>
+                  <div key={i} style={{ fontSize: '12px', background: 'var(--bg-main)', padding: '8px 10px', borderRadius: '8px', borderLeft: '3px solid #FF3B30' }}>
                     <strong style={{ color: 'var(--text-primary)' }}>{c.casting}</strong> está locado em:<br/>
                     <span style={{ color: 'var(--text-secondary)' }}>• {c.projeto1.titulo}</span><br/>
                     <span style={{ color: 'var(--text-secondary)' }}>• {c.projeto2.titulo}</span>
@@ -84,44 +84,23 @@ export const GlobalActions: React.FC<Props> = ({ projetos, onAddProjeto, onSaveA
         </div>
       )}
 
-      <button 
-        style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '6px', 
-          padding: '6px 10px', 
-          background: 'var(--bg-card)', 
-          border: '1px solid var(--border)', 
-          borderRadius: '6px', 
-          color: 'var(--text-secondary)',
-          fontSize: '12px',
-          fontWeight: 500,
-          cursor: 'pointer',
-          transition: 'all 0.2s'
-        }} 
-        onMouseOver={e => e.currentTarget.style.background = 'var(--bg-elevated)'}
-        onMouseOut={e => e.currentTarget.style.background = 'var(--bg-card)'}
-        onClick={handleExport} 
-        title="Exportar como Imagem"
-      >
-        <Camera size={14} /> Exportar
+      <button className="save-btn secondary-btn" onClick={handleExport} title="Exportar como Imagem">
+        <Camera size={13} /> Exportar
       </button>
 
       {onSaveAll && (
-        <button 
-          className="save-btn secondary-btn" 
+        <button
+          className="save-btn secondary-btn"
           onClick={handleSave}
           disabled={isSaving}
         >
-          {isSaving ? <div className="spinner-small" /> : <Cloud size={16} />}
+          {isSaving ? <div className="spinner-small" /> : <Cloud size={13} />}
           {isSaving ? 'Salvando...' : 'Salvar Tudo'}
         </button>
       )}
-      <button 
-        className="save-btn primary-btn" 
-        onClick={onAddProjeto}
-      >
-        <Plus size={16} /> Novo Projeto
+
+      <button className="save-btn primary-btn" onClick={onAddProjeto}>
+        <Plus size={13} /> Novo Projeto
       </button>
     </>
   );
