@@ -11,9 +11,10 @@ interface Props {
   projetos: Projeto[];
   fases: FaseType[];
   onSelectEvent: (event: CalEvent) => void;
+  onDropEvent?: (projetoId: string, fase: FaseType, oldDate: string, newDate: string) => void;
 }
 
-export const WeekView: React.FC<Props> = ({ currentDate, projetos, fases, onSelectEvent }) => {
+export const WeekView: React.FC<Props> = ({ currentDate, projetos, fases, onSelectEvent, onDropEvent }) => {
   const now = new Date();
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 });
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
@@ -44,7 +45,20 @@ export const WeekView: React.FC<Props> = ({ currentDate, projetos, fases, onSele
           const events = getEventsForDay(projetos, day, fases);
           const today = isToday(day);
           return (
-            <div key={colIdx} className={`week-col-flat ${today ? 'today-col-flat' : ''}`}>
+            <div 
+              key={colIdx} 
+              className={`week-col-flat ${today ? 'today-col-flat' : ''}`}
+              onDragOver={e => e.preventDefault()}
+              onDrop={e => {
+                e.preventDefault();
+                const data = e.dataTransfer.getData('application/json');
+                if (!data || !onDropEvent) return;
+                try {
+                  const { projetoId, fase, date } = JSON.parse(data);
+                  onDropEvent(projetoId, fase, date, day.toISOString());
+                } catch {}
+              }}
+            >
               {events.length === 0 ? (
                 <div className="week-col-empty" />
               ) : (
@@ -55,6 +69,14 @@ export const WeekView: React.FC<Props> = ({ currentDate, projetos, fases, onSele
                     <button
                       key={j}
                       className="week-event-flat"
+                      draggable
+                      onDragStart={(e) => {
+                        e.dataTransfer.setData('application/json', JSON.stringify({
+                          projetoId: ev.projeto.id,
+                          fase: ev.fase,
+                          date: ev.date.toISOString()
+                        }));
+                      }}
                       style={{
                         background: canalColor.bg,
                         borderLeft: `3px solid ${canalColor.dot}`,

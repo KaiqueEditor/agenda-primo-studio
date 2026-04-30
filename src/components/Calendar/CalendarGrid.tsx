@@ -170,6 +170,7 @@ export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, 
           projetos={projetos}
           fases={fases}
           onSelectEvent={onSelectEvent}
+          onDropEvent={onDropEvent}
         />
       )}
 
