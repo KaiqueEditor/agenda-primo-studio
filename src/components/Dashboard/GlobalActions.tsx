@@ -84,8 +84,27 @@ export const GlobalActions: React.FC<Props> = ({ projetos, onAddProjeto, onSaveA
         </div>
       )}
 
-      <button className="save-btn secondary-btn" onClick={handleExport} title="Exportar como Imagem">
-        <Camera size={16} /> Exportar
+      <button 
+        style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '6px', 
+          padding: '6px 12px', 
+          background: 'var(--bg-card)', 
+          border: '1px solid var(--border)', 
+          borderRadius: '8px', 
+          color: 'var(--text-secondary)',
+          fontSize: '13px',
+          fontWeight: 500,
+          cursor: 'pointer',
+          transition: 'all 0.2s'
+        }} 
+        onMouseOver={e => e.currentTarget.style.background = 'var(--bg-elevated)'}
+        onMouseOut={e => e.currentTarget.style.background = 'var(--bg-card)'}
+        onClick={handleExport} 
+        title="Exportar como Imagem"
+      >
+        <Camera size={14} /> Exportar
       </button>
 
       {onSaveAll && (
