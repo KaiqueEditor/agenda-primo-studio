@@ -38,7 +38,7 @@ export const AutocompleteTagInput: React.FC<Props> = ({ tags = [], onChange, sug
   };
 
   return (
-    <div className="tag-input-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', padding: '8px 10px', border: '1px solid var(--border-subtle)', borderRadius: '8px', background: 'var(--bg-card)', position: 'relative', alignItems: 'center', boxShadow: '0 1px 2px rgba(0,0,0,0.01) inset', transition: 'border-color 0.2s' }}>
+    <div className="tag-input-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', padding: '8px 10px', border: '1px solid var(--border-subtle)', borderRadius: '12px', background: 'var(--bg-card)', position: 'relative', alignItems: 'center', boxShadow: '0 1px 2px rgba(0,0,0,0.01) inset', transition: 'border-color 0.2s' }}>
       {tags.map(tag => (
         <span key={tag} className="tag-bubble" style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--accent-light)', color: 'var(--accent)', padding: '4px 10px', borderRadius: '100px', fontSize: '12px', fontWeight: 600 }}>
           {tag}
@@ -70,7 +70,7 @@ export const AutocompleteTagInput: React.FC<Props> = ({ tags = [], onChange, sug
             style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '13px', color: 'var(--text-primary)' }}
           />
           {showSuggestions && filteredSuggestions.length > 0 && (
-            <div className="suggestions-dropdown" style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '6px', marginTop: '4px', zIndex: 10, maxHeight: '150px', overflowY: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+            <div className="suggestions-dropdown" style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px', marginTop: '4px', zIndex: 10, maxHeight: '150px', overflowY: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
               {filteredSuggestions.map(s => (
                 <div 
                   key={s} 

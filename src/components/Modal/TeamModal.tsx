@@ -63,7 +63,7 @@ export const TeamModal: React.FC<Props> = ({ team, projetos, onClose, onSave }) 
           </button>
         </div>
 
-        <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid var(--border)', borderRadius: '6px' }}>
+        <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid var(--border)', borderRadius: '12px' }}>
           {[...team]
             .map(t => ({ ...t, projects: getProjectsForMember(t.name) }))
             .sort((a, b) => {
