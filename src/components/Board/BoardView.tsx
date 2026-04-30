@@ -36,31 +36,30 @@ function getBoardCol(p: Projeto): BoardColumn['fase'] {
   const edit = p.fases.edicao;
   const pub  = p.fases.publicacao;
 
-  // 1. If it has a past publication date -> Concluído
+  // 1. Concluído: passed publication date
   if (pub?.data && isBefore(pub.data, today) && !isSameDay(pub.data, today)) {
     return 'concluido';
   }
 
-  // 2. If it is currently recording or will record -> Gravação
-  if (grav?.inicio && grav?.fim) {
-    if (isWithinInterval(today, { start: grav.inicio, end: grav.fim }) || isSameDay(today, grav.inicio) || isSameDay(today, grav.fim)) {
+  // 2. Gravação: currently recording or will record
+  if (grav?.inicio) {
+    if (isAfter(grav.inicio, today) || isSameDay(today, grav.inicio) || (grav.fim && isWithinInterval(today, { start: grav.inicio, end: grav.fim }))) {
       return 'gravacao';
     }
-    if (isAfter(grav.inicio, today)) return 'gravacao';
   }
 
-  // 3. If it is currently editing or will edit -> Edição
-  if (edit?.inicio && edit?.fim) {
-    if (isWithinInterval(today, { start: edit.inicio, end: edit.fim }) || isSameDay(today, edit.inicio) || isSameDay(today, edit.fim)) {
-      return 'edicao';
-    }
-    if (isAfter(edit.inicio, today)) return 'edicao';
+  // 3. Edição: has any edicao data (and past recording, but not published)
+  if (edit?.inicio || edit?.fim) {
+    return 'edicao';
   }
 
-  // 4. If it has a future publication date (and isn't in grav/edit) -> Publicação
-  if (pub?.data && (isSameDay(pub.data, today) || isAfter(pub.data, today))) {
+  // 4. Publicação: has publication data in the future/today
+  if (pub?.data) {
     return 'publicacao';
   }
+
+  // 5. Fallbacks for stuck projects
+  if (grav?.inicio || grav?.fim) return 'gravacao';
 
   return 'sem_fase';
 }

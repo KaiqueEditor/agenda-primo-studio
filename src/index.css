@@ -461,10 +461,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: min-content repeat(6, minmax(0, 1fr));
-  gap: 0; /* Remove borders between cells */
+  gap: 8px; /* Added spacing between cells */
   background: transparent;
-  border-top: 1px solid var(--border-subtle);
-  border-left: 1px solid var(--border-subtle);
+  border: none;
   border-radius: 0;
   overflow: hidden;
   flex: 1;
@@ -473,30 +472,34 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .calendar-weekday {
   background: transparent;
-  padding: 12px;
+  padding: 8px 12px;
   text-align: right;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-secondary);
-  border-right: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  border: none;
 }
 
 .calendar-cell {
-  background: transparent;
-  padding: 8px 8px 10px 10px;
-  min-height: 110px;
+  background: var(--bg-card);
+  padding: 10px 10px 12px 12px;
+  min-height: 120px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  transition: background var(--transition);
+  gap: 6px;
+  transition: all var(--transition);
   overflow: hidden; /* Prevent visual leakage */
-  border-right: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px; /* More rounded cells */
   position: relative;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
 
-.calendar-cell:hover { background: var(--bg-card-hover); }
+.calendar-cell:hover { 
+  background: var(--bg-card-hover);
+  border-color: var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
 .calendar-cell.other-month { }
 .calendar-cell.other-month .cell-day { color: var(--text-muted); opacity: 0.4; }
 .calendar-cell.other-month .cell-events { opacity: 0.3; }
@@ -542,7 +545,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .cell-events {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   flex: 1;
   overflow: hidden; /* Keep events strictly inside the cell */
 }
@@ -550,11 +553,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .cal-event {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 2px 6px;
-  border: none;
-  border-left: 3px solid var(--event-color);
-  border-radius: 2px 4px 4px 2px;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid var(--event-border);
+  border-left: 4px solid var(--event-color);
+  border-radius: 6px;
   background: var(--event-bg);
   cursor: pointer;
   font-family: inherit;
