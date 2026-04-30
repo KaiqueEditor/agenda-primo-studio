@@ -3,7 +3,7 @@ import { type Projeto, type FaseType, FASE_CONFIG } from '../../types';
 import { getCanalColor, getInitials, getAvatarColor } from '../../utils/displayHelpers';
 import { formatDate } from '../../utils/dateHelpers';
 import { Video, Mic, Calendar, Users, Zap } from 'lucide-react';
-import { isWithinInterval, isSameDay, isBefore, isAfter } from 'date-fns';
+import { isSameDay, isBefore, isAfter } from 'date-fns';
 
 interface Props {
   projetos: Projeto[];
@@ -27,8 +27,8 @@ const BOARD_COLS: BoardColumn[] = [
   { fase: 'concluido',  label: 'Publicado',   color: '#5856D6', bg: 'rgba(88,86,214,0.06)',   description: 'Já publicado' },
 ];
 
-/** Determine which board column this project belongs to */
-function getBoardCol(p: Projeto): BoardColumn['fase'] {
+/** Determine which board columns this project belongs to based on dates */
+function getBoardColsForProject(p: Projeto): Array<BoardColumn['fase']> {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
@@ -38,30 +38,18 @@ function getBoardCol(p: Projeto): BoardColumn['fase'] {
 
   // 1. Concluído: passed publication date
   if (pub?.data && isBefore(pub.data, today) && !isSameDay(pub.data, today)) {
-    return 'concluido';
+    return ['concluido'];
   }
 
-  // 2. Gravação: currently recording or will record
-  if (grav?.inicio) {
-    if (isAfter(grav.inicio, today) || isSameDay(today, grav.inicio) || (grav.fim && isWithinInterval(today, { start: grav.inicio, end: grav.fim }))) {
-      return 'gravacao';
-    }
-  }
+  const cols: Array<BoardColumn['fase']> = [];
 
-  // 3. Edição: has any edicao data (and past recording, but not published)
-  if (edit?.inicio || edit?.fim) {
-    return 'edicao';
-  }
+  if (grav?.inicio || grav?.fim) cols.push('gravacao');
+  if (edit?.inicio || edit?.fim) cols.push('edicao');
+  if (pub?.data) cols.push('publicacao');
 
-  // 4. Publicação: has publication data in the future/today
-  if (pub?.data) {
-    return 'publicacao';
-  }
+  if (cols.length === 0) cols.push('sem_fase');
 
-  // 5. Fallbacks for stuck projects
-  if (grav?.inicio || grav?.fim) return 'gravacao';
-
-  return 'sem_fase';
+  return cols;
 }
 
 function getNextDate(p: Projeto): { label: string; date: Date } | null {
@@ -79,7 +67,7 @@ function getNextDate(p: Projeto): { label: string; date: Date } | null {
 export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading }) => {
   const columns = BOARD_COLS.map(col => ({
     ...col,
-    items: projetos.filter(p => getBoardCol(p) === col.fase),
+    items: projetos.filter(p => getBoardColsForProject(p).includes(col.fase)),
   }));
 
   if (loading) {
@@ -131,6 +119,12 @@ export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading }) => {
               const canal = Array.isArray(projeto.canal) ? projeto.canal.join(' + ') : projeto.canal;
               const colFase = col.fase as FaseType;
               const faseConfig = FASE_CONFIG[colFase as FaseType];
+              
+              // We want to show the specific date for THIS column
+              let columnSpecificDate = nextDate;
+              if (colFase === 'gravacao' && projeto.fases.gravacao?.inicio) columnSpecificDate = { label: 'Grav.', date: projeto.fases.gravacao.inicio };
+              if (colFase === 'edicao' && projeto.fases.edicao?.inicio) columnSpecificDate = { label: 'Edição', date: projeto.fases.edicao.inicio };
+              if (colFase === 'publicacao' && projeto.fases.publicacao?.data) columnSpecificDate = { label: 'Pub.', date: projeto.fases.publicacao.data };
 
               return (
                 <div key={projeto.id} className="board-card" onClick={() => onSelect(projeto)}>
@@ -182,10 +176,10 @@ export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading }) => {
                   )}
 
                   {/* Next date */}
-                  {nextDate && (
+                  {columnSpecificDate && (
                     <div className="board-card-date">
                       <Calendar size={11} />
-                      {nextDate.label} {formatDate(nextDate.date, 'dd/MM')}
+                      {columnSpecificDate.label} {formatDate(columnSpecificDate.date, 'dd/MM')}
                     </div>
                   )}
 
