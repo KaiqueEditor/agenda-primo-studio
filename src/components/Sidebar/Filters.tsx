@@ -1,6 +1,6 @@
-import React from 'react';
-import { Search, Filter, CalendarDays, BarChart, List, Video, Mic, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, User, Moon, Sun } from 'lucide-react';
-import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
+import React, { useState } from 'react';
+import { Search, Filter, CalendarDays, BarChart, List, Video, Mic, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, User, Moon, Sun, Cloud, Plus } from 'lucide-react';
+import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode, type Projeto } from '../../types';
 import type { AppUser } from '../../hooks/useAuth';
 import { getInitials, getAvatarColor } from '../../utils/displayHelpers';
 
@@ -21,11 +21,21 @@ interface Props {
   teamMembers: string[];
   darkMode: boolean;
   onToggleDarkMode: () => void;
+  projetos?: Projeto[];
+  onAddProjeto?: () => void;
+  onSaveAll?: () => void;
 }
 
 export const Sidebar: React.FC<Props> = ({
-  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers, darkMode, onToggleDarkMode
+  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers, darkMode, onToggleDarkMode, projetos = [], onAddProjeto, onSaveAll
 }) => {
+  const [isSaving, setIsSaving] = useState(false);
+  const handleSave = async () => {
+    if (!onSaveAll) return;
+    setIsSaving(true);
+    try { await onSaveAll(); } finally { setIsSaving(false); }
+  };
+
   const canais = [
     'O Primo Rico',
     'O Primo Rico + AGF',
@@ -93,6 +103,34 @@ export const Sidebar: React.FC<Props> = ({
           <button className="user-logout" onClick={onSignOut} title="Sair">
             <LogOut size={14} />
           </button>
+        </div>
+      )}
+
+      {/* Ações Rápidas - Movidas do Header para o Sidebar */}
+      {(onAddProjeto || onSaveAll) && (
+        <div className="sidebar-section">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {onAddProjeto && (
+              <button className="sidebar-action-btn primary" onClick={onAddProjeto}>
+                <Plus size={14} /> Novo Projeto
+              </button>
+            )}
+            {onSaveAll && (
+              <button 
+                className="sidebar-action-btn secondary" 
+                onClick={handleSave} 
+                disabled={isSaving}
+              >
+                {isSaving ? <span className="spinner-small" /> : <Cloud size={14} />} 
+                {isSaving ? 'Salvando...' : 'Salvar na Nuvem'}
+              </button>
+            )}
+          </div>
+          {projetos.length > 0 && (
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px', textAlign: 'center' }}>
+              {projetos.length} projetos carregados
+            </div>
+          )}
         </div>
       )}
 
