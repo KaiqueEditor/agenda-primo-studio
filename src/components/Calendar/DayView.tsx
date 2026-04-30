@@ -1,29 +1,26 @@
-import React, { useRef, useEffect } from 'react';
-import { format, isSameDay, isToday } from 'date-fns';
+import React from 'react';
+import { format, isToday, isSameDay } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { Projeto, FaseType, CalendarEvent as CalEvent } from '../../types';
 import { getEventsForDay } from '../../utils/dateHelpers';
 import { getCanalColor } from '../../utils/displayHelpers';
 import { FASE_CONFIG } from '../../types';
 
-const HOURS = Array.from({ length: 24 }, (_, i) => i);
-const HOUR_HEIGHT = 64;
-
 interface Props {
   currentDate: Date;
   projetos: Projeto[];
   fases: FaseType[];
   onSelectEvent: (event: CalEvent) => void;
+  onChangeDate?: (d: Date) => void;
 }
 
-// Mini month calendar for day view sidebar
-const MiniCalendar: React.FC<{ date: Date; onSelectDate: (d: Date) => void }> = ({ date, onSelectDate }) => {
+// Minimal inline mini calendar for the sidebar
+const MiniCal: React.FC<{ date: Date; onSelect: (d: Date) => void }> = ({ date, onSelect }) => {
   const year = date.getFullYear();
   const month = date.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const cells: (number | null)[] = [...Array(firstDay).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
-  // pad to multiple of 7
   while (cells.length % 7 !== 0) cells.push(null);
 
   return (
@@ -38,16 +35,14 @@ const MiniCalendar: React.FC<{ date: Date; onSelectDate: (d: Date) => void }> = 
         {cells.map((day, i) => {
           if (!day) return <div key={i} />;
           const d = new Date(year, month, day);
-          const today = isToday(d);
-          const selected = isSameDay(d, date);
+          const todayFlag = isToday(d);
+          const sel = isSameDay(d, date);
           return (
             <button
               key={i}
-              className={`mini-cal-day ${today ? 'mini-today' : ''} ${selected ? 'mini-selected' : ''}`}
-              onClick={() => onSelectDate(d)}
-            >
-              {day}
-            </button>
+              className={`mini-cal-day ${todayFlag ? 'mini-today' : ''} ${sel ? 'mini-selected' : ''}`}
+              onClick={() => onSelect(d)}
+            >{day}</button>
           );
         })}
       </div>
@@ -55,83 +50,68 @@ const MiniCalendar: React.FC<{ date: Date; onSelectDate: (d: Date) => void }> = 
   );
 };
 
-export const DayView: React.FC<Props> = ({ currentDate, projetos, fases, onSelectEvent }) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const now = new Date();
-  const isCurrentDay = isSameDay(currentDate, now);
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+export const DayView: React.FC<Props> = ({ currentDate, projetos, fases, onSelectEvent, onChangeDate }) => {
   const events = getEventsForDay(projetos, currentDate, fases);
-
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 7 * HOUR_HEIGHT;
-    }
-  }, []);
+  const today = isToday(currentDate);
+  const dayLabel = format(currentDate, "EEEE, d 'de' MMMM", { locale: ptBR });
 
   return (
     <div className="day-view">
-      {/* Main scrollable area */}
-      <div className="day-view-main" ref={scrollRef}>
-        <div className="day-time-grid" style={{ height: HOUR_HEIGHT * 24 }}>
-          {/* Hour labels + lines */}
-          {HOURS.map(h => (
-            <div key={h} className="day-hour-row" style={{ top: h * HOUR_HEIGHT, height: HOUR_HEIGHT }}>
-              <span className="day-hour-label">
-                {h > 0 ? (h < 10 ? `0${h}:00` : `${h}:00`) : ''}
-              </span>
-              <div className="day-hour-line" />
-            </div>
-          ))}
+      {/* Main content */}
+      <div className="day-view-main">
+        {/* Day header */}
+        <div className={`day-view-header ${today ? 'day-view-header-today' : ''}`}>
+          <span className="day-view-label">{dayLabel}</span>
+          {today && <span className="day-view-today-badge">Hoje</span>}
+        </div>
 
-          {/* Current time indicator */}
-          {isCurrentDay && (
-            <div className="day-now-line" style={{ top: (currentMinutes / 60) * HOUR_HEIGHT }}>
-              <div className="day-now-dot" />
+        {/* Events list */}
+        <div className="day-events-list">
+          {events.length === 0 ? (
+            <div className="day-empty">
+              <div className="day-empty-icon">📅</div>
+              <span>Nenhum projeto neste dia</span>
             </div>
-          )}
-
-          {/* Events column */}
-          <div className="day-events-col">
-            {events.map((ev, j) => {
+          ) : (
+            events.map((ev, j) => {
               const canalColor = getCanalColor(ev.projeto.canal);
               const faseConfig = FASE_CONFIG[ev.fase];
-              const top = (8 + j * 2) * HOUR_HEIGHT;
-              const height = HOUR_HEIGHT * 1.5;
+              const canal = Array.isArray(ev.projeto.canal) ? ev.projeto.canal.join(' + ') : ev.projeto.canal;
               return (
                 <button
                   key={j}
-                  className="day-event"
+                  className="day-event-card"
                   style={{
-                    top,
-                    height,
                     background: canalColor.bg,
                     borderLeft: `4px solid ${canalColor.dot}`,
-                    color: canalColor.text,
                   }}
                   onClick={() => onSelectEvent(ev)}
                 >
-                  <div className="day-event-title">{ev.projeto.titulo}</div>
-                  <div className="day-event-meta">
-                    <span className="day-event-fase-dot" style={{ background: faseConfig.color }} />
-                    <span>{faseConfig.label}</span>
-                    {' · '}
-                    <span>{Array.isArray(ev.projeto.canal) ? ev.projeto.canal.join(', ') : ev.projeto.canal}</span>
+                  <div className="day-event-card-top">
+                    <span className="day-event-card-title" style={{ color: canalColor.text }}>
+                      {ev.projeto.titulo}
+                    </span>
+                    <span className="day-event-card-fase" style={{ background: faseConfig.color }}>
+                      {faseConfig.label}
+                    </span>
+                  </div>
+                  <div className="day-event-card-meta">
+                    <span style={{ color: canalColor.dot }}>● {canal}</span>
+                    <span>{ev.projeto.tipo === 'video' ? '🎬 Vídeo' : '🎙 Podcast'}</span>
+                    {ev.projeto.casting.length > 0 && (
+                      <span>👥 {ev.projeto.casting.slice(0, 3).join(', ')}</span>
+                    )}
                   </div>
                 </button>
               );
-            })}
-            {events.length === 0 && (
-              <div className="day-empty">
-                <span>Nenhum projeto neste dia</span>
-              </div>
-            )}
-          </div>
+            })
+          )}
         </div>
       </div>
 
-      {/* Right sidebar: mini calendar */}
+      {/* Sidebar: mini calendar */}
       <div className="day-view-sidebar">
-        <MiniCalendar date={currentDate} onSelectDate={() => {}} />
+        <MiniCal date={currentDate} onSelect={onChangeDate || (() => {})} />
       </div>
     </div>
   );
