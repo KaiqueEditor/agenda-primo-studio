@@ -142,17 +142,32 @@ function App() {
               onSelectEvent={handleEventClick} 
               onDropEvent={handleDropEvent} 
               loading={loading}
-              headerActions={<GlobalActions onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
+              headerActions={<GlobalActions projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
             />
           )}
           {viewMode === 'timeline' && (
-            <TimelineView projetos={projetos} onSelect={handleProjectClick} loading={loading} />
+            <TimelineView 
+              projetos={projetos} 
+              onSelect={handleProjectClick} 
+              loading={loading}
+              headerActions={<GlobalActions projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
+            />
           )}
           {viewMode === 'list' && (
-            <ProjectList projetos={projetos} onSelect={handleProjectClick} loading={loading} />
+            <ProjectList 
+              projetos={projetos} 
+              onSelect={handleProjectClick} 
+              loading={loading} 
+              headerActions={<GlobalActions projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
+            />
           )}
           {viewMode === 'board' && (
-            <BoardView projetos={projetos} onSelect={handleProjectClick} loading={loading} />
+            <BoardView 
+              projetos={projetos} 
+              onSelect={handleProjectClick} 
+              loading={loading} 
+              headerActions={<GlobalActions projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
+            />
           )}
         </div>
       </main>

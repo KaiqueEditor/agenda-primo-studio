@@ -12,12 +12,13 @@ interface Props {
   projetos: Projeto[];
   onSelect: (p: Projeto) => void;
   loading?: boolean;
+  headerActions?: React.ReactNode;
 }
 
 const ROW_HEIGHT = 52;
 const DAY_W = 28; // px per day
 
-export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading }) => {
+export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading, headerActions }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
 
@@ -115,16 +116,19 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading }) =
     <div className="tl2-container">
       {/* Legend */}
       <div className="tl2-legend">
-        {faseOrder.map(f => (
-          <span key={f} className="tl2-legend-item">
-            <span className="tl2-legend-dot" style={{ background: FASE_CONFIG[f].color }} />
-            {FASE_CONFIG[f].label}
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          {faseOrder.map(f => (
+            <span key={f} className="tl2-legend-item">
+              <span className="tl2-legend-dot" style={{ background: FASE_CONFIG[f].color }} />
+              {FASE_CONFIG[f].label}
+            </span>
+          ))}
+          <span className="tl2-legend-item">
+            <span className="tl2-legend-dot tl2-diamond-mini" style={{ background: FASE_CONFIG.publicacao.color }} />
+            Data de Publicação
           </span>
-        ))}
-        <span className="tl2-legend-item">
-          <span className="tl2-legend-dot tl2-diamond-mini" style={{ background: FASE_CONFIG.publicacao.color }} />
-          Data de Publicação
-        </span>
+        </div>
+        {headerActions && <div style={{ display: 'flex', gap: '12px' }}>{headerActions}</div>}
       </div>
 
       <div className="tl2-layout" ref={scrollRef}>

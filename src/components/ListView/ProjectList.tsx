@@ -10,9 +10,10 @@ interface Props {
   projetos: Projeto[];
   onSelect: (p: Projeto) => void;
   loading?: boolean;
+  headerActions?: React.ReactNode;
 }
 
-export const ProjectList: React.FC<Props> = ({ projetos, onSelect, loading }) => {
+export const ProjectList: React.FC<Props> = ({ projetos, onSelect, loading, headerActions }) => {
   const sorted = [...projetos].sort((a, b) => {
     const timeA = a.fases.publicacao?.data?.getTime() || Infinity;
     const timeB = b.fases.publicacao?.data?.getTime() || Infinity;
@@ -63,20 +64,35 @@ export const ProjectList: React.FC<Props> = ({ projetos, onSelect, loading }) =>
 
   if (projetos.length === 0) {
     return (
-      <div className="empty-state">
-        <div className="empty-state-icon">
-          <Calendar size={24} />
-        </div>
-        <div>
-          <h3>Nenhum projeto encontrado</h3>
-          <p style={{ marginTop: '4px' }}>Tente ajustar os filtros na barra lateral</p>
+      <div className="list-view-container">
+        {headerActions && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '16px 24px 0', background: 'var(--bg-main)' }}>
+            <div style={{ display: 'flex', gap: '12px' }}>{headerActions}</div>
+          </div>
+        )}
+        <div className="list-view-content">
+          <div className="empty-state">
+            <div className="empty-state-icon">
+              <Calendar size={24} />
+            </div>
+            <div>
+              <h3>Nenhum projeto encontrado</h3>
+              <p style={{ marginTop: '4px' }}>Tente ajustar os filtros na barra lateral</p>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="list-container">
+    <div className="list-view-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {headerActions && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '16px 24px 0', background: 'var(--bg-main)' }}>
+          <div style={{ display: 'flex', gap: '12px' }}>{headerActions}</div>
+        </div>
+      )}
+      <div className="list-container" style={{ flex: 1, overflowY: 'auto' }}>
       {groups.map((group) => (
         <div key={group.label} className="list-group">
           <div className="list-group-header">
@@ -157,6 +173,7 @@ export const ProjectList: React.FC<Props> = ({ projetos, onSelect, loading }) =>
           })}
         </div>
       ))}
+      </div>
     </div>
   );
 };

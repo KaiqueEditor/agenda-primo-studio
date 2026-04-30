@@ -831,7 +831,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .tl2-legend {
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
   padding: 10px 16px;
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;

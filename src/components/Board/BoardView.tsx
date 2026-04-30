@@ -9,6 +9,7 @@ interface Props {
   projetos: Projeto[];
   onSelect: (p: Projeto) => void;
   loading?: boolean;
+  headerActions?: React.ReactNode;
 }
 
 type BoardColumn = {
@@ -64,7 +65,7 @@ function getNextDate(p: Projeto): { label: string; date: Date } | null {
   return null;
 }
 
-export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading }) => {
+export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading, headerActions }) => {
   const columns = BOARD_COLS.map(col => ({
     ...col,
     items: projetos.filter(p => getBoardColsForProject(p).includes(col.fase)),
@@ -89,130 +90,137 @@ export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading }) => {
   }
 
   return (
-    <div className="board-container">
-      {columns.map(col => (
-        <div
-          key={col.fase}
-          className="board-column"
-          style={{ '--col-color': col.color, '--col-bg': col.bg } as React.CSSProperties}
-        >
-          {/* Column header */}
-          <div className="board-column-header">
-            <div className="board-col-left">
-              <span className="board-col-dot" style={{ background: col.color }} />
-              <div>
-                <span className="board-col-title">{col.label}</span>
-                <span className="board-col-desc">{col.description}</span>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {headerActions && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '16px 24px 0', background: 'var(--bg-main)' }}>
+          <div style={{ display: 'flex', gap: '12px' }}>{headerActions}</div>
+        </div>
+      )}
+      <div className="board-container" style={{ flex: 1, overflowY: 'auto' }}>
+        {columns.map(col => (
+          <div
+            key={col.fase}
+            className="board-column"
+            style={{ '--col-color': col.color, '--col-bg': col.bg } as React.CSSProperties}
+          >
+            {/* Column header */}
+            <div className="board-column-header">
+              <div className="board-col-left">
+                <span className="board-col-dot" style={{ background: col.color }} />
+                <div>
+                  <span className="board-col-title">{col.label}</span>
+                  <span className="board-col-desc">{col.description}</span>
+                </div>
               </div>
+              <span className="board-col-count" style={{ background: col.color + '22', color: col.color }}>
+                {col.items.length}
+              </span>
             </div>
-            <span className="board-col-count" style={{ background: col.color + '22', color: col.color }}>
-              {col.items.length}
-            </span>
-          </div>
 
-          {/* Cards */}
-          <div className="board-column-body">
-            {col.items.map(projeto => {
-              const canalColor = getCanalColor(projeto.canal);
-              const isLive = projeto.fases.gravacao?.aoVivo;
-              const nextDate = getNextDate(projeto);
-              const canal = Array.isArray(projeto.canal) ? projeto.canal.join(' + ') : projeto.canal;
-              const colFase = col.fase as FaseType;
-              const faseConfig = FASE_CONFIG[colFase as FaseType];
-              
-              // We want to show the specific date for THIS column
-              let columnSpecificDate = nextDate;
-              if (colFase === 'gravacao' && projeto.fases.gravacao?.inicio) columnSpecificDate = { label: 'Grav.', date: projeto.fases.gravacao.inicio };
-              if (colFase === 'edicao' && projeto.fases.edicao?.inicio) columnSpecificDate = { label: 'Edição', date: projeto.fases.edicao.inicio };
-              if (colFase === 'publicacao' && projeto.fases.publicacao?.data) columnSpecificDate = { label: 'Pub.', date: projeto.fases.publicacao.data };
+            {/* Cards */}
+            <div className="board-column-body">
+              {col.items.map(projeto => {
+                const canalColor = getCanalColor(projeto.canal);
+                const isLive = projeto.fases.gravacao?.aoVivo;
+                const nextDate = getNextDate(projeto);
+                const canal = Array.isArray(projeto.canal) ? projeto.canal.join(' + ') : projeto.canal;
+                const colFase = col.fase as FaseType;
+                const faseConfig = FASE_CONFIG[colFase as FaseType];
+                
+                // We want to show the specific date for THIS column
+                let columnSpecificDate = nextDate;
+                if (colFase === 'gravacao' && projeto.fases.gravacao?.inicio) columnSpecificDate = { label: 'Grav.', date: projeto.fases.gravacao.inicio };
+                if (colFase === 'edicao' && projeto.fases.edicao?.inicio) columnSpecificDate = { label: 'Edição', date: projeto.fases.edicao.inicio };
+                if (colFase === 'publicacao' && projeto.fases.publicacao?.data) columnSpecificDate = { label: 'Pub.', date: projeto.fases.publicacao.data };
 
-              return (
-                <div key={projeto.id} className="board-card" onClick={() => onSelect(projeto)}>
-                  {/* Canal chip + live */}
-                  <div className="board-card-header">
-                    <span
-                      className="board-canal-chip"
-                      style={{ background: canalColor.bg, color: canalColor.text, borderColor: canalColor.border }}
-                    >
-                      {projeto.tipo === 'video' ? <Video size={10} /> : <Mic size={10} />}
-                      {canal}
-                    </span>
-                    {isLive && (
-                      <span className="board-live"><Zap size={10} /> LIVE</span>
+                return (
+                  <div key={projeto.id} className="board-card" onClick={() => onSelect(projeto)}>
+                    {/* Canal chip + live */}
+                    <div className="board-card-header">
+                      <span
+                        className="board-canal-chip"
+                        style={{ background: canalColor.bg, color: canalColor.text, borderColor: canalColor.border }}
+                      >
+                        {projeto.tipo === 'video' ? <Video size={10} /> : <Mic size={10} />}
+                        {canal}
+                      </span>
+                      {isLive && (
+                        <span className="board-live"><Zap size={10} /> LIVE</span>
+                      )}
+                    </div>
+
+                    {/* Title */}
+                    <h4 className="board-card-title">{projeto.titulo}</h4>
+
+                    {/* Phase progress dots */}
+                    {faseConfig && (
+                      <div className="board-phase-row">
+                        {(['gravacao', 'edicao', 'publicacao'] as FaseType[]).map(f => {
+                          const fc = FASE_CONFIG[f];
+                          const active = f === colFase;
+                          const done = (
+                            (f === 'gravacao' && (colFase === 'edicao' || colFase === 'publicacao' || colFase === 'concluido' as any)) ||
+                            (f === 'edicao' && (colFase === 'publicacao' || colFase === 'concluido' as any)) ||
+                            (f === 'publicacao' && colFase === 'concluido' as any)
+                          );
+                          return (
+                            <span key={f} className="board-phase-step">
+                              <span
+                                className="board-phase-dot"
+                                style={{
+                                  background: active ? fc.color : done ? fc.color : 'var(--border)',
+                                  opacity: done ? 0.5 : 1,
+                                  transform: active ? 'scale(1.3)' : 'scale(1)',
+                                }}
+                              />
+                              <span className="board-phase-label" style={{ color: active ? fc.color : 'var(--text-muted)' }}>
+                                {fc.label}
+                              </span>
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Next date */}
+                    {columnSpecificDate && (
+                      <div className="board-card-date">
+                        <Calendar size={11} />
+                        {columnSpecificDate.label} {formatDate(columnSpecificDate.date, 'dd/MM')}
+                      </div>
+                    )}
+
+                    {/* People */}
+                    {(projeto.responsavel?.length || projeto.casting.length > 0) && (
+                      <div className="board-card-footer">
+                        <Users size={11} style={{ color: 'var(--text-muted)' }} />
+                        <div className="board-card-people">
+                          {[...(projeto.responsavel || []), ...projeto.casting].slice(0, 5).map(name => (
+                            <span
+                              key={name}
+                              className="board-avatar"
+                              style={{ background: getAvatarColor(name) }}
+                              title={name}
+                            >
+                              {getInitials(name)}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
+                );
+              })}
 
-                  {/* Title */}
-                  <h4 className="board-card-title">{projeto.titulo}</h4>
-
-                  {/* Phase progress dots */}
-                  {faseConfig && (
-                    <div className="board-phase-row">
-                      {(['gravacao', 'edicao', 'publicacao'] as FaseType[]).map(f => {
-                        const fc = FASE_CONFIG[f];
-                        const active = f === colFase;
-                        const done = (
-                          (f === 'gravacao' && (colFase === 'edicao' || colFase === 'publicacao' || colFase === 'concluido' as any)) ||
-                          (f === 'edicao' && (colFase === 'publicacao' || colFase === 'concluido' as any)) ||
-                          (f === 'publicacao' && colFase === 'concluido' as any)
-                        );
-                        return (
-                          <span key={f} className="board-phase-step">
-                            <span
-                              className="board-phase-dot"
-                              style={{
-                                background: active ? fc.color : done ? fc.color : 'var(--border)',
-                                opacity: done ? 0.5 : 1,
-                                transform: active ? 'scale(1.3)' : 'scale(1)',
-                              }}
-                            />
-                            <span className="board-phase-label" style={{ color: active ? fc.color : 'var(--text-muted)' }}>
-                              {fc.label}
-                            </span>
-                          </span>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {/* Next date */}
-                  {columnSpecificDate && (
-                    <div className="board-card-date">
-                      <Calendar size={11} />
-                      {columnSpecificDate.label} {formatDate(columnSpecificDate.date, 'dd/MM')}
-                    </div>
-                  )}
-
-                  {/* People */}
-                  {(projeto.responsavel?.length || projeto.casting.length > 0) && (
-                    <div className="board-card-footer">
-                      <Users size={11} style={{ color: 'var(--text-muted)' }} />
-                      <div className="board-card-people">
-                        {[...(projeto.responsavel || []), ...projeto.casting].slice(0, 5).map(name => (
-                          <span
-                            key={name}
-                            className="board-avatar"
-                            style={{ background: getAvatarColor(name) }}
-                            title={name}
-                          >
-                            {getInitials(name)}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+              {col.items.length === 0 && (
+                <div className="board-empty">
+                  <span>Nenhum projeto</span>
                 </div>
-              );
-            })}
-
-            {col.items.length === 0 && (
-              <div className="board-empty">
-                <span>Nenhum projeto</span>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
