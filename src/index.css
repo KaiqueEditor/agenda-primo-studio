@@ -1584,29 +1584,25 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border-top: 1px solid var(--border);
 }
 
-.save-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Modal save button gets the pill style */
+.modal-footer .save-btn {
   background: var(--accent);
   color: #FFFFFF;
   border: none;
-  border-radius: 999px; /* Pill shape */
+  border-radius: 999px;
   padding: 12px 24px;
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition);
   box-shadow: 0 4px 14px var(--accent-light);
 }
 
-.save-btn:hover {
+.modal-footer .save-btn:hover {
   filter: brightness(1.05);
   box-shadow: 0 6px 20px var(--accent-glow);
   transform: scale(1.02);
 }
 
-.save-btn:active {
+.modal-footer .save-btn:active {
   transform: scale(0.98);
 }
 
