@@ -30,36 +30,37 @@ const BOARD_COLS: BoardColumn[] = [
 /** Determine which board column this project belongs to */
 function getBoardCol(p: Projeto): BoardColumn['fase'] {
   const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  
   const grav = p.fases.gravacao;
   const edit = p.fases.edicao;
   const pub  = p.fases.publicacao;
 
-  // Publicado: has a pub date in the past
-  if (pub?.data && isBefore(pub.data, now) && !isSameDay(pub.data, now)) return 'concluido';
-  // Publicação: pub date is today or upcoming (within 2 days) and editing done
-  if (pub?.data && (isSameDay(pub.data, now) || isAfter(pub.data, now))) {
-    if (!grav?.inicio || !edit?.inicio) return 'publicacao';
-    // Editing must be done (fim before now)
-    if (edit.fim && isBefore(edit.fim, now)) return 'publicacao';
+  // 1. If it has a past publication date -> Concluído
+  if (pub?.data && isBefore(pub.data, today) && !isSameDay(pub.data, today)) {
+    return 'concluido';
   }
-  // Em Edição: currently in editing window
-  if (edit?.inicio && edit?.fim) {
-    if (isWithinInterval(now, { start: edit.inicio, end: edit.fim }) || isSameDay(now, edit.inicio) || isSameDay(now, edit.fim)) {
-      return 'edicao';
-    }
-  }
-  // Em Gravação: currently in recording window
+
+  // 2. If it is currently recording or will record -> Gravação
   if (grav?.inicio && grav?.fim) {
-    if (isWithinInterval(now, { start: grav.inicio, end: grav.fim }) || isSameDay(now, grav.inicio) || isSameDay(now, grav.fim)) {
+    if (isWithinInterval(today, { start: grav.inicio, end: grav.fim }) || isSameDay(today, grav.inicio) || isSameDay(today, grav.fim)) {
       return 'gravacao';
     }
-    // Future gravacao
-    if (isAfter(grav.inicio, now)) return 'gravacao';
+    if (isAfter(grav.inicio, today)) return 'gravacao';
   }
-  // Has editing scheduled in future
-  if (edit?.inicio && isAfter(edit.inicio, now)) return 'edicao';
-  // Has pub scheduled
-  if (pub?.data && isAfter(pub.data, now)) return 'publicacao';
+
+  // 3. If it is currently editing or will edit -> Edição
+  if (edit?.inicio && edit?.fim) {
+    if (isWithinInterval(today, { start: edit.inicio, end: edit.fim }) || isSameDay(today, edit.inicio) || isSameDay(today, edit.fim)) {
+      return 'edicao';
+    }
+    if (isAfter(edit.inicio, today)) return 'edicao';
+  }
+
+  // 4. If it has a future publication date (and isn't in grav/edit) -> Publicação
+  if (pub?.data && (isSameDay(pub.data, today) || isAfter(pub.data, today))) {
+    return 'publicacao';
+  }
 
   return 'sem_fase';
 }

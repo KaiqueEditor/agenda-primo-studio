@@ -248,10 +248,12 @@ body {
 }
 
 .view-toggle, .tipo-toggle {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   background: var(--bg-main);
   border-radius: 8px;
-  padding: 2px;
+  padding: 4px;
+  gap: 4px;
   border: 1px solid var(--border-subtle);
 }
 
@@ -581,6 +583,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   align-items: center;
   gap: 3px;
   line-height: 1.5;
+  min-width: 0;
 }
 
 .live-icon { color: var(--warning); }
@@ -759,22 +762,22 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 /* Two-panel layout */
 .tl2-layout {
-  display: flex;
   flex: 1;
-  min-height: 0;
-  overflow: hidden;
+  overflow: auto;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
-/* Left labels panel (fixed) */
+/* Left labels panel (fixed horizontally) */
 .tl2-labels-panel {
   width: 260px;
-  min-width: 260px;
   flex-shrink: 0;
   border-right: 1px solid var(--border);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
   background: var(--bg-card);
+  position: sticky;
+  left: 0;
+  z-index: 30;
 }
 
 .tl2-labels-header {
@@ -788,8 +791,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-bottom: 1px solid var(--border-subtle);
-  flex-shrink: 0;
   background: var(--bg-main);
+  position: sticky;
+  top: 0;
+  z-index: 40;
 }
 
 .tl2-label-row {
@@ -879,22 +884,18 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 /* Right scrollable Gantt area */
-.tl2-scroll-area {
-  flex: 1;
-  overflow-x: auto;
-  overflow-y: auto;
+.tl2-gantt-area {
   position: relative;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
 }
 
 /* Month header */
 .tl2-month-header {
   height: 36px;
-  position: relative;
+  position: sticky;
+  top: 0;
   border-bottom: 1px solid var(--border-subtle);
   background: var(--bg-main);
-  flex-shrink: 0;
+  z-index: 20;
 }
 
 .tl2-month-cell {

@@ -127,55 +127,56 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading }) =
         </span>
       </div>
 
-      <div className="tl2-layout">
-        {/* Fixed left: project labels */}
-        <div className="tl2-labels-panel">
-          {/* Header spacer */}
-          <div className="tl2-labels-header">
-            <span>Projeto</span>
-          </div>
-          {withDates.map(projeto => {
-            const canalColor = getCanalColor(projeto.canal);
-            const canal = Array.isArray(projeto.canal) ? projeto.canal.join(' + ') : projeto.canal;
-            const isLive = projeto.fases.gravacao?.aoVivo;
-            return (
-              <div
-                key={projeto.id}
-                className="tl2-label-row"
-                style={{ height: ROW_HEIGHT }}
-                onClick={() => onSelect(projeto)}
-              >
-                {/* Canal color accent */}
-                <span className="tl2-label-accent" style={{ background: canalColor.dot }} />
-                <div className="tl2-label-info">
-                  <span className="tl2-label-title">{projeto.titulo}</span>
-                  <div className="tl2-label-meta">
-                    <span className="tl2-label-tipo">
-                      {projeto.tipo === 'video' ? <Video size={10} /> : <Mic size={10} />}
-                    </span>
-                    <span className="tl2-label-canal" style={{ color: canalColor.text, background: canalColor.bg, borderColor: canalColor.border }}>
-                      {canal}
-                    </span>
-                    {isLive && (
-                      <span className="tl2-label-live"><Zap size={9} />LIVE</span>
-                    )}
+      <div className="tl2-layout" ref={scrollRef}>
+        <div style={{ display: 'flex', minWidth: 'max-content', minHeight: 'min-content' }}>
+          {/* Fixed left: project labels */}
+          <div className="tl2-labels-panel">
+            {/* Header spacer */}
+            <div className="tl2-labels-header">
+              <span>Projeto</span>
+            </div>
+            {withDates.map(projeto => {
+              const canalColor = getCanalColor(projeto.canal);
+              const canal = Array.isArray(projeto.canal) ? projeto.canal.join(' + ') : projeto.canal;
+              const isLive = projeto.fases.gravacao?.aoVivo;
+              return (
+                <div
+                  key={projeto.id}
+                  className="tl2-label-row"
+                  style={{ height: ROW_HEIGHT }}
+                  onClick={() => onSelect(projeto)}
+                >
+                  {/* Canal color accent */}
+                  <span className="tl2-label-accent" style={{ background: canalColor.dot }} />
+                  <div className="tl2-label-info">
+                    <span className="tl2-label-title">{projeto.titulo}</span>
+                    <div className="tl2-label-meta">
+                      <span className="tl2-label-tipo">
+                        {projeto.tipo === 'video' ? <Video size={10} /> : <Mic size={10} />}
+                      </span>
+                      <span className="tl2-label-canal" style={{ color: canalColor.text, background: canalColor.bg, borderColor: canalColor.border }}>
+                        {canal}
+                      </span>
+                      {isLive && (
+                        <span className="tl2-label-live"><Zap size={9} />LIVE</span>
+                      )}
+                    </div>
                   </div>
+                  {/* Mini avatars */}
+                  {projeto.casting.slice(0, 3).map(name => (
+                    <span key={name} className="tl2-avatar" style={{ background: getAvatarColor(name) }} title={name}>
+                      {getInitials(name)}
+                    </span>
+                  ))}
                 </div>
-                {/* Mini avatars */}
-                {projeto.casting.slice(0, 3).map(name => (
-                  <span key={name} className="tl2-avatar" style={{ background: getAvatarColor(name) }} title={name}>
-                    {getInitials(name)}
-                  </span>
-                ))}
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        {/* Scrollable right: Gantt bars */}
-        <div className="tl2-scroll-area" ref={scrollRef}>
-          <div style={{ width: totalWidth, minWidth: totalWidth, position: 'relative' }}>
+          {/* Right Gantt area */}
+          <div className="tl2-gantt-area" style={{ width: totalWidth, position: 'relative' }}>
             {/* Month headers */}
+
             <div className="tl2-month-header">
               {months.map((m, i) => {
                 const x = dayToX(m);
