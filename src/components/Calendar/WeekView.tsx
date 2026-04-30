@@ -22,7 +22,6 @@ export const WeekView: React.FC<Props> = ({ currentDate, projetos, fases, onSele
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
-  const todayColIndex = weekDays.findIndex(d => isSameDay(d, now));
 
   useEffect(() => {
     if (scrollRef.current) {
