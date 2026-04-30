@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { format, startOfWeek, addDays, isSameDay, isToday } from 'date-fns';
+import { format, startOfWeek, addDays, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { Projeto, FaseType, CalendarEvent as CalEvent } from '../../types';
 import { getEventsForDay } from '../../utils/dateHelpers';
