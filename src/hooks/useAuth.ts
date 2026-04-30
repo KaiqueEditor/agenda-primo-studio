@@ -20,8 +20,10 @@ const ADMIN_EMAILS = [
   'itala@primostudio.com.br',
   'juan@timeprimo.com',
   'juan@primostudio.com.br',
+  'juan.paul@timeprimo.com',
   'renan@timeprimo.com',
   'renan@primostudio.com.br',
+  'renan.spurio@timeprimo.com',
 ];
 
 export const useAuth = () => {
