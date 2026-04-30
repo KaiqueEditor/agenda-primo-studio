@@ -714,7 +714,370 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border-radius: 50%;
 }
 
-/* ===== LIST VIEW ===== */
+/* ===== TIMELINE v2 — GANTT PREMIUM ===== */
+.tl2-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Legend */
+.tl2-legend {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  background: var(--bg-main);
+}
+.tl2-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.tl2-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.tl2-diamond-mini {
+  border-radius: 2px;
+  transform: rotate(45deg);
+  width: 9px;
+  height: 9px;
+}
+
+/* Two-panel layout */
+.tl2-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Left labels panel (fixed) */
+.tl2-labels-panel {
+  width: 260px;
+  min-width: 260px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+}
+
+.tl2-labels-header {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  background: var(--bg-main);
+}
+
+.tl2-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background var(--transition);
+  position: relative;
+}
+.tl2-label-row:hover { background: var(--bg-card-hover); }
+
+.tl2-label-accent {
+  width: 3px;
+  height: 28px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.tl2-label-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tl2-label-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tl2-label-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tl2-label-tipo {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.tl2-label-canal {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 100px;
+  border: 1px solid;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
+}
+
+.tl2-label-live {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #FF9500;
+  background: rgba(255,149,0,0.1);
+  padding: 1px 5px;
+  border-radius: 100px;
+}
+
+.tl2-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 8px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1.5px solid var(--bg-card);
+}
+
+/* Right scrollable Gantt area */
+.tl2-scroll-area {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: auto;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* Month header */
+.tl2-month-header {
+  height: 36px;
+  position: relative;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-main);
+  flex-shrink: 0;
+}
+
+.tl2-month-cell {
+  position: absolute;
+  top: 0;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+  border-right: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Grid body */
+.tl2-grid-body {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Weekend shading */
+.tl2-weekend {
+  position: absolute;
+  top: 0;
+  background: var(--bg-main);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Weekly vertical lines */
+.tl2-week-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-subtle);
+  z-index: 0;
+}
+
+/* Today indicator */
+.tl2-today-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #FF3B30;
+  z-index: 10;
+  pointer-events: none;
+}
+.tl2-today-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FF3B30;
+  position: absolute;
+  top: 0;
+  left: -3px;
+}
+.tl2-today-label {
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #FF3B30;
+  white-space: nowrap;
+  background: var(--bg-card);
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+/* Bar row */
+.tl2-bar-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+.tl2-bar-row:hover { background: rgba(0,0,0,0.02); }
+.tl2-row-sep {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+/* Gantt bars */
+.tl2-bar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.15s;
+  z-index: 2;
+  overflow: hidden;
+  opacity: 0.85;
+}
+.tl2-bar:hover { filter: brightness(1.08); transform: translateY(-50%) scaleY(1.08); opacity: 1; }
+.tl2-bar-active { opacity: 1; box-shadow: 0 0 0 2px rgba(255,255,255,0.4), 0 2px 8px rgba(0,0,0,0.2); }
+
+.tl2-bar-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.95);
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+
+/* Active pulse animation */
+.tl2-bar-pulse {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  opacity: 0.5;
+  animation: barPulse 1.5s ease-in-out infinite;
+}
+@keyframes barPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.9; }
+}
+
+/* Diamond (publication) */
+.tl2-diamond {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  z-index: 3;
+  transition: transform 0.15s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.tl2-diamond:hover { transform: translateY(-50%) rotate(45deg) scale(1.3); }
+
+/* Tooltip */
+.tl2-tooltip {
+  position: fixed;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+/* ===== LEGEND (after timeline) ===== */
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
 .list-container {
   display: flex;
   flex-direction: column;
