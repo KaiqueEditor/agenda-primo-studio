@@ -75,7 +75,7 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
             onChange={e => handleChange('titulo', e.target.value)}
             placeholder="Nome do Projeto"
           />
-          <div className="modal-badge" style={{ flex: 1 }}>
+          <div style={{ flex: 1 }}>
             <AutocompleteTagInput
               tags={Array.isArray(edited.canal) ? edited.canal : (edited.canal ? [edited.canal] : [])}
               onChange={tags => handleChange('canal', tags)}
@@ -108,7 +108,7 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
               return (
                 <div key={fase} className="timeline-item active">
                   <div className="timeline-dot filled" style={{ background: config.color, borderColor: config.color }} />
-                  <div className="timeline-info" style={{ width: '100%' }}>
+                  <div className="timeline-info">
                     <span className="timeline-fase" style={{ color: config.color }}>
                       {config.label}
                       {isLive && <Zap size={12} className="live-badge" />}
