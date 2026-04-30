@@ -58,7 +58,7 @@ export const MetricsHeader: React.FC<Props> = ({ projetos, onAddProjeto, onSaveA
         {conflicts.length > 0 && (
           <div className="metric-card alert">
             <div className="metric-icon" style={{ color: '#FF3B30' }}>
-              <AlertTriangle size={20} />
+              <AlertTriangle size={16} />
             </div>
             <div className="metric-info">
               <span className="metric-value">{conflicts.length}</span>
