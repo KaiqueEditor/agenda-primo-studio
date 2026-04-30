@@ -18,9 +18,10 @@ interface Props {
   onSelectEvent: (event: CalEvent) => void;
   onDropEvent?: (projetoId: string, fase: FaseType, oldDate: string, newDate: string) => void;
   loading?: boolean;
+  headerActions?: React.ReactNode;
 }
 
-export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, onDropEvent, loading }) => {
+export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, onDropEvent, loading, headerActions }) => {
   const [calView, setCalView] = useState<CalView>('mes');
   const [currentDate, setCurrentDate] = useState(new Date('2026-05-01'));
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
@@ -93,6 +94,12 @@ export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, 
               <ChevronRight size={18} />
             </button>
           </div>
+
+          {headerActions && (
+            <div className="cal-header-actions" style={{ marginLeft: '12px', display: 'flex', gap: '12px' }}>
+              {headerActions}
+            </div>
+          )}
         </div>
       </div>
 

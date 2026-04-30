@@ -3,7 +3,7 @@ import type { ViewMode, CalendarEvent as CalEvent, Projeto, FaseType } from './t
 import { useProjects } from './hooks/useProjects';
 import { useAuth } from './hooks/useAuth';
 import { Sidebar } from './components/Sidebar/Filters';
-import { MetricsHeader } from './components/Dashboard/MetricsHeader';
+import { GlobalActions } from './components/Dashboard/GlobalActions';
 import { CalendarGrid } from './components/Calendar/CalendarGrid';
 import { TimelineView } from './components/Timeline/TimelineView';
 import { ProjectList } from './components/ListView/ProjectList';
@@ -134,10 +134,16 @@ function App() {
         onToggleDarkMode={() => setDarkMode(!darkMode)}
       />
       <main className="main-area">
-        <MetricsHeader projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />
         <div className="view-area">
           {viewMode === 'calendar' && (
-            <CalendarGrid projetos={projetos} fases={filters.fases} onSelectEvent={handleEventClick} onDropEvent={handleDropEvent} loading={loading} />
+            <CalendarGrid 
+              projetos={projetos} 
+              fases={filters.fases} 
+              onSelectEvent={handleEventClick} 
+              onDropEvent={handleDropEvent} 
+              loading={loading}
+              headerActions={<GlobalActions onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
+            />
           )}
           {viewMode === 'timeline' && (
             <TimelineView projetos={projetos} onSelect={handleProjectClick} loading={loading} />
