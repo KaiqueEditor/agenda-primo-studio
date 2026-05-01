@@ -3049,3 +3049,37 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 
 .sidebar button:focus { outline: none; box-shadow: none; }
+
+/* ===== RESPONSIVE TWEAKS (13" Laptops & smaller) ===== */
+@media (max-width: 1400px) {
+  /* Sidebar */
+  .sidebar { width: 220px; min-width: 220px; padding: 16px 12px; }
+  
+  /* Main Container Paddings */
+  .view-area { padding: 8px 16px 16px 16px; }
+  .cal-month { padding: 0 16px 16px 16px; }
+  .cal-topbar { padding: 16px 20px; }
+  
+  /* Week View Cards */
+  .week-event-flat { padding: 6px 8px; gap: 2px; }
+  .week-flat-title { font-size: 11px; }
+  .week-flat-meta { font-size: 10px; }
+  .week-flat-fase { font-size: 10px; margin-top: 2px; }
+  .week-flat-dot { width: 5px; height: 5px; }
+  
+  /* Month Cells */
+  .calendar-grid { gap: 8px; }
+  .calendar-cell { padding: 8px 8px 10px 10px; min-height: 100px; gap: 4px; }
+  .cell-event-item { padding: 4px 6px; font-size: 10px; }
+}
+
+@media (max-width: 1024px) {
+  .sidebar { width: 200px; min-width: 200px; }
+  .cal-topbar { flex-direction: column; align-items: stretch; gap: 12px; }
+  .cal-topbar-right { flex-wrap: wrap; justify-content: space-between; }
+  .view-area { padding: 8px 12px 12px 12px; }
+  .cal-month { padding: 0 12px 12px 12px; }
+  .calendar-grid { gap: 6px; }
+  .week-event-flat { padding: 4px 6px; }
+  .calendar-cell { padding: 6px 6px 8px 8px; min-height: 90px; }
+}
