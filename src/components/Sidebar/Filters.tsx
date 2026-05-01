@@ -1,6 +1,6 @@
 import React from 'react';
-import { Search, Filter, CalendarDays, BarChart, List, Video, Mic, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, User, Moon, Sun } from 'lucide-react';
-import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
+import { Search, Filter, CalendarDays, BarChart, List, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, User, Moon, Sun } from 'lucide-react';
+import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode, DEFAULT_FORMATOS } from '../../types';
 import type { AppUser } from '../../hooks/useAuth';
 import { getInitials, getAvatarColor } from '../../utils/displayHelpers';
 
@@ -12,7 +12,7 @@ interface Props {
   onToggleFase: (fase: FaseType) => void;
   onSetCanal: (canal: string) => void;
   onSetSearch: (s: string) => void;
-  onSetTipo: (t: 'all' | 'video' | 'podcast') => void;
+  onSetTipo: (t: string) => void;
   onSetResponsavel: (r: string) => void;
   onSetView: (v: ViewMode) => void;
   onOpenTeam: () => void;
@@ -28,15 +28,14 @@ export const Sidebar: React.FC<Props> = ({
 }) => {
   const canais = [
     'O Primo Rico',
-    'O Primo Rico + AGF',
     'Você Mais Rico',
-    'Você Mais Rico + AGF',
     'PrimoCast',
     'Finclass',
-    'AGF + Finclass',
     'Os Sócios Podcast',
     'Os Economistas',
-    'G4 / PrimoCast',
+    'AGF',
+    'G4',
+    'PrimoTech',
   ];
   const faseKeys: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
 
@@ -145,15 +144,21 @@ export const Sidebar: React.FC<Props> = ({
       </div>
 
       <div className="sidebar-section">
-        <label className="sidebar-label">Tipo</label>
+        <label className="sidebar-label">Formato</label>
         <div className="tipo-toggle">
-          {(['all', 'video', 'podcast'] as const).map((t) => (
+          <button
+            className={`tipo-btn ${filters.tipo === 'all' ? 'active' : ''}`}
+            onClick={() => onSetTipo('all')}
+          >
+            Todos
+          </button>
+          {DEFAULT_FORMATOS.map(f => (
             <button
-              key={t}
-              className={`tipo-btn ${filters.tipo === t ? 'active' : ''}`}
-              onClick={() => onSetTipo(t)}
+              key={f.value}
+              className={`tipo-btn ${filters.tipo === f.value ? 'active' : ''}`}
+              onClick={() => onSetTipo(filters.tipo === f.value ? 'all' : f.value)}
             >
-              {t === 'all' ? 'Todos' : t === 'video' ? <><Video size={14} /> Vídeo</> : <><Mic size={14} /> Podcast</>}
+              <span style={{ fontSize: '11px' }}>{f.icon}</span> {f.label}
             </button>
           ))}
         </div>

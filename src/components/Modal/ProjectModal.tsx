@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, Users, Zap, Save, Trash2, Briefcase } from 'lucide-react';
-import { type Projeto, FASE_CONFIG, type FaseType, type TeamMember } from '../../types';
+import { X, Users, Zap, Save, Trash2, Briefcase, Server } from 'lucide-react';
+import { type Projeto, FASE_CONFIG, type FaseType, type TeamMember, DEFAULT_FORMATOS } from '../../types';
 import { getProjectProgress } from '../../utils/dateHelpers';
 import { format } from 'date-fns';
 import { AutocompleteTagInput } from './AutocompleteTagInput';
@@ -72,9 +72,32 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
           <AutocompleteTagInput
             tags={Array.isArray(edited.canal) ? edited.canal : (edited.canal ? [edited.canal] : [])}
             onChange={tags => handleChange('canal', tags)}
-            suggestions={['O Primo Rico', 'Você Mais Rico', 'PrimoCast', 'Finclass', 'Os Sócios', 'AGF', 'PrimoTech']}
+            suggestions={['O Primo Rico', 'Você Mais Rico', 'PrimoCast', 'Finclass', 'Os Sócios', 'AGF', 'PrimoTech', 'G4', 'Os Economistas']}
             placeholder="Adicionar canal/tag..."
           />
+        </div>
+
+        {/* ── Formato ── */}
+        <div className="modal-section">
+          <p className="modal-section-label">Formato</p>
+          <div className="formato-chips">
+            {DEFAULT_FORMATOS.map(f => {
+              const isActive = (edited.formato || []).includes(f.value);
+              return (
+                <button
+                  key={f.value}
+                  className={`formato-chip ${isActive ? 'active' : ''}`}
+                  onClick={() => {
+                    const curr = edited.formato || [];
+                    handleChange('formato', isActive ? curr.filter(v => v !== f.value) : [...curr, f.value]);
+                  }}
+                  type="button"
+                >
+                  <span>{f.icon}</span> {f.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* ── Progress ── */}
@@ -156,6 +179,18 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
               placeholder="Adicionar membro..."
             />
           </div>
+        </div>
+
+        {/* ── Descrição / Caminho do Servidor ── */}
+        <div className="modal-section">
+          <p className="modal-section-label"><Server size={13} /> Caminho do Servidor</p>
+          <textarea
+            className="modal-textarea"
+            value={edited.descricao || ''}
+            onChange={e => handleChange('descricao', e.target.value)}
+            placeholder="Ex: /Projetos/PrimoCast/EP.24 ou observações gerais..."
+            rows={3}
+          />
         </div>
 
         {/* ── Footer ── */}

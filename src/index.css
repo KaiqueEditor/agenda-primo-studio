@@ -1483,7 +1483,61 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+}
+
+.formato-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.formato-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.formato-chip:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.formato-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.modal-textarea {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+  resize: vertical;
+  transition: all var(--transition);
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.modal-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12);
 }
 
 .modal-timeline { margin-bottom: 20px; }

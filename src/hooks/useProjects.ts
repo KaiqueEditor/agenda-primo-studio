@@ -72,7 +72,7 @@ export const useProjects = () => {
         const c = Array.isArray(p.canal) ? p.canal.join(', ') : p.canal;
         if (!c.toLowerCase().includes(filters.canal.toLowerCase())) return false;
       }
-      if (filters.tipo !== 'all' && p.tipo !== filters.tipo) return false;
+      if (filters.tipo !== 'all' && p.tipo !== filters.tipo && !(p.formato || []).includes(filters.tipo)) return false;
       if (filters.search && !p.titulo.toLowerCase().includes(filters.search.toLowerCase())) return false;
       if (filters.responsavel) {
         const members = [...(p.responsavel || []), ...p.casting];
@@ -97,7 +97,7 @@ export const useProjects = () => {
     setFilters((f) => ({ ...f, search }));
   }, []);
 
-  const setTipo = useCallback((tipo: 'all' | 'video' | 'podcast') => {
+  const setTipo = useCallback((tipo: string) => {
     setFilters((f) => ({ ...f, tipo }));
   }, []);
 

@@ -6,12 +6,17 @@ export interface FasePeriodo {
   aoVivo?: boolean;
 }
 
+// Formato do conteúdo — extensível via tags livres
+export type FormatoType = 'youtube' | 'youtube_shorts' | 'reels' | 'ao_vivo' | 'anuncio' | 'quadros' | 'podcast' | string;
+
 export interface Projeto {
   id: string;
   numero: number;
   titulo: string;
   canal: string | string[];
-  tipo: 'video' | 'podcast';
+  tipo: string; // 'video' | 'podcast' | custom
+  formato?: FormatoType[]; // Multiple format tags: ['youtube', 'ao_vivo']
+  descricao?: string; // Caminho do servidor / observações
   episodios?: number;
   casting: string[];
   responsavel?: string[];
@@ -37,7 +42,7 @@ export interface FilterState {
   fases: FaseType[];
   canal: string;
   search: string;
-  tipo: 'all' | 'video' | 'podcast';
+  tipo: string; // 'all' | 'video' | 'podcast' | any formato
   responsavel: string;
 }
 
@@ -86,3 +91,14 @@ export const FASE_CONFIG: Record<FaseType, { label: string; color: string; color
     colorLight: 'rgba(52, 199, 89, 0.1)',
   },
 };
+
+// Default formato options (user can add custom ones)
+export const DEFAULT_FORMATOS: { value: FormatoType; label: string; icon: string }[] = [
+  { value: 'youtube', label: 'YouTube', icon: '▶' },
+  { value: 'youtube_shorts', label: 'Shorts', icon: '⚡' },
+  { value: 'reels', label: 'Reels / Instagram', icon: '📱' },
+  { value: 'ao_vivo', label: 'Ao Vivo', icon: '🔴' },
+  { value: 'anuncio', label: 'Anúncio', icon: '📢' },
+  { value: 'quadros', label: 'Quadros', icon: '🎬' },
+  { value: 'podcast', label: 'Podcast', icon: '🎙' },
+];
