@@ -23,7 +23,7 @@ interface Props {
 
 export const CalendarGrid: React.FC<Props> = ({ projetos, fases, onSelectEvent, onDropEvent, loading, headerActions }) => {
   const [calView, setCalView] = useState<CalView>('mes');
-  const [currentDate, setCurrentDate] = useState(new Date('2026-05-01'));
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const weekDays = getWeekDayNames();
 
