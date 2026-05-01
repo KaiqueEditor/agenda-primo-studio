@@ -143,7 +143,7 @@ export const ProjectList: React.FC<Props> = ({ projetos, onSelect, loading, head
                 </div>
                 <div className="list-card-right">
                   <div className="list-phases">
-                    {(['gravacao', 'edicao', 'publicacao'] as const).map((fase) => {
+                    {(['gravacao', 'edicao', 'publicacao', 'evento'] as const).map((fase) => {
                       const config = FASE_CONFIG[fase];
                       const data = fase === 'publicacao' ? projeto.fases.publicacao : projeto.fases[fase];
                       if (!data) return null;

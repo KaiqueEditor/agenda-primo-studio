@@ -17,7 +17,7 @@ interface Props {
 export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, onDelete }) => {
   const [edited, setEdited] = useState<Projeto>({ ...projeto });
   const progress = getProjectProgress(edited);
-  const faseOrder: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
+  const faseOrder: FaseType[] = ['gravacao', 'edicao', 'publicacao', 'evento'];
 
   const handleChange = (field: keyof Projeto, value: any) => {
     setEdited({ ...edited, [field]: value });

@@ -92,7 +92,7 @@ function App() {
     if (fase === 'publicacao') {
       updated.fases.publicacao = { data: newDate };
     } else {
-      const f = fase as 'gravacao' | 'edicao';
+      const f = fase as 'gravacao' | 'edicao' | 'evento';
       const periodo = updated.fases[f];
       if (periodo && periodo.inicio && periodo.fim) {
         updated.fases[f] = {

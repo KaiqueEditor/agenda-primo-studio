@@ -24,7 +24,7 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading, hea
 
   const withDates = projetos
     .filter(p =>
-      p.fases.gravacao?.inicio || p.fases.edicao?.inicio || p.fases.publicacao?.data
+      p.fases.gravacao?.inicio || p.fases.edicao?.inicio || p.fases.publicacao?.data || p.fases.evento?.inicio
     )
     .sort((a, b) => a.numero - b.numero);
 
@@ -37,6 +37,8 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading, hea
     if (p.fases.edicao?.inicio)   allDates.push(p.fases.edicao.inicio);
     if (p.fases.edicao?.fim)      allDates.push(p.fases.edicao.fim);
     if (p.fases.publicacao?.data) allDates.push(p.fases.publicacao.data);
+    if (p.fases.evento?.inicio)   allDates.push(p.fases.evento.inicio);
+    if (p.fases.evento?.fim)      allDates.push(p.fases.evento.fim);
   });
 
   // Scroll to today on mount
@@ -110,7 +112,7 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading, hea
     cur = addDays(cur, 1);
   }
 
-  const faseOrder: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
+  const faseOrder: FaseType[] = ['gravacao', 'edicao', 'publicacao', 'evento'];
 
   return (
     <div className="tl2-container">

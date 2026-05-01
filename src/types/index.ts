@@ -1,4 +1,4 @@
-export type FaseType = 'gravacao' | 'edicao' | 'publicacao';
+export type FaseType = 'gravacao' | 'edicao' | 'publicacao' | 'evento';
 
 export interface FasePeriodo {
   inicio?: Date;
@@ -25,6 +25,7 @@ export interface Projeto {
     gravacao?: FasePeriodo;
     edicao?: FasePeriodo;
     publicacao?: { data?: Date };
+    evento?: FasePeriodo;
   };
 }
 
@@ -90,6 +91,11 @@ export const FASE_CONFIG: Record<FaseType, { label: string; color: string; color
     label: 'Publicação',
     color: '#34C759',
     colorLight: 'rgba(52, 199, 89, 0.1)',
+  },
+  evento: {
+    label: 'Evento',
+    color: '#A855F7',
+    colorLight: 'rgba(168, 85, 247, 0.1)',
   },
 };
 

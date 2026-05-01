@@ -32,7 +32,7 @@ interface Props {
 export const Sidebar: React.FC<Props> = ({
   filters, viewMode, collapsed, user, onToggleFase, onSetSearch, onSetView, onOpenTeam, onToggleCollapse, darkMode, onToggleDarkMode, onOpenProfile, onOpenTagManager, onAddProjeto
 }) => {
-  const faseKeys: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
+  const faseKeys: FaseType[] = ['gravacao', 'edicao', 'publicacao', 'evento'];
 
   if (collapsed) {
     return (

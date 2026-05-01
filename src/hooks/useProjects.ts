@@ -9,7 +9,7 @@ export const useProjects = () => {
   const [team, setTeam] = useState<TeamMember[]>(TEAM_MEMBERS);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<FilterState>({
-    fases: ['gravacao', 'edicao', 'publicacao'],
+    fases: ['gravacao', 'edicao', 'publicacao', 'evento'],
     canal: '',
     search: '',
     tipo: 'all',
@@ -36,6 +36,10 @@ export const useProjects = () => {
           }
           if (p.fases.publicacao?.data) {
             p.fases.publicacao.data = new Date(p.fases.publicacao.data);
+          }
+          if (p.fases.evento) {
+            if (p.fases.evento.inicio) p.fases.evento.inicio = new Date(p.fases.evento.inicio);
+            if (p.fases.evento.fim) p.fases.evento.fim = new Date(p.fases.evento.fim);
           }
           return p;
         });
@@ -85,6 +89,7 @@ export const useProjects = () => {
           if (fase === 'gravacao') return !!p.fases.gravacao;
           if (fase === 'edicao') return !!p.fases.edicao;
           if (fase === 'publicacao') return !!p.fases.publicacao;
+          if (fase === 'evento') return !!p.fases.evento;
           return false;
         });
         if (!hasSelectedFase) return false;

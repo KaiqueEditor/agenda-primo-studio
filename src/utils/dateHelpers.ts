@@ -51,7 +51,7 @@ export const getEventsForDay = (
     const fases = projeto.fases;
 
     // Check each fase
-    (['gravacao', 'edicao'] as const).forEach((fase) => {
+    (['evento', 'gravacao', 'edicao'] as const).forEach((fase) => {
       const periodo = fases[fase];
       if (!periodo || !periodo.inicio || !periodo.fim) return;
       if (!fasesFilter.includes(fase)) return;
@@ -91,6 +91,9 @@ export const getProjectProgress = (projeto: Projeto): number => {
   const now = new Date();
   const phases: { start: Date; end: Date }[] = [];
 
+  if (projeto.fases.evento?.inicio && projeto.fases.evento?.fim) {
+    phases.push({ start: projeto.fases.evento.inicio, end: projeto.fases.evento.fim });
+  }
   if (projeto.fases.gravacao?.inicio && projeto.fases.gravacao?.fim) {
     phases.push({ start: projeto.fases.gravacao.inicio, end: projeto.fases.gravacao.fim });
   }
@@ -123,6 +126,12 @@ export const getProjectProgress = (projeto: Projeto): number => {
 export const getCurrentFase = (projeto: Projeto): FaseType | null => {
   const now = new Date();
 
+  if (
+    projeto.fases.evento?.inicio && projeto.fases.evento?.fim &&
+    isWithinInterval(now, { start: projeto.fases.evento.inicio, end: projeto.fases.evento.fim })
+  ) {
+    return 'evento';
+  }
   if (
     projeto.fases.gravacao?.inicio && projeto.fases.gravacao?.fim &&
     isWithinInterval(now, { start: projeto.fases.gravacao.inicio, end: projeto.fases.gravacao.fim })

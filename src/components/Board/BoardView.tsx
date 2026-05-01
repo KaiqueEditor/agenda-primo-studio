@@ -22,6 +22,7 @@ type BoardColumn = {
 
 const BOARD_COLS: BoardColumn[] = [
   { fase: 'sem_fase',   label: 'A Definir',   color: '#8E8E93', bg: 'rgba(142,142,147,0.06)', description: 'Sem datas definidas' },
+  { fase: 'evento',     label: 'Evento',      color: '#A855F7', bg: 'rgba(168,85,247,0.06)',  description: 'Datas do evento' },
   { fase: 'gravacao',   label: 'Gravação',    color: '#007AFF', bg: 'rgba(0,122,255,0.06)',   description: 'Em fase de gravação' },
   { fase: 'edicao',     label: 'Edição',      color: '#FF9500', bg: 'rgba(255,149,0,0.06)',   description: 'Em fase de edição' },
   { fase: 'publicacao', label: 'Publicação',  color: '#34C759', bg: 'rgba(52,199,89,0.06)',   description: 'Pronto para publicar' },
@@ -33,6 +34,7 @@ function getBoardColsForProject(p: Projeto): Array<BoardColumn['fase']> {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
+  const eve = p.fases.evento;
   const grav = p.fases.gravacao;
   const edit = p.fases.edicao;
   const pub  = p.fases.publicacao;
@@ -44,6 +46,7 @@ function getBoardColsForProject(p: Projeto): Array<BoardColumn['fase']> {
 
   const cols: Array<BoardColumn['fase']> = [];
 
+  if (eve?.inicio || eve?.fim) cols.push('evento');
   if (grav?.inicio || grav?.fim) cols.push('gravacao');
   if (edit?.inicio || edit?.fim) cols.push('edicao');
   if (pub?.data) cols.push('publicacao');
@@ -55,9 +58,11 @@ function getBoardColsForProject(p: Projeto): Array<BoardColumn['fase']> {
 
 function getNextDate(p: Projeto): { label: string; date: Date } | null {
   const now = new Date();
+  const eve = p.fases.evento;
   const grav = p.fases.gravacao;
   const edit = p.fases.edicao;
   const pub  = p.fases.publicacao;
+  if (eve?.inicio && isAfter(eve.inicio, now)) return { label: 'Evento', date: eve.inicio };
   if (grav?.inicio && isAfter(grav.inicio, now)) return { label: 'Grav.', date: grav.inicio };
   if (edit?.inicio && isAfter(edit.inicio, now)) return { label: 'Edição', date: edit.inicio };
   if (pub?.data && isAfter(pub.data, now))        return { label: 'Pub.',  date: pub.data };
@@ -158,7 +163,7 @@ export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading, header
                     {/* Phase progress dots */}
                     {faseConfig && (
                       <div className="board-phase-row">
-                        {(['gravacao', 'edicao', 'publicacao'] as FaseType[]).map(f => {
+                        {(['evento', 'gravacao', 'edicao', 'publicacao'] as FaseType[]).map(f => {
                           const fc = FASE_CONFIG[f];
                           const active = f === colFase;
                           const done = (
