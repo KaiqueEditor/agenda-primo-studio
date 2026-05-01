@@ -78,7 +78,7 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
           <AutocompleteTagInput
             tags={Array.isArray(edited.canal) ? edited.canal : (edited.canal ? [edited.canal] : [])}
             onChange={tags => handleChange('canal', tags)}
-            suggestions={['O Primo Rico', 'Você Mais Rico', 'PrimoCast', 'Finclass', 'Os Sócios', 'AGF', 'PrimoTech', 'G4', 'Os Economistas']}
+            suggestions={['AGF', 'Finclass', 'G4', 'O Primo Rico', 'Os Economistas', 'Os Sócios', 'PrimoCast', 'PrimoTech', 'Você Mais Rico'].sort()}
             placeholder="Adicionar canal/tag..."
           />
         </div>
@@ -86,24 +86,12 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
         {/* ── Formato ── */}
         <div className="modal-section">
           <p className="modal-section-label">Formato</p>
-          <div className="formato-chips">
-            {DEFAULT_FORMATOS.map(f => {
-              const isActive = (edited.formato || []).includes(f.value);
-              return (
-                <button
-                  key={f.value}
-                  className={`formato-chip ${isActive ? 'active' : ''}`}
-                  onClick={() => {
-                    const curr = edited.formato || [];
-                    handleChange('formato', isActive ? curr.filter(v => v !== f.value) : [...curr, f.value]);
-                  }}
-                  type="button"
-                >
-                  <span>{f.icon}</span> {f.label}
-                </button>
-              );
-            })}
-          </div>
+          <AutocompleteTagInput
+            tags={edited.formato || []}
+            onChange={tags => handleChange('formato', tags)}
+            suggestions={DEFAULT_FORMATOS.map(f => f.label).sort()}
+            placeholder="Adicionar formato (ex: YouTube, Reels)..."
+          />
         </div>
 
         {/* ── Progress ── */}
@@ -172,7 +160,7 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
             <AutocompleteTagInput
               tags={edited.casting || []}
               onChange={tags => handleChange('casting', tags)}
-              suggestions={['Thiago Nigro', 'Bruno Perini', 'Malu', 'Lucão', 'Kaique', 'Louise', 'Luis Barsi', 'Time AGF']}
+              suggestions={['Bruno Perini', 'Kaique', 'Louise', 'Lucão', 'Luis Barsi', 'Malu', 'Thiago Nigro', 'Time AGF'].sort()}
               placeholder="Adicionar casting..."
             />
           </div>
@@ -181,7 +169,7 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
             <AutocompleteTagInput
               tags={edited.responsavel || []}
               onChange={tags => handleChange('responsavel', tags)}
-              suggestions={team.map(m => m.name)}
+              suggestions={team.map(m => m.name).sort()}
               placeholder="Adicionar membro..."
             />
           </div>

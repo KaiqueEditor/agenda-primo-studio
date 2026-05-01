@@ -36,7 +36,7 @@ export const Sidebar: React.FC<Props> = ({
     'AGF',
     'G4',
     'PrimoTech',
-  ];
+  ].sort();
   const faseKeys: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
 
   if (collapsed) {
@@ -152,7 +152,7 @@ export const Sidebar: React.FC<Props> = ({
           >
             Todos
           </button>
-          {DEFAULT_FORMATOS.map(f => (
+          {DEFAULT_FORMATOS.map(f => f).sort((a, b) => a.label.localeCompare(b.label)).map(f => (
             <button
               key={f.value}
               className={`tipo-btn ${filters.tipo === f.value ? 'active' : ''}`}
@@ -186,7 +186,7 @@ export const Sidebar: React.FC<Props> = ({
           onChange={(e) => onSetResponsavel(e.target.value)}
         >
           <option value="">Todos</option>
-          {teamMembers.map((m) => (
+          {[...teamMembers].sort().map((m) => (
             <option key={m} value={m}>{m}</option>
           ))}
         </select>

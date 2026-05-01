@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { X } from 'lucide-react';
+import { X, Plus } from 'lucide-react';
 
 interface Props {
   tags: string[];
@@ -67,8 +67,17 @@ export const AutocompleteTagInput: React.FC<Props> = ({ tags = [], onChange, sug
             onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
             onKeyDown={handleKeyDown}
             placeholder={tags.length === 0 ? placeholder : ''}
-            style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '13px', color: 'var(--text-primary)' }}
+            style={{ border: 'none', background: 'transparent', outline: 'none', width: 'calc(100% - 24px)', fontSize: '13px', color: 'var(--text-primary)' }}
           />
+          {inputValue.trim() && (
+            <button
+              type="button"
+              onClick={() => handleAddTag(inputValue)}
+              style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', background: 'var(--accent)', color: 'white', border: 'none', borderRadius: '4px', padding: '2px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Plus size={14} />
+            </button>
+          )}
           {showSuggestions && filteredSuggestions.length > 0 && (
             <div className="suggestions-dropdown" style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px', marginTop: '4px', zIndex: 10, maxHeight: '150px', overflowY: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
               {filteredSuggestions.map(s => (
