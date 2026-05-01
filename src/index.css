@@ -833,7 +833,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .view-area {
   flex: 1;
   overflow-y: auto;
-  padding: 32px; /* Respiro generoso em toda a área principal */
+  padding: 8px 24px 24px 24px;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
@@ -2530,7 +2530,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .cal-today-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
 
 /* Month wrapper */
-.cal-month { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.cal-month { 
+  flex: 1; 
+  min-height: 0; 
+  display: flex; 
+  flex-direction: column; 
+  overflow: hidden; 
+  padding: 0 32px 32px 32px; /* Espaço nas bordas do calendário */
+}
 .cal-month .calendar-grid { border-top: none; }
 
 /* ===== WEEK VIEW ===== */
