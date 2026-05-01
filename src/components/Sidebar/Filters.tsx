@@ -1,8 +1,9 @@
 import React from 'react';
 import { Search, Filter, CalendarDays, BarChart, List, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, User, Moon, Sun } from 'lucide-react';
-import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode, DEFAULT_FORMATOS } from '../../types';
+import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
 import type { AppUser } from '../../hooks/useAuth';
 import { getInitials, getAvatarColor } from '../../utils/displayHelpers';
+import type { TagCategory } from '../Modal/TagManagerModal';
 
 interface Props {
   filters: FilterState;
@@ -22,22 +23,17 @@ interface Props {
   darkMode: boolean;
   onToggleDarkMode: () => void;
   onOpenProfile: () => void;
+  onOpenTagManager: (category: TagCategory) => void;
+  customFormatos: string[];
+  customCanais: string[];
 }
 
 export const Sidebar: React.FC<Props> = ({
-  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers, darkMode, onToggleDarkMode, onOpenProfile
+  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers, darkMode, onToggleDarkMode, onOpenProfile, onOpenTagManager, customFormatos, customCanais
 }) => {
-  const canais = [
-    'O Primo Rico',
-    'Você Mais Rico',
-    'PrimoCast',
-    'Finclass',
-    'Os Sócios Podcast',
-    'Os Economistas',
-    'AGF',
-    'G4',
-    'PrimoTech',
-  ].sort();
+  // Use custom tags for selects
+  const formatoOptions = [...customFormatos].sort();
+  const canalOptions = [...customCanais].sort();
   const faseKeys: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
 
   if (collapsed) {
@@ -153,10 +149,7 @@ export const Sidebar: React.FC<Props> = ({
       <div className="sidebar-section">
         <div className="sidebar-label-row">
           <label className="sidebar-label">Formato</label>
-          <button className="sidebar-add-btn" onClick={() => {
-            const nome = prompt('Nome do novo formato:');
-            if (nome?.trim()) onSetTipo(nome.trim());
-          }} title="Adicionar formato">+</button>
+          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('formato')} title="Gerenciar formatos">+</button>
         </div>
         <select
           className="sidebar-select"
@@ -164,8 +157,8 @@ export const Sidebar: React.FC<Props> = ({
           onChange={(e) => onSetTipo(e.target.value)}
         >
           <option value="all">Todos os formatos</option>
-          {DEFAULT_FORMATOS.map(f => f).sort((a, b) => a.label.localeCompare(b.label)).map(f => (
-            <option key={f.value} value={f.value}>{f.label}</option>
+          {formatoOptions.map(f => (
+            <option key={f} value={f}>{f}</option>
           ))}
         </select>
       </div>
@@ -173,10 +166,7 @@ export const Sidebar: React.FC<Props> = ({
       <div className="sidebar-section">
         <div className="sidebar-label-row">
           <label className="sidebar-label">Canal</label>
-          <button className="sidebar-add-btn" onClick={() => {
-            const nome = prompt('Nome do novo canal:');
-            if (nome?.trim()) onSetCanal(nome.trim());
-          }} title="Adicionar canal">+</button>
+          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('canal')} title="Gerenciar canais">+</button>
         </div>
         <select
           className="sidebar-select"
@@ -184,7 +174,7 @@ export const Sidebar: React.FC<Props> = ({
           onChange={(e) => onSetCanal(e.target.value)}
         >
           <option value="">Todos os canais</option>
-          {canais.map((c) => (
+          {canalOptions.map((c) => (
             <option key={c} value={c}>{c}</option>
           ))}
         </select>
@@ -193,10 +183,7 @@ export const Sidebar: React.FC<Props> = ({
       <div className="sidebar-section">
         <div className="sidebar-label-row">
           <label className="sidebar-label"><User size={14} /> Responsável</label>
-          <button className="sidebar-add-btn" onClick={() => {
-            const nome = prompt('Nome do novo responsável:');
-            if (nome?.trim()) onSetResponsavel(nome.trim());
-          }} title="Adicionar responsável">+</button>
+          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('responsavel')} title="Gerenciar responsáveis">+</button>
         </div>
         <select
           className="sidebar-select"

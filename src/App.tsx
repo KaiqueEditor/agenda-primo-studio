@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import type { ViewMode, CalendarEvent as CalEvent, Projeto, FaseType } from './types';
+import { DEFAULT_FORMATOS } from './types';
 import { useProjects } from './hooks/useProjects';
 import { useAuth } from './hooks/useAuth';
 import { Sidebar } from './components/Sidebar/Filters';
@@ -11,6 +12,7 @@ import { BoardView } from './components/Board/BoardView';
 import { ProjectModal } from './components/Modal/ProjectModal';
 import { TeamModal } from './components/Modal/TeamModal';
 import { UserProfileModal } from './components/Modal/UserProfileModal';
+import { TagManagerModal, type TagCategory } from './components/Modal/TagManagerModal';
 import { LoginPage } from './components/Auth/LoginPage';
 import { ToastContainer, toast } from './components/UI/Toast';
 import { CommandPalette } from './components/UI/CommandPalette';
@@ -24,8 +26,19 @@ function App() {
   const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [tagManagerCategory, setTagManagerCategory] = useState<TagCategory | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('agf-theme-apple') === 'dark');
+
+  // Custom tags persisted in localStorage
+  const [customFormatos, setCustomFormatos] = useState<string[]>(() => {
+    const saved = localStorage.getItem('agf-tags-formatos');
+    return saved ? JSON.parse(saved) : DEFAULT_FORMATOS.map(f => f.label);
+  });
+  const [customCanais, setCustomCanais] = useState<string[]>(() => {
+    const saved = localStorage.getItem('agf-tags-canais');
+    return saved ? JSON.parse(saved) : ['AGF', 'Finclass', 'G4', 'O Primo Rico', 'Os Economistas', 'Os Sócios Podcast', 'PrimoCast', 'PrimoTech', 'Você Mais Rico'];
+  });
 
   // Apply dark mode to document
   useEffect(() => {
@@ -135,6 +148,9 @@ function App() {
         darkMode={darkMode}
         onToggleDarkMode={() => setDarkMode(!darkMode)}
         onOpenProfile={() => setShowProfileModal(true)}
+        onOpenTagManager={(cat: TagCategory) => setTagManagerCategory(cat)}
+        customFormatos={customFormatos}
+        customCanais={customCanais}
       />
       <main className="main-area">
         <div className="view-area">
@@ -219,6 +235,25 @@ function App() {
           onClose={() => setShowProfileModal(false)}
         />
       )}
+
+      {tagManagerCategory && (
+        <TagManagerModal
+          category={tagManagerCategory}
+          tags={tagManagerCategory === 'formato' ? customFormatos : tagManagerCategory === 'canal' ? customCanais : team.map(t => t.name)}
+          onClose={() => setTagManagerCategory(null)}
+          onSave={(newTags) => {
+            if (tagManagerCategory === 'formato') {
+              setCustomFormatos(newTags);
+              localStorage.setItem('agf-tags-formatos', JSON.stringify(newTags));
+            } else if (tagManagerCategory === 'canal') {
+              setCustomCanais(newTags);
+              localStorage.setItem('agf-tags-canais', JSON.stringify(newTags));
+            }
+            toast.success('Tags atualizadas');
+          }}
+        />
+      )}
+
       <ToastContainer />
     </div>
   );

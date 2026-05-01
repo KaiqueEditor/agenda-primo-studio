@@ -310,6 +310,153 @@ body {
   border-color: var(--accent);
 }
 
+/* ── Tag Manager Modal ── */
+.tag-mgr-add {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tag-mgr-input {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.tag-mgr-input:focus {
+  border-color: var(--accent);
+}
+
+.tag-mgr-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.tag-mgr-add-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tag-mgr-add-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.tag-mgr-list {
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.tag-mgr-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.tag-mgr-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+.tag-mgr-item:last-child {
+  border-bottom: none;
+}
+
+.tag-mgr-item:hover {
+  background: var(--bg-elevated);
+}
+
+.tag-mgr-name {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.tag-mgr-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.tag-mgr-item:hover .tag-mgr-actions {
+  opacity: 1;
+}
+
+.tag-mgr-icon-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  padding: 0;
+}
+
+.tag-mgr-icon-btn:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.tag-mgr-icon-btn.danger:hover {
+  background: rgba(255, 59, 48, 0.1);
+  color: #FF3B30;
+  border-color: rgba(255, 59, 48, 0.3);
+}
+
+.tag-mgr-icon-btn.confirm {
+  background: rgba(52, 199, 89, 0.1);
+  color: #34C759;
+  border-color: rgba(52, 199, 89, 0.3);
+}
+
+.tag-mgr-icon-btn.confirm:hover {
+  background: #34C759;
+  color: white;
+}
+
+.tag-mgr-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.tag-mgr-footer {
+  padding-top: 4px;
+}
+
 .sidebar-input, .sidebar-select {
   background: var(--bg-card);
   border: 1px solid var(--border);
