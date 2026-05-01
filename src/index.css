@@ -1940,7 +1940,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 /* ===== BOARD / KANBAN ===== */
 .board-container {
   display: flex; gap: 16px; height: 100%; overflow-x: auto;
-  padding-bottom: 16px; scrollbar-width: thin;
+  padding: 16px 0 16px 0; scrollbar-width: thin;
 }
 .board-column {
   min-width: 280px; width: 280px; flex-shrink: 0;
