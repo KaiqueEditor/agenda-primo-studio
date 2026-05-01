@@ -3024,3 +3024,5 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 
+
+.sidebar button:focus { outline: none; box-shadow: none; }

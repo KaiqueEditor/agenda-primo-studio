@@ -74,7 +74,7 @@ export const Sidebar: React.FC<Props> = ({
           </div>
           <span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>Primo Studio</span>
         </div>
-        <button onClick={onToggleCollapse} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+        <button onClick={onToggleCollapse} style={{ background: 'transparent', border: 'none', outline: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}>
           <ChevronsLeft size={16} />
         </button>
       </div>
@@ -102,7 +102,7 @@ export const Sidebar: React.FC<Props> = ({
         </label>
         <button 
           onClick={onAddProjeto}
-          style={{ width: '100%', padding: '8px 16px', background: '#0D6EFD', color: '#fff', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontWeight: 600, fontSize: '13px', cursor: 'pointer', marginBottom: '8px' }}
+          style={{ width: '100%', padding: '8px 16px', background: '#0D6EFD', color: '#fff', borderRadius: '8px', border: 'none', outline: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontWeight: 600, fontSize: '13px', cursor: 'pointer', marginBottom: '8px' }}
         >
           <Plus size={16} /> Novo Projeto
         </button>
@@ -132,7 +132,7 @@ export const Sidebar: React.FC<Props> = ({
                 display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 12px', borderRadius: '6px',
                 background: isActive ? '#EFF6FF' : 'transparent',
                 color: isActive ? '#0D6EFD' : 'var(--text-secondary)',
-                border: 'none', borderLeft: isActive ? '3px solid #0D6EFD' : '3px solid transparent',
+                border: 'none', outline: 'none', borderLeft: isActive ? '3px solid #0D6EFD' : '3px solid transparent',
                 fontWeight: isActive ? 600 : 500, fontSize: '14px', cursor: 'pointer', textAlign: 'left'
               }}
             >
@@ -158,7 +158,7 @@ export const Sidebar: React.FC<Props> = ({
                 onClick={() => onToggleFase(fase)}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer',
+                  padding: '4px 0', border: 'none', outline: 'none', background: 'transparent', cursor: 'pointer',
                   color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
                   fontWeight: isActive ? 600 : 500, fontSize: '14px'
                 }}
@@ -180,13 +180,13 @@ export const Sidebar: React.FC<Props> = ({
           Organização
         </label>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <button onClick={() => onOpenTagManager('canal')} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+          <button onClick={() => onOpenTagManager('canal')} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', outline: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
             <Hash size={16} /> Canais
           </button>
-          <button onClick={() => onOpenTagManager('formato')} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+          <button onClick={() => onOpenTagManager('formato')} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', outline: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
             <FileText size={16} /> Formatos
           </button>
-          <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+          <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', outline: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
             <Users size={16} /> Responsáveis
           </button>
         </div>
@@ -196,10 +196,10 @@ export const Sidebar: React.FC<Props> = ({
 
       {/* Footer */}
       <div style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: '2px', marginTop: 'auto' }}>
-        <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+        <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', outline: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
           <Users size={16} /> Equipe
         </button>
-        <button onClick={onToggleDarkMode} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+        <button onClick={onToggleDarkMode} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', outline: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
           <Settings size={16} /> Configurações
         </button>
       </div>
