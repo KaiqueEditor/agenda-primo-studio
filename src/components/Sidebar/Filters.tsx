@@ -67,7 +67,7 @@ export const Sidebar: React.FC<Props> = ({
   return (
     <aside className="sidebar" style={{ width: '260px', background: '#ffffff', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
       {/* 1. Primo Studio Logo & Collapse */}
-      <div style={{ padding: '24px 24px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ padding: '16px 20px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ width: '28px', height: '28px', background: '#0D6EFD', borderRadius: '8px', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px' }}>
             P
@@ -81,7 +81,7 @@ export const Sidebar: React.FC<Props> = ({
 
       {/* 2. User Info */}
       {user && (
-        <div style={{ padding: '0 24px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }} onClick={onOpenProfile}>
+        <div style={{ padding: '0 20px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }} onClick={onOpenProfile}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#A855F7', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '600', fontSize: '14px' }}>
               {getInitials(user.displayName)}
@@ -96,13 +96,13 @@ export const Sidebar: React.FC<Props> = ({
       )}
 
       {/* 3. AÇÕES RÁPIDAS */}
-      <div style={{ padding: '0 24px 16px' }}>
+      <div style={{ padding: '0 20px 12px' }}>
         <label style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '12px', display: 'block' }}>
           Ações Rápidas
         </label>
         <button 
           onClick={onAddProjeto}
-          style={{ width: '100%', padding: '10px 16px', background: '#0D6EFD', color: '#fff', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontWeight: 600, fontSize: '14px', cursor: 'pointer', marginBottom: '12px' }}
+          style={{ width: '100%', padding: '8px 16px', background: '#0D6EFD', color: '#fff', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontWeight: 600, fontSize: '13px', cursor: 'pointer', marginBottom: '8px' }}
         >
           <Plus size={16} /> Novo Projeto
         </button>
@@ -119,7 +119,7 @@ export const Sidebar: React.FC<Props> = ({
       </div>
 
       {/* 4. Navigation Views */}
-      <div style={{ padding: '0 16px 16px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+      <div style={{ padding: '0 12px 12px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
         {(['calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => {
           const isActive = viewMode === v;
           const label = v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista';
@@ -129,7 +129,7 @@ export const Sidebar: React.FC<Props> = ({
               key={v}
               onClick={() => onSetView(v)}
               style={{
-                display: 'flex', alignItems: 'center', gap: '12px', padding: '8px 12px', borderRadius: '6px',
+                display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 12px', borderRadius: '6px',
                 background: isActive ? '#EFF6FF' : 'transparent',
                 color: isActive ? '#0D6EFD' : 'var(--text-secondary)',
                 border: 'none', borderLeft: isActive ? '3px solid #0D6EFD' : '3px solid transparent',
@@ -144,11 +144,11 @@ export const Sidebar: React.FC<Props> = ({
       </div>
 
       {/* 5. PRODUÇÃO */}
-      <div style={{ padding: '0 24px 16px' }}>
+      <div style={{ padding: '0 20px 12px' }}>
         <label style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '8px', display: 'block' }}>
           Produção
         </label>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
           {faseKeys.map((fase) => {
             const config = FASE_CONFIG[fase];
             const isActive = filters.fases.includes(fase);
@@ -158,7 +158,7 @@ export const Sidebar: React.FC<Props> = ({
                 onClick={() => onToggleFase(fase)}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer',
+                  padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer',
                   color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
                   fontWeight: isActive ? 600 : 500, fontSize: '14px'
                 }}
@@ -175,31 +175,31 @@ export const Sidebar: React.FC<Props> = ({
       </div>
 
       {/* 6. ORGANIZAÇÃO */}
-      <div style={{ padding: '0 24px 16px' }}>
+      <div style={{ padding: '0 20px 12px' }}>
         <label style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '8px', display: 'block' }}>
           Organização
         </label>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <button onClick={() => onOpenTagManager('canal')} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <button onClick={() => onOpenTagManager('canal')} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
             <Hash size={16} /> Canais
           </button>
-          <button onClick={() => onOpenTagManager('formato')} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+          <button onClick={() => onOpenTagManager('formato')} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
             <FileText size={16} /> Formatos
           </button>
-          <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+          <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
             <Users size={16} /> Responsáveis
           </button>
         </div>
       </div>
 
-      <div style={{ margin: '0 24px 16px', height: '1px', background: 'var(--border-subtle)' }} />
+      <div style={{ margin: '0 20px 12px', height: '1px', background: 'var(--border-subtle)' }} />
 
       {/* Footer */}
-      <div style={{ padding: '0 24px 24px', display: 'flex', flexDirection: 'column', gap: '8px', marginTop: 'auto' }}>
-        <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+      <div style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: '2px', marginTop: 'auto' }}>
+        <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
           <Users size={16} /> Equipe
         </button>
-        <button onClick={onToggleDarkMode} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+        <button onClick={onToggleDarkMode} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
           <Settings size={16} /> Configurações
         </button>
       </div>
