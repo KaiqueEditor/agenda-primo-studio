@@ -10,6 +10,7 @@ import { ProjectList } from './components/ListView/ProjectList';
 import { BoardView } from './components/Board/BoardView';
 import { ProjectModal } from './components/Modal/ProjectModal';
 import { TeamModal } from './components/Modal/TeamModal';
+import { UserProfileModal } from './components/Modal/UserProfileModal';
 import { LoginPage } from './components/Auth/LoginPage';
 import { ToastContainer, toast } from './components/UI/Toast';
 import { CommandPalette } from './components/UI/CommandPalette';
@@ -22,6 +23,7 @@ function App() {
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
   const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('agf-theme-apple') === 'dark');
 
@@ -132,6 +134,7 @@ function App() {
         teamMembers={team.map(t => t.name)}
         darkMode={darkMode}
         onToggleDarkMode={() => setDarkMode(!darkMode)}
+        onOpenProfile={() => setShowProfileModal(true)}
       />
       <main className="main-area">
         <div className="view-area">
@@ -208,6 +211,12 @@ function App() {
           projetos={allProjetos}
           onClose={() => setShowTeamModal(false)} 
           onSave={addTeamMember} 
+        />
+      )}
+      {showProfileModal && user && (
+        <UserProfileModal 
+          user={user}
+          onClose={() => setShowProfileModal(false)}
         />
       )}
       <ToastContainer />

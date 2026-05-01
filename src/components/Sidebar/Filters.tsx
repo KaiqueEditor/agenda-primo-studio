@@ -21,10 +21,11 @@ interface Props {
   teamMembers: string[];
   darkMode: boolean;
   onToggleDarkMode: () => void;
+  onOpenProfile: () => void;
 }
 
 export const Sidebar: React.FC<Props> = ({
-  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers, darkMode, onToggleDarkMode
+  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers, darkMode, onToggleDarkMode, onOpenProfile
 }) => {
   const canais = [
     'O Primo Rico',
@@ -81,13 +82,19 @@ export const Sidebar: React.FC<Props> = ({
       </div>
 
       {user && (
-        <div className="sidebar-user">
-          <div className="user-avatar" style={{ background: getAvatarColor(user.displayName) }}>
-            {getInitials(user.displayName)}
-          </div>
-          <div className="user-info">
-            <span className="user-name">{user.displayName}</span>
-            <span className="user-role">{user.role === 'admin' ? 'Admin' : 'Visualizador'}</span>
+        <div className="sidebar-user" style={{ cursor: 'pointer' }}>
+          <div 
+            style={{ display: 'flex', alignItems: 'center', flex: 1, overflow: 'hidden' }}
+            onClick={onOpenProfile}
+            title="Ver Perfil"
+          >
+            <div className="user-avatar" style={{ background: getAvatarColor(user.displayName) }}>
+              {getInitials(user.displayName)}
+            </div>
+            <div className="user-info">
+              <span className="user-name">{user.displayName}</span>
+              <span className="user-role">{user.role === 'admin' ? 'Admin' : 'Visualizador'}</span>
+            </div>
           </div>
           <button className="user-logout" onClick={onSignOut} title="Sair">
             <LogOut size={14} />
