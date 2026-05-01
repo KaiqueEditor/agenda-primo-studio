@@ -17,7 +17,6 @@ interface Props {
 export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, onDelete }) => {
   const [edited, setEdited] = useState<Projeto>({ ...projeto });
   const progress = getProjectProgress(edited);
-
   const faseOrder: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
 
   const handleChange = (field: keyof Projeto, value: any) => {
@@ -27,13 +26,11 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
   const handleDateChange = (fase: FaseType, field: 'inicio' | 'fim' | 'data', value: string) => {
     setEdited((prev) => {
       const newFases = { ...prev.fases };
-      
       let newDate: Date | undefined = undefined;
       if (value) {
         const [year, month, day] = value.split('-');
         newDate = new Date(Number(year), Number(month) - 1, Number(day));
       }
-
       if (fase === 'publicacao') {
         newFases.publicacao = { data: newDate };
       } else {
@@ -46,45 +43,41 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
 
   const formatForInput = (d?: Date) => {
     if (!d) return '';
-    try {
-      return format(d, 'yyyy-MM-dd');
-    } catch {
-      return '';
-    }
+    try { return format(d, 'yyyy-MM-dd'); } catch { return ''; }
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}><X size={20} /></button>
+        <button className="modal-close" onClick={onClose}><X size={18} /></button>
 
+        {/* ── Header ── */}
         <div className="modal-header">
           <div className="modal-badge">
-            <select 
-              value={edited.tipo} 
+            <select
+              value={edited.tipo}
               onChange={e => handleChange('tipo', e.target.value)}
-              style={{ background: 'transparent', border: 'none', outline: 'none', color: 'inherit', fontWeight: 'bold' }}
+              style={{ background: 'transparent', border: 'none', outline: 'none', color: 'inherit', fontWeight: 'bold', cursor: 'pointer' }}
             >
               <option value="video">Vídeo</option>
               <option value="podcast">Podcast</option>
             </select>
           </div>
-          <input 
-            className="modal-title-input" 
-            value={edited.titulo} 
+          <input
+            className="modal-title-input"
+            value={edited.titulo}
             onChange={e => handleChange('titulo', e.target.value)}
             placeholder="Nome do Projeto"
           />
-          <div style={{ flex: 1 }}>
-            <AutocompleteTagInput
-              tags={Array.isArray(edited.canal) ? edited.canal : (edited.canal ? [edited.canal] : [])}
-              onChange={tags => handleChange('canal', tags)}
-              suggestions={['O Primo Rico', 'Você Mais Rico', 'PrimoCast', 'Finclass', 'Os Sócios', 'AGF', 'PrimoTech']}
-              placeholder="Adicionar canal/tag..."
-            />
-          </div>
+          <AutocompleteTagInput
+            tags={Array.isArray(edited.canal) ? edited.canal : (edited.canal ? [edited.canal] : [])}
+            onChange={tags => handleChange('canal', tags)}
+            suggestions={['O Primo Rico', 'Você Mais Rico', 'PrimoCast', 'Finclass', 'Os Sócios', 'AGF', 'PrimoTech']}
+            placeholder="Adicionar canal/tag..."
+          />
         </div>
 
+        {/* ── Progress ── */}
         <div className="modal-progress-section">
           <div className="progress-label">
             <span>Progresso Geral</span>
@@ -95,50 +88,47 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
           </div>
         </div>
 
-        <div className="modal-timeline">
-          <h3>Cronograma</h3>
+        {/* ── Cronograma ── */}
+        <div className="modal-section">
+          <p className="modal-section-label">Cronograma</p>
           <div className="timeline-track">
             {faseOrder.map((fase) => {
               const config = FASE_CONFIG[fase];
               const faseData = fase === 'publicacao' ? edited.fases.publicacao : edited.fases[fase];
-              
               const isPubli = fase === 'publicacao';
               const isLive = fase === 'gravacao' && edited.fases.gravacao?.aoVivo;
-
               return (
                 <div key={fase} className="timeline-item active">
-                  <div className="timeline-dot filled" style={{ background: config.color, borderColor: config.color }} />
-                  <div className="timeline-info">
-                    <span className="timeline-fase" style={{ color: config.color }}>
-                      {config.label}
-                      {isLive && <Zap size={12} className="live-badge" />}
-                    </span>
-                    <div className="timeline-date-inputs">
-                      {isPubli ? (
-                        <input 
-                          type="date" 
-                          value={formatForInput((faseData as {data?: Date})?.data)}
-                          onChange={e => handleDateChange(fase, 'data', e.target.value)}
+                  <span className="timeline-dot filled" style={{ background: config.color }} />
+                  <span className="timeline-fase">
+                    {config.label}
+                    {isLive && <Zap size={11} className="live-badge" />}
+                  </span>
+                  <div className="timeline-date-inputs">
+                    {isPubli ? (
+                      <input
+                        type="date"
+                        value={formatForInput((faseData as {data?: Date})?.data)}
+                        onChange={e => handleDateChange(fase, 'data', e.target.value)}
+                        className="date-input"
+                      />
+                    ) : (
+                      <>
+                        <input
+                          type="date"
+                          value={formatForInput((faseData as {inicio?: Date, fim?: Date})?.inicio)}
+                          onChange={e => handleDateChange(fase, 'inicio', e.target.value)}
                           className="date-input"
                         />
-                      ) : (
-                        <>
-                          <input 
-                            type="date" 
-                            value={formatForInput((faseData as {inicio?: Date, fim?: Date})?.inicio)}
-                            onChange={e => handleDateChange(fase, 'inicio', e.target.value)}
-                            className="date-input"
-                          />
-                          <span className="date-sep">→</span>
-                          <input 
-                            type="date" 
-                            value={formatForInput((faseData as {inicio?: Date, fim?: Date})?.fim)}
-                            onChange={e => handleDateChange(fase, 'fim', e.target.value)}
-                            className="date-input"
-                          />
-                        </>
-                      )}
-                    </div>
+                        <span className="date-sep">→</span>
+                        <input
+                          type="date"
+                          value={formatForInput((faseData as {inicio?: Date, fim?: Date})?.fim)}
+                          onChange={e => handleDateChange(fase, 'fim', e.target.value)}
+                          className="date-input"
+                        />
+                      </>
+                    )}
                   </div>
                 </div>
               );
@@ -146,9 +136,10 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '24px', marginBottom: '40px' }}>
-          <div className="modal-casting" style={{ flex: 1, margin: 0 }}>
-            <h3><Users size={16} /> Casting (separado por vírgula)</h3>
+        {/* ── Casting + Equipe ── */}
+        <div className="modal-two-col">
+          <div>
+            <p className="modal-section-label"><Users size={13} /> Casting</p>
             <AutocompleteTagInput
               tags={edited.casting || []}
               onChange={tags => handleChange('casting', tags)}
@@ -156,32 +147,29 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
               placeholder="Adicionar casting..."
             />
           </div>
-
-          <div className="modal-casting" style={{ flex: 1, margin: 0 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <h3><Briefcase size={16} /> Equipe Alocada</h3>
-            </div>
+          <div>
+            <p className="modal-section-label"><Briefcase size={13} /> Equipe</p>
             <AutocompleteTagInput
               tags={edited.responsavel || []}
               onChange={tags => handleChange('responsavel', tags)}
               suggestions={team.map(m => m.name)}
-              placeholder="Adicionar membro da equipe..."
+              placeholder="Adicionar membro..."
             />
           </div>
         </div>
 
+        {/* ── Footer ── */}
         <div className="modal-footer" style={{ justifyContent: 'space-between' }}>
           {onDelete ? (
-            <button 
-              onClick={() => onDelete(edited.id)} 
-              style={{ color: '#FF3B30', background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
+            <button
+              onClick={() => onDelete(edited.id)}
+              style={{ color: '#FF3B30', background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, fontSize: '13px' }}
             >
-              <Trash2 size={16} /> Excluir Projeto
+              <Trash2 size={14} /> Excluir Projeto
             </button>
           ) : <div />}
-          
           <button className="save-btn" onClick={() => onSave(edited)}>
-            <Save size={16} /> Salvar Alterações
+            <Save size={14} /> Salvar Alterações
           </button>
         </div>
       </div>
