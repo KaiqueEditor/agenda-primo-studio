@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, User, Mail, Save, Lock, Eye, EyeOff } from 'lucide-react';
+import { X, User, Mail, Save, Lock, Eye, EyeOff, LogOut } from 'lucide-react';
 import type { AppUser } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
 import { toast } from '../UI/Toast';
@@ -177,15 +177,29 @@ export const UserProfileModal: React.FC<Props> = ({ user, onClose }) => {
           </div>
         </div>
 
-        <button
-          className="save-btn"
-          onClick={handleSave}
-          disabled={loading}
-          style={{ width: '100%', padding: '12px', display: 'flex', justifyContent: 'center', gap: '8px' }}
-        >
-          {loading ? <div className="spinner" style={{ width: '16px', height: '16px' }} /> : <Save size={16} />}
-          {loading ? 'Salvando...' : 'Salvar Alterações'}
-        </button>
+        <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={async () => {
+              await supabase.auth.signOut();
+              onClose();
+            }}
+            style={{ flex: 1, padding: '12px', display: 'flex', justifyContent: 'center', gap: '8px', color: 'var(--danger)', background: 'rgba(255,59,48,0.1)' }}
+          >
+            <LogOut size={16} />
+            Sair
+          </button>
+          <button
+            className="save-btn"
+            onClick={handleSave}
+            disabled={loading}
+            style={{ flex: 2, padding: '12px', display: 'flex', justifyContent: 'center', gap: '8px' }}
+          >
+            {loading ? <div className="spinner" style={{ width: '16px', height: '16px' }} /> : <Save size={16} />}
+            {loading ? 'Salvando...' : 'Salvar Alterações'}
+          </button>
+        </div>
       </div>
     </div>
   );
