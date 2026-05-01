@@ -94,12 +94,12 @@ export const FASE_CONFIG: Record<FaseType, { label: string; color: string; color
 };
 
 // Default formato options (user can add custom ones)
-export const DEFAULT_FORMATOS: { value: FormatoType; label: string; icon: string }[] = [
-  { value: 'youtube', label: 'YouTube', icon: '▶' },
-  { value: 'youtube_shorts', label: 'Shorts', icon: '⚡' },
-  { value: 'reels', label: 'Reels / Instagram', icon: '📱' },
-  { value: 'ao_vivo', label: 'Ao Vivo', icon: '🔴' },
-  { value: 'anuncio', label: 'Anúncio', icon: '📢' },
-  { value: 'quadros', label: 'Quadros', icon: '🎬' },
-  { value: 'podcast', label: 'Podcast', icon: '🎙' },
+export const DEFAULT_FORMATOS: { value: FormatoType; label: string }[] = [
+  { value: 'youtube', label: 'YouTube' },
+  { value: 'youtube_shorts', label: 'Shorts' },
+  { value: 'reels', label: 'Reels / Instagram' },
+  { value: 'ao_vivo', label: 'Ao Vivo' },
+  { value: 'anuncio', label: 'Anúncio' },
+  { value: 'quadros', label: 'Quadros' },
+  { value: 'podcast', label: 'Podcast' },
 ];

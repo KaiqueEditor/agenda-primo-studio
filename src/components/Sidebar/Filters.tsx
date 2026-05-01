@@ -151,28 +151,33 @@ export const Sidebar: React.FC<Props> = ({
       </div>
 
       <div className="sidebar-section">
-        <label className="sidebar-label">Formato</label>
-        <div className="tipo-toggle">
-          <button
-            className={`tipo-btn ${filters.tipo === 'all' ? 'active' : ''}`}
-            onClick={() => onSetTipo('all')}
-          >
-            Todos
-          </button>
-          {DEFAULT_FORMATOS.map(f => f).sort((a, b) => a.label.localeCompare(b.label)).map(f => (
-            <button
-              key={f.value}
-              className={`tipo-btn ${filters.tipo === f.value ? 'active' : ''}`}
-              onClick={() => onSetTipo(filters.tipo === f.value ? 'all' : f.value)}
-            >
-              <span style={{ fontSize: '11px' }}>{f.icon}</span> {f.label}
-            </button>
-          ))}
+        <div className="sidebar-label-row">
+          <label className="sidebar-label">Formato</label>
+          <button className="sidebar-add-btn" onClick={() => {
+            const nome = prompt('Nome do novo formato:');
+            if (nome?.trim()) onSetTipo(nome.trim());
+          }} title="Adicionar formato">+</button>
         </div>
+        <select
+          className="sidebar-select"
+          value={filters.tipo}
+          onChange={(e) => onSetTipo(e.target.value)}
+        >
+          <option value="all">Todos os formatos</option>
+          {DEFAULT_FORMATOS.map(f => f).sort((a, b) => a.label.localeCompare(b.label)).map(f => (
+            <option key={f.value} value={f.value}>{f.label}</option>
+          ))}
+        </select>
       </div>
 
       <div className="sidebar-section">
-        <label className="sidebar-label">Canal</label>
+        <div className="sidebar-label-row">
+          <label className="sidebar-label">Canal</label>
+          <button className="sidebar-add-btn" onClick={() => {
+            const nome = prompt('Nome do novo canal:');
+            if (nome?.trim()) onSetCanal(nome.trim());
+          }} title="Adicionar canal">+</button>
+        </div>
         <select
           className="sidebar-select"
           value={filters.canal}
@@ -186,7 +191,13 @@ export const Sidebar: React.FC<Props> = ({
       </div>
 
       <div className="sidebar-section">
-        <label className="sidebar-label"><User size={14} /> Responsável</label>
+        <div className="sidebar-label-row">
+          <label className="sidebar-label"><User size={14} /> Responsável</label>
+          <button className="sidebar-add-btn" onClick={() => {
+            const nome = prompt('Nome do novo responsável:');
+            if (nome?.trim()) onSetResponsavel(nome.trim());
+          }} title="Adicionar responsável">+</button>
+        </div>
         <select
           className="sidebar-select"
           value={filters.responsavel}

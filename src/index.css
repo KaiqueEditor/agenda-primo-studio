@@ -274,6 +274,42 @@ body {
   margin-bottom: 2px;
 }
 
+.sidebar-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.sidebar-label-row .sidebar-label {
+  margin-bottom: 0;
+}
+
+.sidebar-add-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  padding: 0;
+  line-height: 1;
+  font-family: inherit;
+}
+
+.sidebar-add-btn:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
 .sidebar-input, .sidebar-select {
   background: var(--bg-card);
   border: 1px solid var(--border);
