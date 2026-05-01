@@ -123,45 +123,29 @@ export const Sidebar: React.FC<Props> = ({
   return (
     <aside className="sidebar" style={{ width: '260px', background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
       
-      {/* 1. Header (Logo & Collapse) */}
-      <div style={{ padding: '20px', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ 
-            width: '32px', height: '32px', background: 'rgba(255, 255, 255, 0.2)', 
-            borderRadius: '8px', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', 
-            fontWeight: '700', fontSize: '15px' 
-          }}>
-            P
-          </div>
-          <span style={{ fontSize: '16px', fontWeight: 600, color: '#fff', letterSpacing: '-0.3px' }}>Primo Studio</span>
-        </div>
-        <button onClick={onToggleCollapse} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', outline: 'none', color: '#fff', cursor: 'pointer', padding: '6px', borderRadius: '6px', transition: 'background 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)'} onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}>
-          <LayoutPanelLeft size={18} />
-        </button>
-      </div>
-
-      {/* 2. User Info */}
-      {user && (
-        <div style={{ padding: '16px 12px 16px' }}>
+      {/* 1. Top Header (User Info & Collapse) */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: user ? 'space-between' : 'flex-end', padding: '16px 12px 12px' }}>
+        {user && (
           <div 
-            style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', borderRadius: '10px', transition: 'background 0.2s' }} 
+            style={{ padding: '8px', display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', borderRadius: '10px', transition: 'background 0.2s', flex: 1, marginRight: '4px' }} 
             onClick={onOpenProfile}
             onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-main)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #A855F7 0%, #8B5CF6 100%)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '600', fontSize: '14px', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.2)' }}>
-                {getInitials(user.displayName)}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', lineHeight: '1' }}>{user.displayName}</span>
-                <span style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: '1' }}>{user.role === 'admin' ? 'Administrador' : 'Visualizador'}</span>
-              </div>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #A855F7 0%, #8B5CF6 100%)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '600', fontSize: '13px', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.2)' }}>
+              {getInitials(user.displayName)}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
+              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', lineHeight: '1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.displayName}</span>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: '1' }}>{user.role === 'admin' ? 'Administrador' : 'Visualizador'}</span>
             </div>
             <ChevronDown size={14} color="var(--text-muted)" />
           </div>
-        </div>
-      )}
+        )}
+        <button onClick={onToggleCollapse} style={{ background: 'transparent', border: 'none', outline: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '8px', borderRadius: '8px', transition: 'background 0.2s', flexShrink: 0 }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-main)'} onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+          <LayoutPanelLeft size={18} />
+        </button>
+      </div>
 
       {/* 3. AÇÕES RÁPIDAS */}
       <div style={{ padding: '0 12px 16px' }}>
