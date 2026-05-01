@@ -833,7 +833,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .view-area {
   flex: 1;
   overflow-y: auto;
-  padding: 8px 24px 24px 24px; /* Less top padding for more space */
+  padding: 32px; /* Respiro generoso em toda a área principal */
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
@@ -2438,7 +2438,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
+  padding: 24px 32px;
   border-bottom: 1px solid var(--border-subtle);
   background: var(--bg-card);
   flex-shrink: 0;
@@ -2448,7 +2448,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .cal-topbar-left { flex: 1; }
 
 .cal-title {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.3px;
