@@ -140,8 +140,7 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading, hea
               <span>Projeto</span>
             </div>
             {withDates.map(projeto => {
-              const canalColor = getCanalColor(projeto.canal);
-              const canal = Array.isArray(projeto.canal) ? projeto.canal.join(' + ') : projeto.canal;
+              const canais = Array.isArray(projeto.canal) ? projeto.canal : (projeto.canal ? [projeto.canal] : []);
               const isLive = projeto.fases.gravacao?.aoVivo;
               return (
                 <div
@@ -150,17 +149,24 @@ export const TimelineView: React.FC<Props> = ({ projetos, onSelect, loading, hea
                   style={{ height: ROW_HEIGHT }}
                   onClick={() => onSelect(projeto)}
                 >
-                  {/* Canal color accent */}
-                  <span className="tl2-label-accent" style={{ background: canalColor.dot }} />
+                  {/* Canal color accent - use first canal */}
+                  <span className="tl2-label-accent" style={{ background: getCanalColor(canais[0] || '').dot }} />
                   <div className="tl2-label-info">
                     <span className="tl2-label-title">{projeto.titulo}</span>
                     <div className="tl2-label-meta">
                       <span className="tl2-label-tipo">
                         {projeto.tipo === 'video' ? <Video size={10} /> : <Mic size={10} />}
                       </span>
-                      <span className="tl2-label-canal" style={{ color: canalColor.text, background: canalColor.bg, borderColor: canalColor.border }}>
-                        {canal}
-                      </span>
+                      <div style={{ display: 'flex', gap: '3px', flexWrap: 'wrap' }}>
+                        {canais.map(c => {
+                          const cc = getCanalColor(c);
+                          return (
+                            <span key={c} className="tl2-label-canal" style={{ color: cc.text, background: cc.bg, borderColor: cc.border }}>
+                              {c}
+                            </span>
+                          );
+                        })}
+                      </div>
                       {isLive && (
                         <span className="tl2-label-live"><Zap size={9} />LIVE</span>
                       )}

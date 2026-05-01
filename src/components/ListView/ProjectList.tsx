@@ -103,7 +103,6 @@ export const ProjectList: React.FC<Props> = ({ projetos, onSelect, loading, head
           {group.projetos.map((projeto) => {
             const progress = getProjectProgress(projeto);
             const isLive = projeto.fases.gravacao?.aoVivo;
-            const canalColor = getCanalColor(projeto.canal);
             const status = getProjectStatus(projeto);
 
             return (
@@ -115,24 +114,31 @@ export const ProjectList: React.FC<Props> = ({ projetos, onSelect, loading, head
                       <span className="status-badge" style={{ background: status.bg, color: status.color }}>{status.label}</span>
                     </div>
                     <div className="list-meta">
-                      <span className="list-canal-chip" style={{ background: canalColor.bg, color: canalColor.text, borderColor: canalColor.border }}>
-                        {projeto.tipo === 'video' ? <Video size={11} /> : <Mic size={11} />}
-                        {Array.isArray(projeto.canal) ? projeto.canal.join(' + ') : projeto.canal}
-                      </span>
-                      {isLive && <span className="list-live"><Zap size={12} /> AO VIVO</span>}
-                    </div>
-                    {projeto.casting.length > 0 && (
-                      <div className="list-casting">
-                        {projeto.casting.slice(0, 3).map(name => (
-                          <span key={name} className="mini-avatar" style={{ background: getAvatarColor(name) }} title={name}>
-                            {getInitials(name)}
-                          </span>
-                        ))}
-                        {projeto.casting.length > 3 && (
-                          <span className="mini-avatar-more">+{projeto.casting.length - 3}</span>
-                        )}
+                      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', alignItems: 'center' }}>
+                        {(Array.isArray(projeto.canal) ? projeto.canal : (projeto.canal ? [projeto.canal] : [])).map(c => {
+                          const cc = getCanalColor(c);
+                          return (
+                            <span key={c} className="list-canal-chip" style={{ background: cc.bg, color: cc.text, borderColor: cc.border }}>
+                              {projeto.tipo === 'video' ? <Video size={11} /> : <Mic size={11} />}
+                              {c}
+                            </span>
+                          );
+                        })}
+                        {isLive && <span className="list-live"><Zap size={12} /> AO VIVO</span>}
                       </div>
-                    )}
+                      {projeto.casting.length > 0 && (
+                        <div className="list-casting">
+                          {projeto.casting.slice(0, 3).map(name => (
+                            <span key={name} className="mini-avatar" style={{ background: getAvatarColor(name) }} title={name}>
+                              {getInitials(name)}
+                            </span>
+                          ))}
+                          {projeto.casting.length > 3 && (
+                            <span className="mini-avatar-more">+{projeto.casting.length - 3}</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="list-card-right">

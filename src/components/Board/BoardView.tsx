@@ -120,10 +120,9 @@ export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading, header
             {/* Cards */}
             <div className="board-column-body">
               {col.items.map(projeto => {
-                const canalColor = getCanalColor(projeto.canal);
                 const isLive = projeto.fases.gravacao?.aoVivo;
                 const nextDate = getNextDate(projeto);
-                const canal = Array.isArray(projeto.canal) ? projeto.canal.join(' + ') : projeto.canal;
+                const canais = Array.isArray(projeto.canal) ? projeto.canal : (projeto.canal ? [projeto.canal] : []);
                 const colFase = col.fase as FaseType;
                 const faseConfig = FASE_CONFIG[colFase as FaseType];
                 
@@ -135,15 +134,19 @@ export const BoardView: React.FC<Props> = ({ projetos, onSelect, loading, header
 
                 return (
                   <div key={projeto.id} className="board-card" onClick={() => onSelect(projeto)}>
-                    {/* Canal chip + live */}
+                    {/* Canal chips + live */}
                     <div className="board-card-header">
-                      <span
-                        className="board-canal-chip"
-                        style={{ background: canalColor.bg, color: canalColor.text, borderColor: canalColor.border }}
-                      >
-                        {projeto.tipo === 'video' ? <Video size={10} /> : <Mic size={10} />}
-                        {canal}
-                      </span>
+                      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', flex: 1 }}>
+                        {canais.map(c => {
+                          const cc = getCanalColor(c);
+                          return (
+                            <span key={c} className="board-canal-chip" style={{ background: cc.bg, color: cc.text, borderColor: cc.border }}>
+                              {projeto.tipo === 'video' ? <Video size={10} /> : <Mic size={10} />}
+                              {c}
+                            </span>
+                          );
+                        })}
+                      </div>
                       {isLive && (
                         <span className="board-live"><Zap size={10} /> LIVE</span>
                       )}

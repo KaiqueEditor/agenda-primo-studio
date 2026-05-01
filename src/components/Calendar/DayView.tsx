@@ -76,7 +76,7 @@ export const DayView: React.FC<Props> = ({ currentDate, projetos, fases, onSelec
             events.map((ev, j) => {
               const canalColor = getCanalColor(ev.projeto.canal);
               const faseConfig = FASE_CONFIG[ev.fase];
-              const canal = Array.isArray(ev.projeto.canal) ? ev.projeto.canal.join(' + ') : ev.projeto.canal;
+              const canais = Array.isArray(ev.projeto.canal) ? ev.projeto.canal : (ev.projeto.canal ? [ev.projeto.canal] : []);
               return (
                 <button
                   key={j}
@@ -96,7 +96,12 @@ export const DayView: React.FC<Props> = ({ currentDate, projetos, fases, onSelec
                     </span>
                   </div>
                   <div className="day-event-card-meta">
-                    <span style={{ color: canalColor.dot }}>● {canal}</span>
+                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                      {canais.map(c => {
+                        const cc = getCanalColor(c);
+                        return <span key={c} style={{ color: cc.dot }}>● {c}</span>;
+                      })}
+                    </div>
                     <span>{ev.projeto.tipo === 'video' ? '🎬 Vídeo' : '🎙 Podcast'}</span>
                     {ev.projeto.casting.length > 0 && (
                       <span>👥 {ev.projeto.casting.slice(0, 3).join(', ')}</span>
