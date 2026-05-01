@@ -27,7 +27,7 @@ export const FilterBar: React.FC<Props> = ({
         <select
           value={filters.canal}
           onChange={(e) => onSetCanal(e.target.value)}
-          style={{ appearance: 'none', background: '#fff', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px 32px 8px 16px', fontSize: '14px', color: 'var(--text-primary)', outline: 'none', cursor: 'pointer', minWidth: '140px' }}
+          style={{ appearance: 'none', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px 32px 8px 16px', fontSize: '14px', color: 'var(--text-primary)', outline: 'none', cursor: 'pointer', minWidth: '140px' }}
         >
           <option value="">Canais</option>
           {canalOptions.map(c => <option key={c} value={c}>{c}</option>)}
@@ -39,7 +39,7 @@ export const FilterBar: React.FC<Props> = ({
         <select
           value={filters.tipo}
           onChange={(e) => onSetTipo(e.target.value)}
-          style={{ appearance: 'none', background: '#fff', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px 32px 8px 16px', fontSize: '14px', color: 'var(--text-primary)', outline: 'none', cursor: 'pointer', minWidth: '140px' }}
+          style={{ appearance: 'none', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px 32px 8px 16px', fontSize: '14px', color: 'var(--text-primary)', outline: 'none', cursor: 'pointer', minWidth: '140px' }}
         >
           <option value="all">Formatos</option>
           {formatoOptions.map(f => <option key={f} value={f}>{f}</option>)}
@@ -51,7 +51,7 @@ export const FilterBar: React.FC<Props> = ({
         <select
           value={filters.responsavel}
           onChange={(e) => onSetResponsavel(e.target.value)}
-          style={{ appearance: 'none', background: '#fff', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px 32px 8px 16px', fontSize: '14px', color: 'var(--text-primary)', outline: 'none', cursor: 'pointer', minWidth: '140px' }}
+          style={{ appearance: 'none', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px 32px 8px 16px', fontSize: '14px', color: 'var(--text-primary)', outline: 'none', cursor: 'pointer', minWidth: '140px' }}
         >
           <option value="">Responsáveis</option>
           {teamOptions.map(t => <option key={t} value={t}>{t}</option>)}

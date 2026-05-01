@@ -754,7 +754,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .metric-pill.alert {
-  background: #FFF2F2;
+  background: rgba(255, 59, 48, 0.08);
   border-color: rgba(255, 59, 48, 0.2);
 }
 
@@ -2126,7 +2126,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-size: 15px; font-family: inherit; outline: none; background: var(--bg-main);
   transition: all var(--transition);
 }
-.login-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,122,255,0.12); background: white; }
+.login-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,122,255,0.12); background: var(--bg-card); }
 .password-wrapper { position: relative; }
 .password-wrapper input { padding-right: 40px; }
 .password-toggle {
@@ -2152,7 +2152,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 .google-btn {
   display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; padding: 12px; background: white; color: #3c4043;
+  width: 100%; padding: 12px; background: var(--bg-card); color: var(--text-primary);
   border: 1px solid var(--border); border-radius: 10px; font-size: 14px;
   font-weight: 500; cursor: pointer; font-family: inherit;
   transition: all var(--transition); margin-bottom: 0;
