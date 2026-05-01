@@ -20,6 +20,7 @@ export interface Projeto {
   episodios?: number;
   casting: string[];
   responsavel?: string[];
+  updatedBy?: string;
   fases: {
     gravacao?: FasePeriodo;
     edicao?: FasePeriodo;

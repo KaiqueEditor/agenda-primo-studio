@@ -51,6 +51,12 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}><X size={18} /></button>
 
+        {edited.updatedBy && (
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '8px', paddingLeft: '2px' }}>
+            Modificado por: <strong>{edited.updatedBy}</strong>
+          </div>
+        )}
+
         {/* ── Header ── */}
         <div className="modal-header">
           <div className="modal-badge">

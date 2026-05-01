@@ -186,10 +186,11 @@ function App() {
               return;
             }
             const exists = allProjetos.some(exist => exist.id === p.id);
+            const projectWithEditor = { ...p, updatedBy: user?.displayName || 'Desconhecido' };
             if (exists) {
-              updateProjeto(p);
+              updateProjeto(projectWithEditor);
             } else {
-              addProjeto(p);
+              addProjeto(projectWithEditor);
             }
             setSelectedProjeto(null);
             toast.success('Projeto salvo');

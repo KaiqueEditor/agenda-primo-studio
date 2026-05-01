@@ -59,10 +59,18 @@ export const useAuth = () => {
     setLoading(false);
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, nick: string) => {
     setError(null);
     setLoading(true);
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: {
+        data: {
+          display_name: nick,
+        }
+      }
+    });
     if (error) {
       setError(error.message);
     } else {
@@ -106,7 +114,7 @@ export const useAuth = () => {
   const user: AppUser | null = session?.user ? {
     email: session.user.email || '',
     role: ADMIN_EMAILS.includes(session.user.email?.toLowerCase() || '') ? 'admin' : 'viewer',
-    displayName: session.user.email?.split('@')[0] || 'Usuário',
+    displayName: session.user.user_metadata?.display_name || session.user.email?.split('@')[0] || 'Usuário',
   } : null;
 
   return {

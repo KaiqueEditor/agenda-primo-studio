@@ -3,7 +3,7 @@ import { Calendar, LogIn, Eye, EyeOff, Mail } from 'lucide-react';
 
 interface Props {
   onSignIn: (email: string, password: string) => void;
-  onSignUp: (email: string, password: string) => void;
+  onSignUp: (email: string, password: string, nick: string) => void;
   onSignInWithGoogle: () => void;
   onSignInWithMagicLink: (email: string) => Promise<boolean>;
   error: string | null;
@@ -14,6 +14,7 @@ export const LoginPage: React.FC<Props> = ({ onSignIn, onSignUp, onSignInWithGoo
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [nick, setNick] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [magicLinkSent, setMagicLinkSent] = useState(false);
@@ -27,7 +28,11 @@ export const LoginPage: React.FC<Props> = ({ onSignIn, onSignUp, onSignInWithGoo
         setLocalError('As senhas não coincidem');
         return;
       }
-      onSignUp(email, password);
+      if (!nick.trim()) {
+        setLocalError('Por favor, informe seu nome/nick');
+        return;
+      }
+      onSignUp(email, password, nick);
     } else {
       onSignIn(email, password);
     }
@@ -78,6 +83,13 @@ export const LoginPage: React.FC<Props> = ({ onSignIn, onSignUp, onSignInWithGoo
             <div className="login-divider"><span>ou</span></div>
 
             <form onSubmit={handleSubmit} className="login-form">
+              {isSignUp && (
+                <div className="login-field">
+                  <label htmlFor="nick">Nome / Nick</label>
+                  <input id="nick" type="text" value={nick} onChange={(e) => setNick(e.target.value)} placeholder="Como devemos te chamar?" required />
+                </div>
+              )}
+
               <div className="login-field">
                 <label htmlFor="email">Email</label>
                 <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="seu@email.com" required />
