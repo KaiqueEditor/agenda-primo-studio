@@ -78,6 +78,17 @@ export const useProjects = () => {
         const members = [...(p.responsavel || []), ...p.casting];
         if (!members.some(m => m.toLowerCase().includes(filters.responsavel.toLowerCase()))) return false;
       }
+      if (filters.fases.length < 3) {
+        if (filters.fases.length === 0) return false;
+        // Check if the project has at least one of the selected phases
+        const hasSelectedFase = filters.fases.some(fase => {
+          if (fase === 'gravacao') return !!p.fases.gravacao;
+          if (fase === 'edicao') return !!p.fases.edicao;
+          if (fase === 'publicacao') return !!p.fases.publicacao;
+          return false;
+        });
+        if (!hasSelectedFase) return false;
+      }
       return true;
     });
   }, [projetos, filters]);

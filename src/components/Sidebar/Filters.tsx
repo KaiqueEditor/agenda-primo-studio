@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Filter, CalendarDays, BarChart, List, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, User, Moon, Sun } from 'lucide-react';
+import { Search, CalendarDays, BarChart, List, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, Moon, Sun, Plus, MonitorPlay } from 'lucide-react';
 import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
 import type { AppUser } from '../../hooks/useAuth';
 import { getInitials, getAvatarColor } from '../../utils/displayHelpers';
@@ -31,7 +31,6 @@ interface Props {
 export const Sidebar: React.FC<Props> = ({
   filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers, darkMode, onToggleDarkMode, onOpenProfile, onOpenTagManager, customFormatos, customCanais
 }) => {
-  // Use custom tags for selects
   const formatoOptions = [...customFormatos].sort();
   const canalOptions = [...customCanais].sort();
   const faseKeys: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
@@ -68,44 +67,42 @@ export const Sidebar: React.FC<Props> = ({
 
   return (
     <aside className="sidebar">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div className="sidebar-logo">
-          <span className="logo-text">Primo.Studio</span>
+      <div className="sidebar-header-row">
+        <div className="sidebar-logo-container">
+          <div className="sidebar-logo-icon">
+            <MonitorPlay size={16} />
+          </div>
+          <span className="sidebar-logo-text">Primo.Studio</span>
         </div>
-        <button className="sidebar-collapse-btn" onClick={onToggleCollapse} title="Colapsar menu">
+        <button className="sidebar-collapse-btn" onClick={onToggleCollapse} title="Recolher menu">
           <ChevronLeft size={16} />
         </button>
       </div>
 
       {user && (
-        <div className="sidebar-user" style={{ cursor: 'pointer' }}>
-          <div 
-            style={{ display: 'flex', alignItems: 'center', flex: 1, overflow: 'hidden' }}
-            onClick={onOpenProfile}
-            title="Ver Perfil"
-          >
-            <div className="user-avatar" style={{ background: getAvatarColor(user.displayName) }}>
-              {getInitials(user.displayName)}
-            </div>
-            <div className="user-info">
-              <span className="user-name">{user.displayName}</span>
-              <span className="user-role">{user.role === 'admin' ? 'Admin' : 'Visualizador'}</span>
-            </div>
+        <div className="sidebar-user-card" onClick={onOpenProfile} title="Ver Perfil">
+          <div className="sidebar-user-avatar" style={{ background: getAvatarColor(user.displayName) }}>
+            {getInitials(user.displayName)}
           </div>
-          <button className="user-logout" onClick={onSignOut} title="Sair">
+          <div className="sidebar-user-info">
+            <span className="sidebar-user-name">{user.displayName}</span>
+            <span className="sidebar-user-role">{user.role === 'admin' ? 'Administrador' : 'Visualizador'}</span>
+          </div>
+          <button className="sidebar-logout-btn" onClick={(e) => { e.stopPropagation(); onSignOut(); }} title="Sair da conta">
             <LogOut size={14} />
           </button>
         </div>
       )}
 
-      <div className="sidebar-section">
-        <label className="sidebar-label">Visualização</label>
-        <div className="view-toggle">
-          {(['calendar', 'timeline', 'list', 'board'] as ViewMode[]).map((v) => (
+      <div className="sidebar-nav-group">
+        <label className="sidebar-section-title">Visualização</label>
+        <div className="sidebar-segmented-control">
+          {(['calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => (
             <button
               key={v}
-              className={`view-btn ${viewMode === v ? 'active' : ''}`}
+              className={`segmented-btn ${viewMode === v ? 'active' : ''}`}
               onClick={() => onSetView(v)}
+              title={v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista'}
             >
               {v === 'calendar' ? <CalendarDays size={14} /> : v === 'timeline' ? <BarChart size={14} /> : v === 'board' ? <LayoutGrid size={14} /> : <List size={14} />}
               <span>{v === 'calendar' ? 'Calend.' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista'}</span>
@@ -114,42 +111,46 @@ export const Sidebar: React.FC<Props> = ({
         </div>
       </div>
 
-      <div className="sidebar-section">
-        <label className="sidebar-label"><Search size={14} /> Buscar</label>
-        <input
-          type="text"
-          className="sidebar-input"
-          placeholder="Nome do projeto..."
-          value={filters.search}
-          onChange={(e) => onSetSearch(e.target.value)}
-        />
+      <div className="sidebar-nav-group">
+        <div className="sidebar-search-box">
+          <Search size={14} className="sidebar-search-icon" />
+          <input
+            type="text"
+            className="sidebar-search-input"
+            placeholder="Buscar projetos..."
+            value={filters.search}
+            onChange={(e) => onSetSearch(e.target.value)}
+          />
+        </div>
       </div>
 
-      <div className="sidebar-section">
-        <label className="sidebar-label"><Filter size={14} /> Fases</label>
-        <div className="fase-filters">
+      <div className="sidebar-nav-group">
+        <label className="sidebar-section-title">Fases do Projeto</label>
+        <div className="sidebar-fases-grid">
           {faseKeys.map((fase) => {
             const config = FASE_CONFIG[fase];
             const isActive = filters.fases.includes(fase);
             return (
               <button
                 key={fase}
-                className={`fase-filter-btn ${isActive ? 'active' : ''}`}
-                style={{ '--fase-color': config.color, '--fase-bg': config.colorLight } as React.CSSProperties}
+                className={`sidebar-fase-toggle ${isActive ? 'active' : ''}`}
+                style={{ '--fase-color': config.color } as React.CSSProperties}
                 onClick={() => onToggleFase(fase)}
               >
-                <span className="fase-dot" />
-                {config.label}
+                <div className="fase-indicator" />
+                <span>{config.label}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      <div className="sidebar-section">
+      <div className="sidebar-nav-group">
         <div className="sidebar-label-row">
-          <label className="sidebar-label">Formato</label>
-          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('formato')} title="Gerenciar formatos">+</button>
+          <label className="sidebar-section-title">Formato</label>
+          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('formato')} title="Gerenciar formatos">
+            <Plus size={14} />
+          </button>
         </div>
         <select
           className="sidebar-select"
@@ -163,10 +164,12 @@ export const Sidebar: React.FC<Props> = ({
         </select>
       </div>
 
-      <div className="sidebar-section">
+      <div className="sidebar-nav-group">
         <div className="sidebar-label-row">
-          <label className="sidebar-label">Canal</label>
-          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('canal')} title="Gerenciar canais">+</button>
+          <label className="sidebar-section-title">Canal</label>
+          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('canal')} title="Gerenciar canais">
+            <Plus size={14} />
+          </button>
         </div>
         <select
           className="sidebar-select"
@@ -180,10 +183,12 @@ export const Sidebar: React.FC<Props> = ({
         </select>
       </div>
 
-      <div className="sidebar-section">
+      <div className="sidebar-nav-group">
         <div className="sidebar-label-row">
-          <label className="sidebar-label"><User size={14} /> Responsável</label>
-          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('responsavel')} title="Gerenciar responsáveis">+</button>
+          <label className="sidebar-section-title">Responsável</label>
+          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('responsavel')} title="Gerenciar responsáveis">
+            <Plus size={14} />
+          </button>
         </div>
         <select
           className="sidebar-select"
@@ -197,15 +202,13 @@ export const Sidebar: React.FC<Props> = ({
         </select>
       </div>
 
-      <div className="sidebar-section" style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button className="sidebar-team-btn" onClick={onOpenTeam} style={{ flex: 1 }}>
-            <Users size={16} /> Equipe
-          </button>
-          <button className="sidebar-team-btn" onClick={onToggleDarkMode} style={{ width: 'auto', padding: '10px 12px' }} title={darkMode ? 'Modo Claro' : 'Modo Escuro'}>
-            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
-        </div>
+      <div className="sidebar-footer">
+        <button className="sidebar-footer-btn" onClick={onOpenTeam}>
+          <Users size={15} /> Equipe
+        </button>
+        <button className="sidebar-footer-btn-icon" onClick={onToggleDarkMode} title={darkMode ? 'Modo Claro' : 'Modo Escuro'}>
+          {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+        </button>
       </div>
     </aside>
   );
