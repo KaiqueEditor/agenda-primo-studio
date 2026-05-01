@@ -65,6 +65,8 @@ export const WeekView: React.FC<Props> = ({ currentDate, projetos, fases, onSele
                 events.map((ev, j) => {
                   const canalColor = getCanalColor(ev.projeto.canal);
                   const faseConfig = FASE_CONFIG[ev.fase];
+                  const canais = Array.isArray(ev.projeto.canal) ? ev.projeto.canal.join(', ') : ev.projeto.canal;
+                  const responsaveis = ev.projeto.responsavel && ev.projeto.responsavel.length > 0 ? ev.projeto.responsavel.join(', ') : null;
                   return (
                     <button
                       key={j}
@@ -85,8 +87,12 @@ export const WeekView: React.FC<Props> = ({ currentDate, projetos, fases, onSele
                       onClick={() => onSelectEvent(ev)}
                     >
                       <span className="week-flat-title">
-                        {ev.projeto.titulo.split(' - ')[0]}
+                        {ev.projeto.titulo}
                       </span>
+                      <div className="week-flat-meta">
+                        {canais && <span className="meta-item">{canais}</span>}
+                        {responsaveis && <span className="meta-item">{responsaveis}</span>}
+                      </div>
                       <span className="week-flat-fase" style={{ color: faseConfig.color }}>
                         <span className="week-flat-dot" style={{ background: faseConfig.color }} />
                         {faseConfig.label}
