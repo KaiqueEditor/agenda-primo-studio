@@ -36,12 +36,10 @@ export const Sidebar: React.FC<Props> = ({
 
   if (collapsed) {
     return (
-      <aside className="sidebar sidebar-collapsed" style={{ width: '64px', background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ background: 'var(--accent)', width: '100%', padding: '20px 0', display: 'flex', justifyContent: 'center', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-          <button className="sidebar-expand-btn" onClick={onToggleCollapse} title="Expandir menu" style={{ background: 'rgba(255,255,255,0.2)', border: 'none', cursor: 'pointer', color: '#fff', padding: '8px', borderRadius: '8px', transition: 'background 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'} onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}>
-            <LayoutPanelLeft size={20} />
-          </button>
-        </div>
+      <aside className="sidebar sidebar-collapsed" style={{ width: '64px', background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 0' }}>
+        <button className="sidebar-expand-btn" onClick={onToggleCollapse} title="Expandir menu" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '8px', marginBottom: '16px', borderRadius: '8px', transition: 'background 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-main)'} onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+          <LayoutPanelLeft size={20} />
+        </button>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', alignItems: 'center' }}>
           {(['calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => {
             const isActive = viewMode === v;
