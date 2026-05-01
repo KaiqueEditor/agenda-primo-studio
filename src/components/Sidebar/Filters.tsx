@@ -1,8 +1,8 @@
 import React from 'react';
-import { Search, CalendarDays, BarChart, List, Users, ChevronLeft, ChevronRight, LogOut, LayoutGrid, Moon, Sun, Plus, MonitorPlay } from 'lucide-react';
+import { Search, CalendarDays, BarChart, List, LayoutGrid, ChevronRight, Moon, Sun, Plus, Users, Settings, Hash, FileText, ChevronDown, ChevronsLeft } from 'lucide-react';
 import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
 import type { AppUser } from '../../hooks/useAuth';
-import { getInitials, getAvatarColor } from '../../utils/displayHelpers';
+import { getInitials } from '../../utils/displayHelpers';
 import type { TagCategory } from '../Modal/TagManagerModal';
 
 interface Props {
@@ -26,13 +26,12 @@ interface Props {
   onOpenTagManager: (category: TagCategory) => void;
   customFormatos: string[];
   customCanais: string[];
+  onAddProjeto?: () => void;
 }
 
 export const Sidebar: React.FC<Props> = ({
-  filters, viewMode, collapsed, user, onToggleFase, onSetCanal, onSetSearch, onSetTipo, onSetResponsavel, onSetView, onOpenTeam, onToggleCollapse, onSignOut, teamMembers, darkMode, onToggleDarkMode, onOpenProfile, onOpenTagManager, customFormatos, customCanais
+  filters, viewMode, collapsed, user, onToggleFase, onSetSearch, onSetView, onOpenTeam, onToggleCollapse, darkMode, onToggleDarkMode, onOpenProfile, onOpenTagManager, onAddProjeto
 }) => {
-  const formatoOptions = [...customFormatos].sort();
-  const canalOptions = [...customCanais].sort();
   const faseKeys: FaseType[] = ['gravacao', 'edicao', 'publicacao'];
 
   if (collapsed) {
@@ -42,7 +41,7 @@ export const Sidebar: React.FC<Props> = ({
           <ChevronRight size={18} />
         </button>
         <div className="sidebar-collapsed-icons">
-          {(['calendar', 'timeline', 'list', 'board'] as ViewMode[]).map((v) => (
+          {(['calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => (
             <button
               key={v}
               className={`collapsed-icon-btn ${viewMode === v ? 'active' : ''}`}
@@ -66,148 +65,142 @@ export const Sidebar: React.FC<Props> = ({
   }
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-header-row">
-        <div className="sidebar-logo-container">
-          <div className="sidebar-logo-icon">
-            <MonitorPlay size={16} />
+    <aside className="sidebar" style={{ width: '260px', background: '#ffffff', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+      {/* 1. Primo Studio Logo & Collapse */}
+      <div style={{ padding: '24px 24px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ width: '28px', height: '28px', background: '#0D6EFD', borderRadius: '8px', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px' }}>
+            P
           </div>
-          <span className="sidebar-logo-text">Primo.Studio</span>
+          <span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>Primo Studio</span>
         </div>
-        <button className="sidebar-collapse-btn" onClick={onToggleCollapse} title="Recolher menu">
-          <ChevronLeft size={16} />
+        <button onClick={onToggleCollapse} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+          <ChevronsLeft size={16} />
         </button>
       </div>
 
+      {/* 2. User Info */}
       {user && (
-        <div className="sidebar-user-card" onClick={onOpenProfile} title="Ver Perfil">
-          <div className="sidebar-user-avatar" style={{ background: getAvatarColor(user.displayName) }}>
-            {getInitials(user.displayName)}
+        <div style={{ padding: '0 24px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }} onClick={onOpenProfile}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#A855F7', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '600', fontSize: '14px' }}>
+              {getInitials(user.displayName)}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{user.displayName}</span>
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{user.role === 'admin' ? 'Administrador' : 'Visualizador'}</span>
+            </div>
           </div>
-          <div className="sidebar-user-info">
-            <span className="sidebar-user-name">{user.displayName}</span>
-            <span className="sidebar-user-role">{user.role === 'admin' ? 'Administrador' : 'Visualizador'}</span>
-          </div>
-          <button className="sidebar-logout-btn" onClick={(e) => { e.stopPropagation(); onSignOut(); }} title="Sair da conta">
-            <LogOut size={14} />
-          </button>
+          <ChevronDown size={14} color="var(--text-secondary)" />
         </div>
       )}
 
-      <div className="sidebar-nav-group">
-        <label className="sidebar-section-title">Visualização</label>
-        <div className="sidebar-segmented-control">
-          {(['calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => (
-            <button
-              key={v}
-              className={`segmented-btn ${viewMode === v ? 'active' : ''}`}
-              onClick={() => onSetView(v)}
-              title={v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista'}
-            >
-              {v === 'calendar' ? <CalendarDays size={14} /> : v === 'timeline' ? <BarChart size={14} /> : v === 'board' ? <LayoutGrid size={14} /> : <List size={14} />}
-              <span>{v === 'calendar' ? 'Calend.' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista'}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="sidebar-nav-group">
-        <div className="sidebar-search-box">
-          <Search size={14} className="sidebar-search-icon" />
+      {/* 3. AÇÕES RÁPIDAS */}
+      <div style={{ padding: '0 24px 16px' }}>
+        <label style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '12px', display: 'block' }}>
+          Ações Rápidas
+        </label>
+        <button 
+          onClick={onAddProjeto}
+          style={{ width: '100%', padding: '10px 16px', background: '#0D6EFD', color: '#fff', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontWeight: 600, fontSize: '14px', cursor: 'pointer', marginBottom: '12px' }}
+        >
+          <Plus size={16} /> Novo Projeto
+        </button>
+        <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Search size={14} color="var(--text-secondary)" />
           <input
             type="text"
-            className="sidebar-search-input"
-            placeholder="Buscar projetos..."
+            placeholder="Buscar"
             value={filters.search}
             onChange={(e) => onSetSearch(e.target.value)}
+            style={{ border: 'none', background: 'transparent', width: '100%', outline: 'none', fontSize: '14px', color: 'var(--text-primary)' }}
           />
         </div>
       </div>
 
-      <div className="sidebar-nav-group">
-        <label className="sidebar-section-title">Fases do Projeto</label>
-        <div className="sidebar-fases-grid">
+      {/* 4. Navigation Views */}
+      <div style={{ padding: '0 16px 16px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        {(['calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => {
+          const isActive = viewMode === v;
+          const label = v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista';
+          const icon = v === 'calendar' ? <CalendarDays size={16} /> : v === 'timeline' ? <BarChart size={16} /> : v === 'board' ? <LayoutGrid size={16} /> : <List size={16} />;
+          return (
+            <button
+              key={v}
+              onClick={() => onSetView(v)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '12px', padding: '8px 12px', borderRadius: '6px',
+                background: isActive ? '#EFF6FF' : 'transparent',
+                color: isActive ? '#0D6EFD' : 'var(--text-secondary)',
+                border: 'none', borderLeft: isActive ? '3px solid #0D6EFD' : '3px solid transparent',
+                fontWeight: isActive ? 600 : 500, fontSize: '14px', cursor: 'pointer', textAlign: 'left'
+              }}
+            >
+              {icon}
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 5. PRODUÇÃO */}
+      <div style={{ padding: '0 24px 16px' }}>
+        <label style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '8px', display: 'block' }}>
+          Produção
+        </label>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {faseKeys.map((fase) => {
             const config = FASE_CONFIG[fase];
             const isActive = filters.fases.includes(fase);
             return (
               <button
                 key={fase}
-                className={`sidebar-fase-toggle ${isActive ? 'active' : ''}`}
-                style={{ '--fase-color': config.color } as React.CSSProperties}
                 onClick={() => onToggleFase(fase)}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer',
+                  color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  fontWeight: isActive ? 600 : 500, fontSize: '14px'
+                }}
               >
-                <div className="fase-indicator" />
-                <span>{config.label}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: config.color, opacity: isActive ? 1 : 0.5 }} />
+                  {config.label}
+                </div>
+                <ChevronRight size={14} color="var(--text-secondary)" />
               </button>
             );
           })}
         </div>
       </div>
 
-      <div className="sidebar-nav-group">
-        <div className="sidebar-label-row">
-          <label className="sidebar-section-title">Formato</label>
-          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('formato')} title="Gerenciar formatos">
-            <Plus size={14} />
+      {/* 6. ORGANIZAÇÃO */}
+      <div style={{ padding: '0 24px 16px' }}>
+        <label style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '8px', display: 'block' }}>
+          Organização
+        </label>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <button onClick={() => onOpenTagManager('canal')} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+            <Hash size={16} /> Canais
+          </button>
+          <button onClick={() => onOpenTagManager('formato')} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+            <FileText size={16} /> Formatos
+          </button>
+          <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+            <Users size={16} /> Responsáveis
           </button>
         </div>
-        <select
-          className="sidebar-select"
-          value={filters.tipo}
-          onChange={(e) => onSetTipo(e.target.value)}
-        >
-          <option value="all">Todos os formatos</option>
-          {formatoOptions.map(f => (
-            <option key={f} value={f}>{f}</option>
-          ))}
-        </select>
       </div>
 
-      <div className="sidebar-nav-group">
-        <div className="sidebar-label-row">
-          <label className="sidebar-section-title">Canal</label>
-          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('canal')} title="Gerenciar canais">
-            <Plus size={14} />
-          </button>
-        </div>
-        <select
-          className="sidebar-select"
-          value={filters.canal}
-          onChange={(e) => onSetCanal(e.target.value)}
-        >
-          <option value="">Todos os canais</option>
-          {canalOptions.map((c) => (
-            <option key={c} value={c}>{c}</option>
-          ))}
-        </select>
-      </div>
+      <div style={{ margin: '0 24px 16px', height: '1px', background: 'var(--border-subtle)' }} />
 
-      <div className="sidebar-nav-group">
-        <div className="sidebar-label-row">
-          <label className="sidebar-section-title">Responsável</label>
-          <button className="sidebar-add-btn" onClick={() => onOpenTagManager('responsavel')} title="Gerenciar responsáveis">
-            <Plus size={14} />
-          </button>
-        </div>
-        <select
-          className="sidebar-select"
-          value={filters.responsavel}
-          onChange={(e) => onSetResponsavel(e.target.value)}
-        >
-          <option value="">Todos</option>
-          {[...teamMembers].sort().map((m) => (
-            <option key={m} value={m}>{m}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className="sidebar-footer">
-        <button className="sidebar-footer-btn" onClick={onOpenTeam}>
-          <Users size={15} /> Equipe
+      {/* Footer */}
+      <div style={{ padding: '0 24px 24px', display: 'flex', flexDirection: 'column', gap: '8px', marginTop: 'auto' }}>
+        <button onClick={onOpenTeam} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+          <Users size={16} /> Equipe
         </button>
-        <button className="sidebar-footer-btn-icon" onClick={onToggleDarkMode} title={darkMode ? 'Modo Claro' : 'Modo Escuro'}>
-          {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+        <button onClick={onToggleDarkMode} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '14px' }}>
+          <Settings size={16} /> Configurações
         </button>
       </div>
     </aside>

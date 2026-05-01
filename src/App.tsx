@@ -17,6 +17,7 @@ import { LoginPage } from './components/Auth/LoginPage';
 import { ToastContainer, toast } from './components/UI/Toast';
 import { CommandPalette } from './components/UI/CommandPalette';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
+import { FilterBar } from './components/FilterBar/FilterBar';
 import './index.css';
 
 function App() {
@@ -151,6 +152,7 @@ function App() {
         onOpenTagManager={(cat: TagCategory) => setTagManagerCategory(cat)}
         customFormatos={customFormatos}
         customCanais={customCanais}
+        onAddProjeto={handleAddProjeto}
       />
       <main className="main-area">
         <div className="view-area">
@@ -161,7 +163,20 @@ function App() {
               onSelectEvent={handleEventClick} 
               onDropEvent={handleDropEvent} 
               loading={loading}
-              headerActions={<GlobalActions projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
+              headerActions={
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <FilterBar 
+                    filters={filters}
+                    onSetCanal={setCanal}
+                    onSetTipo={setTipo}
+                    onSetResponsavel={setResponsavel}
+                    canalOptions={customCanais}
+                    formatoOptions={customFormatos}
+                    teamOptions={team.map(t => t.name)}
+                  />
+                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} />
+                </div>
+              }
             />
           )}
           {viewMode === 'timeline' && (
@@ -169,7 +184,20 @@ function App() {
               projetos={projetos} 
               onSelect={handleProjectClick} 
               loading={loading}
-              headerActions={<GlobalActions projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
+              headerActions={
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <FilterBar 
+                    filters={filters}
+                    onSetCanal={setCanal}
+                    onSetTipo={setTipo}
+                    onSetResponsavel={setResponsavel}
+                    canalOptions={customCanais}
+                    formatoOptions={customFormatos}
+                    teamOptions={team.map(t => t.name)}
+                  />
+                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} />
+                </div>
+              }
             />
           )}
           {viewMode === 'list' && (
@@ -177,7 +205,20 @@ function App() {
               projetos={projetos} 
               onSelect={handleProjectClick} 
               loading={loading} 
-              headerActions={<GlobalActions projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
+              headerActions={
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <FilterBar 
+                    filters={filters}
+                    onSetCanal={setCanal}
+                    onSetTipo={setTipo}
+                    onSetResponsavel={setResponsavel}
+                    canalOptions={customCanais}
+                    formatoOptions={customFormatos}
+                    teamOptions={team.map(t => t.name)}
+                  />
+                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} />
+                </div>
+              }
             />
           )}
           {viewMode === 'board' && (
@@ -185,7 +226,20 @@ function App() {
               projetos={projetos} 
               onSelect={handleProjectClick} 
               loading={loading} 
-              headerActions={<GlobalActions projetos={allProjetos} onAddProjeto={handleAddProjeto} onSaveAll={handleSaveAll} />}
+              headerActions={
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <FilterBar 
+                    filters={filters}
+                    onSetCanal={setCanal}
+                    onSetTipo={setTipo}
+                    onSetResponsavel={setResponsavel}
+                    canalOptions={customCanais}
+                    formatoOptions={customFormatos}
+                    teamOptions={team.map(t => t.name)}
+                  />
+                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} />
+                </div>
+              }
             />
           )}
         </div>

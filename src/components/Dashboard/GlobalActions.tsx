@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Cloud, Camera, AlertTriangle, X } from 'lucide-react';
+import { Cloud, Camera, AlertTriangle, X } from 'lucide-react';
 import type { Projeto } from '../../types';
 import { detectConflicts } from '../../utils/dateHelpers';
 import * as htmlToImage from 'html-to-image';
 
 interface Props {
   projetos: Projeto[];
-  onAddProjeto: () => void;
   onSaveAll?: () => void;
 }
 
-export const GlobalActions: React.FC<Props> = ({ projetos, onAddProjeto, onSaveAll }) => {
+export const GlobalActions: React.FC<Props> = ({ projetos, onSaveAll }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [showConflicts, setShowConflicts] = useState(false);
@@ -99,9 +98,6 @@ export const GlobalActions: React.FC<Props> = ({ projetos, onAddProjeto, onSaveA
         </button>
       )}
 
-      <button className="save-btn primary-btn" onClick={onAddProjeto}>
-        <Plus size={13} /> Novo Projeto
-      </button>
     </>
   );
 };
