@@ -36,10 +36,12 @@ export const Sidebar: React.FC<Props> = ({
 
   if (collapsed) {
     return (
-      <aside className="sidebar sidebar-collapsed" style={{ width: '64px', background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 0' }}>
-        <button className="sidebar-expand-btn" onClick={onToggleCollapse} title="Expandir menu" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '8px', marginBottom: '16px', borderRadius: '8px' }}>
-          <LayoutPanelLeft size={20} />
-        </button>
+      <aside className="sidebar sidebar-collapsed" style={{ width: '64px', background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ background: 'var(--accent)', width: '100%', padding: '20px 0', display: 'flex', justifyContent: 'center', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <button className="sidebar-expand-btn" onClick={onToggleCollapse} title="Expandir menu" style={{ background: 'rgba(255,255,255,0.2)', border: 'none', cursor: 'pointer', color: '#fff', padding: '8px', borderRadius: '8px', transition: 'background 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'} onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}>
+            <LayoutPanelLeft size={20} />
+          </button>
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', alignItems: 'center' }}>
           {(['calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => {
             const isActive = viewMode === v;
@@ -122,25 +124,25 @@ export const Sidebar: React.FC<Props> = ({
     <aside className="sidebar" style={{ width: '260px', background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
       
       {/* 1. Header (Logo & Collapse) */}
-      <div style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ padding: '20px', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ 
-            width: '32px', height: '32px', background: 'linear-gradient(135deg, var(--accent) 0%, #0A84FF 100%)', 
-            borderRadius: '10px', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', 
-            fontWeight: '700', fontSize: '15px', boxShadow: '0 2px 8px var(--accent-glow)' 
+            width: '32px', height: '32px', background: 'rgba(255, 255, 255, 0.2)', 
+            borderRadius: '8px', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+            fontWeight: '700', fontSize: '15px' 
           }}>
             P
           </div>
-          <span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>Primo Studio</span>
+          <span style={{ fontSize: '16px', fontWeight: 600, color: '#fff', letterSpacing: '-0.3px' }}>Primo Studio</span>
         </div>
-        <button onClick={onToggleCollapse} style={{ background: 'transparent', border: 'none', outline: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px', borderRadius: '6px' }} className="hover-bg-muted">
+        <button onClick={onToggleCollapse} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', outline: 'none', color: '#fff', cursor: 'pointer', padding: '6px', borderRadius: '6px', transition: 'background 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)'} onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}>
           <LayoutPanelLeft size={18} />
         </button>
       </div>
 
       {/* 2. User Info */}
       {user && (
-        <div style={{ padding: '0 12px 16px' }}>
+        <div style={{ padding: '16px 12px 16px' }}>
           <div 
             style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', borderRadius: '10px', transition: 'background 0.2s' }} 
             onClick={onOpenProfile}
