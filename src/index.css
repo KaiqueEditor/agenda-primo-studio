@@ -833,7 +833,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .view-area {
   flex: 1;
   overflow-y: auto;
-  padding: 8px 24px 24px 24px;
+  padding: 8px 16px 16px 16px;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
@@ -889,7 +889,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: min-content repeat(6, minmax(0, 1fr));
-  gap: 12px; /* Increased spacing between cells */
+  gap: 6px; /* Optimized spacing */
   background: transparent;
   border: none;
   border-radius: 0;
@@ -910,8 +910,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .calendar-cell {
   background: var(--bg-card);
-  padding: 10px 10px 12px 12px;
-  min-height: 120px;
+  padding: 6px 6px 8px 8px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -980,9 +980,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 8px;
+  padding: 3px 6px;
   border: none; /* Premium minimalist style */
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--event-bg);
   cursor: pointer;
   font-family: inherit;
@@ -1011,10 +1011,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  line-height: 1.5;
+  display: block;
+  line-height: 1.3;
   min-width: 0;
 }
 
@@ -2438,7 +2436,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 32px;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--border-subtle);
   background: var(--bg-card);
   flex-shrink: 0;
@@ -2536,7 +2534,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex; 
   flex-direction: column; 
   overflow: hidden; 
-  padding: 0 32px 32px 32px; /* Espaço nas bordas do calendário */
+  padding: 0 24px 24px 24px; /* Otimizado */
 }
 .cal-month .calendar-grid { border-top: none; }
 
