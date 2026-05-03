@@ -1,9 +1,11 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import type { CalendarEvent as CalEvent } from '../../types';
-import { CalendarEventItem } from '../Calendar/CalendarEvent';
+
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { FASE_CONFIG } from '../../types';
+import { getCanalColor } from '../../utils/displayHelpers';
 
 interface DayModalProps {
   date: Date;
@@ -66,17 +68,68 @@ export const DayModal: React.FC<DayModalProps> = ({ date, events, onClose, onSel
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {events.map((ev, i) => (
-                <div key={`${ev.projeto.id}-${ev.fase}-${i}`} style={{ width: '100%', position: 'relative' }}>
-                  <CalendarEventItem 
-                    event={ev} 
-                    onClick={(event) => {
-                      onSelectEvent(event);
+              {events.map((ev, i) => {
+                const canalColor = getCanalColor(ev.projeto.canal);
+                const faseConfig = FASE_CONFIG[ev.fase];
+                const canais = Array.isArray(ev.projeto.canal) ? ev.projeto.canal.join(', ') : ev.projeto.canal;
+                const responsaveis = ev.projeto.responsavel && ev.projeto.responsavel.length > 0 ? ev.projeto.responsavel.join(', ') : null;
+
+                return (
+                  <button
+                    key={`${ev.projeto.id}-${ev.fase}-${i}`}
+                    onClick={() => {
+                      onSelectEvent(ev);
                       onClose();
-                    }} 
-                  />
-                </div>
-              ))}
+                    }}
+                    style={{
+                      width: '100%',
+                      background: canalColor.bg,
+                      border: 'none',
+                      borderLeft: `4px solid ${canalColor.dot}`,
+                      borderRadius: '8px',
+                      padding: '12px 16px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '6px',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'transform 0.15s, box-shadow 0.15s',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.transform = 'none';
+                      e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.02)';
+                    }}
+                  >
+                    <span style={{ fontSize: '14px', fontWeight: '600', color: canalColor.text, lineHeight: '1.3' }}>
+                      {ev.projeto.titulo}
+                    </span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', marginTop: '2px' }}>
+                      {canais && (
+                        <span style={{ fontSize: '12px', fontWeight: '500', color: canalColor.text, opacity: 0.8 }}>
+                          {canais}
+                        </span>
+                      )}
+                      {responsaveis && (
+                        <span style={{ fontSize: '12px', fontWeight: '500', color: canalColor.text, opacity: 0.8 }}>
+                          {responsaveis}
+                        </span>
+                      )}
+                    </div>
+                    <span style={{ 
+                      fontSize: '12px', fontWeight: '600', color: faseConfig.color, 
+                      display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' 
+                    }}>
+                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: faseConfig.color }} />
+                      {faseConfig.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
