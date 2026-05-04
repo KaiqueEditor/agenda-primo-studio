@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { X, Users, Zap, Save, Trash2, Briefcase, Server } from 'lucide-react';
 import { type Projeto, FASE_CONFIG, type FaseType, type TeamMember, DEFAULT_FORMATOS } from '../../types';
-import { getProjectProgress } from '../../utils/dateHelpers';
+import { getProjectProgress, detectConflicts } from '../../utils/dateHelpers';
 import { format } from 'date-fns';
 import { AutocompleteTagInput } from './AutocompleteTagInput';
 
 interface Props {
   projeto: Projeto;
+  allProjetos: Projeto[];
   team: TeamMember[];
   initialFase?: FaseType;
   onClose: () => void;
@@ -14,7 +15,7 @@ interface Props {
   onDelete?: (id: string) => void;
 }
 
-export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, onDelete }) => {
+export const ProjectModal: React.FC<Props> = ({ projeto, allProjetos, team, onClose, onSave, onDelete }) => {
   const [edited, setEdited] = useState<Projeto>({ ...projeto });
   const progress = getProjectProgress(edited);
   const faseOrder: FaseType[] = ['gravacao', 'edicao', 'publicacao', 'evento'];
@@ -22,6 +23,9 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
   const handleChange = (field: keyof Projeto, value: any) => {
     setEdited({ ...edited, [field]: value });
   };
+
+  const listToCheck = allProjetos.filter(p => p.id !== edited.id).concat(edited);
+  const myConflicts = detectConflicts(listToCheck).filter(c => c.projeto1.id === edited.id || c.projeto2.id === edited.id);
 
   const handleDateChange = (fase: FaseType, field: 'inicio' | 'fim' | 'data', value: string) => {
     setEdited((prev) => {
@@ -174,6 +178,22 @@ export const ProjectModal: React.FC<Props> = ({ projeto, team, onClose, onSave, 
             />
           </div>
         </div>
+
+        {myConflicts.length > 0 && (
+          <div style={{ marginTop: '12px', padding: '12px', background: 'rgba(255,59,48,0.08)', borderRadius: '8px', borderLeft: '3px solid #FF3B30' }}>
+            <strong style={{ color: '#FF3B30', fontSize: '13px', display: 'block', marginBottom: '6px' }}>Conflitos Detectados:</strong>
+            <ul style={{ margin: 0, paddingLeft: '16px', color: 'var(--text-secondary)', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              {myConflicts.map((c, i) => {
+                const otherProject = c.projeto1.id === edited.id ? c.projeto2 : c.projeto1;
+                return (
+                  <li key={i}>
+                    <strong>{c.casting}</strong> já está locado em: <strong>{otherProject.titulo}</strong> ({c.periodo})
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
 
         {/* ── Descrição / Caminho do Servidor ── */}
         <div className="modal-section">

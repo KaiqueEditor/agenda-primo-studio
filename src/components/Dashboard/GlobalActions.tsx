@@ -7,9 +7,10 @@ import * as htmlToImage from 'html-to-image';
 interface Props {
   projetos: Projeto[];
   onSaveAll?: () => void;
+  onEditProject?: (projeto: Projeto) => void;
 }
 
-export const GlobalActions: React.FC<Props> = ({ projetos, onSaveAll }) => {
+export const GlobalActions: React.FC<Props> = ({ projetos, onSaveAll, onEditProject }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [showConflicts, setShowConflicts] = useState(false);
@@ -71,10 +72,20 @@ export const GlobalActions: React.FC<Props> = ({ projetos, onSaveAll }) => {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '280px', overflowY: 'auto' }}>
                 {conflicts.map((c, i) => (
-                  <div key={i} style={{ fontSize: '12px', background: 'var(--bg-main)', padding: '8px 10px', borderRadius: '8px', borderLeft: '3px solid #FF3B30' }}>
-                    <strong style={{ color: 'var(--text-primary)' }}>{c.casting}</strong> está locado em:<br/>
-                    <span style={{ color: 'var(--text-secondary)' }}>• {c.projeto1.titulo}</span><br/>
-                    <span style={{ color: 'var(--text-secondary)' }}>• {c.projeto2.titulo}</span>
+                  <div key={i} style={{ fontSize: '12px', background: 'var(--bg-main)', padding: '8px 10px', borderRadius: '8px', borderLeft: '3px solid #FF3B30', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div><strong style={{ color: 'var(--text-primary)' }}>{c.casting}</strong> está locado em:</div>
+                    <button 
+                      onClick={() => { if(onEditProject) onEditProject(c.projeto1); setShowConflicts(false); }}
+                      style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: '4px', padding: '4px 6px', textAlign: 'left', cursor: 'pointer', color: 'var(--text-secondary)' }}
+                    >
+                      • {c.projeto1.titulo}
+                    </button>
+                    <button 
+                      onClick={() => { if(onEditProject) onEditProject(c.projeto2); setShowConflicts(false); }}
+                      style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: '4px', padding: '4px 6px', textAlign: 'left', cursor: 'pointer', color: 'var(--text-secondary)' }}
+                    >
+                      • {c.projeto2.titulo}
+                    </button>
                   </div>
                 ))}
               </div>

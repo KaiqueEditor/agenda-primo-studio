@@ -174,7 +174,7 @@ function App() {
                     formatoOptions={customFormatos}
                     teamOptions={team.map(t => t.name)}
                   />
-                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} />
+                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} onEditProject={handleProjectClick} />
                 </div>
               }
             />
@@ -195,7 +195,7 @@ function App() {
                     formatoOptions={customFormatos}
                     teamOptions={team.map(t => t.name)}
                   />
-                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} />
+                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} onEditProject={handleProjectClick} />
                 </div>
               }
             />
@@ -216,7 +216,7 @@ function App() {
                     formatoOptions={customFormatos}
                     teamOptions={team.map(t => t.name)}
                   />
-                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} />
+                  <GlobalActions projetos={allProjetos} onSaveAll={handleSaveAll} onEditProject={handleProjectClick} />
                 </div>
               }
             />
@@ -251,6 +251,7 @@ function App() {
       {selectedProjeto && (
         <ProjectModal 
           projeto={selectedProjeto}
+          allProjetos={allProjetos}
           team={team}
           onClose={() => setSelectedProjeto(null)} 
           onSave={(p) => {
