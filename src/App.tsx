@@ -5,6 +5,7 @@ import { useProjects } from './hooks/useProjects';
 import { useAuth } from './hooks/useAuth';
 import { Sidebar } from './components/Sidebar/Filters';
 import { GlobalActions } from './components/Dashboard/GlobalActions';
+import { OverviewView } from './components/Dashboard/OverviewView';
 import { CalendarGrid } from './components/Calendar/CalendarGrid';
 import { TimelineView } from './components/Timeline/TimelineView';
 import { ProjectList } from './components/ListView/ProjectList';
@@ -156,6 +157,9 @@ function App() {
       />
       <main className="main-area">
         <div className="view-area">
+          {viewMode === 'dashboard' && (
+            <OverviewView projetos={allProjetos} onSelectProject={handleProjectClick} />
+          )}
           {viewMode === 'calendar' && (
             <CalendarGrid 
               projetos={projetos} 

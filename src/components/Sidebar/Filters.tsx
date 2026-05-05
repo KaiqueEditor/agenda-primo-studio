@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, CalendarDays, BarChart, List, LayoutGrid, ChevronRight, Moon, Sun, Plus, Users, Settings, Hash, FileText, ChevronDown, LayoutPanelLeft } from 'lucide-react';
+import { Search, CalendarDays, BarChart, List, LayoutGrid, ChevronRight, Moon, Sun, Plus, Users, Settings, Hash, FileText, ChevronDown, LayoutPanelLeft, LayoutDashboard } from 'lucide-react';
 import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
 import type { AppUser } from '../../hooks/useAuth';
 import { getInitials } from '../../utils/displayHelpers';
@@ -41,14 +41,14 @@ export const Sidebar: React.FC<Props> = ({
           <LayoutPanelLeft size={18} />
         </button>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', alignItems: 'center' }}>
-          {(['calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => {
+          {(['dashboard', 'calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => {
             const isActive = viewMode === v;
-            const icon = v === 'calendar' ? <CalendarDays size={18} /> : v === 'timeline' ? <BarChart size={18} /> : v === 'board' ? <LayoutGrid size={18} /> : <List size={18} />;
+            const icon = v === 'dashboard' ? <LayoutDashboard size={18} /> : v === 'calendar' ? <CalendarDays size={18} /> : v === 'timeline' ? <BarChart size={18} /> : v === 'board' ? <LayoutGrid size={18} /> : <List size={18} />;
             return (
               <button
                 key={v}
                 onClick={() => onSetView(v)}
-                title={v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista'}
+                title={v === 'dashboard' ? 'Visão Geral' : v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista'}
                 style={{
                   width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px',
                   background: isActive ? 'var(--accent-light)' : 'transparent',
@@ -169,10 +169,10 @@ export const Sidebar: React.FC<Props> = ({
 
       {/* 4. Navigation Views */}
       <div style={{ padding: '0 10px 12px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-        {(['calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => {
+        {(['dashboard', 'calendar', 'timeline', 'board', 'list'] as ViewMode[]).map((v) => {
           const isActive = viewMode === v;
-          const label = v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista';
-          const icon = v === 'calendar' ? <CalendarDays size={16} /> : v === 'timeline' ? <BarChart size={16} /> : v === 'board' ? <LayoutGrid size={16} /> : <List size={16} />;
+          const label = v === 'dashboard' ? 'Visão Geral' : v === 'calendar' ? 'Calendário' : v === 'timeline' ? 'Timeline' : v === 'board' ? 'Board' : 'Lista';
+          const icon = v === 'dashboard' ? <LayoutDashboard size={16} /> : v === 'calendar' ? <CalendarDays size={16} /> : v === 'timeline' ? <BarChart size={16} /> : v === 'board' ? <LayoutGrid size={16} /> : <List size={16} />;
           
           return (
             <button key={v} onClick={() => onSetView(v)} style={navItemStyle(isActive)}

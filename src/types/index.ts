@@ -38,7 +38,7 @@ export interface CalendarEvent {
   isSingle?: boolean;
 }
 
-export type ViewMode = 'calendar' | 'timeline' | 'list' | 'board';
+export type ViewMode = 'dashboard' | 'calendar' | 'timeline' | 'list' | 'board';
 
 export interface FilterState {
   fases: FaseType[];
