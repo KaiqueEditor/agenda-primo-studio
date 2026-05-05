@@ -6,6 +6,7 @@ import { useAuth } from './hooks/useAuth';
 import { Sidebar } from './components/Sidebar/Filters';
 import { GlobalActions } from './components/Dashboard/GlobalActions';
 import { OverviewView } from './components/Dashboard/OverviewView';
+import { MyTasksView } from './components/Dashboard/MyTasksView';
 import { CalendarGrid } from './components/Calendar/CalendarGrid';
 import { TimelineView } from './components/Timeline/TimelineView';
 import { ProjectList } from './components/ListView/ProjectList';
@@ -159,6 +160,9 @@ function App() {
         <div className="view-area">
           {viewMode === 'dashboard' && (
             <OverviewView projetos={allProjetos} onSelectProject={handleProjectClick} />
+          )}
+          {viewMode === 'my-tasks' && (
+            <MyTasksView projetos={allProjetos} userName={user?.displayName || ''} onSelectProject={handleProjectClick} />
           )}
           {viewMode === 'calendar' && (
             <CalendarGrid 
