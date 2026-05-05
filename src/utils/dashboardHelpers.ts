@@ -1,5 +1,5 @@
 import { type Projeto } from '../types';
-import { isWithinInterval, startOfWeek, endOfWeek } from 'date-fns';
+import { isWithinInterval, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 
 export const getProjectsDueThisWeek = (projetos: Projeto[]) => {
   const now = new Date();
@@ -71,4 +71,46 @@ export const getProductionFunnel = (projetos: Projeto[]) => {
   });
 
   return { gravacao, edicao, publicacao };
+};
+
+export const getMonthlyStats = (projetos: Projeto[], date: Date = new Date()) => {
+  const start = startOfMonth(date);
+  const end = endOfMonth(date);
+  
+  let gravacoes = 0;
+  let edicoes = 0;
+  let publicacoes = 0;
+  let eventos = 0;
+
+  projetos.forEach(p => {
+    // Check Gravação
+    if (p.fases.gravacao?.inicio || p.fases.gravacao?.fim) {
+      if ((p.fases.gravacao.inicio && isWithinInterval(p.fases.gravacao.inicio, { start, end })) ||
+          (p.fases.gravacao.fim && isWithinInterval(p.fases.gravacao.fim, { start, end }))) {
+        gravacoes++;
+      }
+    }
+    // Check Edição
+    if (p.fases.edicao?.inicio || p.fases.edicao?.fim) {
+      if ((p.fases.edicao.inicio && isWithinInterval(p.fases.edicao.inicio, { start, end })) ||
+          (p.fases.edicao.fim && isWithinInterval(p.fases.edicao.fim, { start, end }))) {
+        edicoes++;
+      }
+    }
+    // Check Evento
+    if (p.fases.evento?.inicio || p.fases.evento?.fim) {
+      if ((p.fases.evento.inicio && isWithinInterval(p.fases.evento.inicio, { start, end })) ||
+          (p.fases.evento.fim && isWithinInterval(p.fases.evento.fim, { start, end }))) {
+        eventos++;
+      }
+    }
+    // Check Publicação
+    if (p.fases.publicacao?.data) {
+      if (isWithinInterval(p.fases.publicacao.data, { start, end })) {
+        publicacoes++;
+      }
+    }
+  });
+
+  return { gravacoes, edicoes, publicacoes, eventos };
 };

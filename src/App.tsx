@@ -24,7 +24,7 @@ import './index.css';
 function App() {
   const { session, user, loading: authLoading, error: authError, signIn, signUp, signOut, signInWithGoogle, signInWithMagicLink, isAdmin } = useAuth();
   const { projetos, allProjetos, filters, toggleFase, setCanal, setSearch, setTipo, setResponsavel, updateProjeto, addProjeto, deleteProjeto, team, addTeamMember, saveAll, loading } = useProjects();
-  const [viewMode, setViewMode] = useState<ViewMode>('calendar');
+  const [viewMode, setViewMode] = useState<ViewMode>('dashboard');
   const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
