@@ -13,9 +13,10 @@ interface Props {
   onClose: () => void;
   onSave: (p: Projeto) => void;
   onDelete?: (id: string) => void;
+  isAdmin?: boolean;
 }
 
-export const ProjectModal: React.FC<Props> = ({ projeto, allProjetos, team, onClose, onSave, onDelete }) => {
+export const ProjectModal: React.FC<Props> = ({ projeto, allProjetos, team, onClose, onSave, onDelete, isAdmin }) => {
   const [edited, setEdited] = useState<Projeto>({ ...projeto });
   const progress = getProjectProgress(edited);
   const faseOrder: FaseType[] = ['gravacao', 'edicao', 'publicacao', 'evento'];
@@ -56,10 +57,14 @@ export const ProjectModal: React.FC<Props> = ({ projeto, allProjetos, team, onCl
         <button className="modal-close" onClick={onClose}><X size={18} /></button>
 
         {edited.updatedBy && (
-          <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '8px', paddingLeft: '2px' }}>
-            Modificado por: <strong>{edited.updatedBy}</strong>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '8px', paddingLeft: '2px', display: 'flex', justifyContent: 'space-between' }}>
+            <span>Modificado por: <strong>{edited.updatedBy}</strong></span>
+            {!isAdmin && <span style={{ color: '#FF9500' }}>Somente Caminho do Servidor liberado</span>}
           </div>
         )}
+
+        {/* Wrapper to disable fields if not admin */}
+        <div style={{ pointerEvents: isAdmin ? 'auto' : 'none', opacity: isAdmin ? 1 : 0.8 }}>
 
         {/* ── Header ── */}
         <div className="modal-header">
@@ -194,16 +199,26 @@ export const ProjectModal: React.FC<Props> = ({ projeto, allProjetos, team, onCl
             </ul>
           </div>
         )}
+        </div> {/* End of disabled wrapper */}
 
         {/* ── Descrição / Caminho do Servidor ── */}
-        <div className="modal-section">
-          <p className="modal-section-label"><Server size={13} /> Caminho do Servidor</p>
+        <div className="modal-section" style={{ background: 'var(--bg-main)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <p className="modal-section-label" style={{ margin: 0 }}><Server size={13} /> Caminho do Servidor</p>
+            {edited.descricaoUpdatedBy && (
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)' }} />
+                Alterado por <strong>{edited.descricaoUpdatedBy}</strong>
+              </span>
+            )}
+          </div>
           <textarea
             className="modal-textarea"
             value={edited.descricao || ''}
             onChange={e => handleChange('descricao', e.target.value)}
             placeholder="Ex: /Projetos/PrimoCast/EP.24 ou observações gerais..."
             rows={3}
+            style={{ margin: 0, border: '1px solid var(--border)', background: 'var(--bg-card)' }}
           />
         </div>
 

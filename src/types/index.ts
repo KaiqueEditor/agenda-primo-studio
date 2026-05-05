@@ -21,6 +21,7 @@ export interface Projeto {
   casting: string[];
   responsavel?: string[];
   updatedBy?: string;
+  descricaoUpdatedBy?: string;
   fases: {
     gravacao?: FasePeriodo;
     edicao?: FasePeriodo;

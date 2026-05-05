@@ -257,14 +257,27 @@ function App() {
           projeto={selectedProjeto}
           allProjetos={allProjetos}
           team={team}
+          isAdmin={isAdmin}
           onClose={() => setSelectedProjeto(null)} 
           onSave={(p) => {
-            if (!isAdmin) {
-              toast.error('Apenas admins podem editar projetos');
-              return;
-            }
             const exists = allProjetos.some(exist => exist.id === p.id);
             const projectWithEditor = { ...p, updatedBy: user?.displayName || 'Desconhecido' };
+            
+            // Check if descricao specifically changed
+            if (selectedProjeto && selectedProjeto.descricao !== p.descricao) {
+              projectWithEditor.descricaoUpdatedBy = user?.displayName || 'Desconhecido';
+            }
+
+            if (!isAdmin) {
+              // Only allow saving if the only change is the description
+              const originalWithoutDesc = { ...selectedProjeto, descricao: undefined, descricaoUpdatedBy: undefined };
+              const newWithoutDesc = { ...projectWithEditor, descricao: undefined, descricaoUpdatedBy: undefined, updatedBy: selectedProjeto?.updatedBy };
+              
+              if (JSON.stringify(originalWithoutDesc) !== JSON.stringify(newWithoutDesc)) {
+                toast.error('Apenas admins podem editar os dados principais do projeto');
+                return;
+              }
+            }
             if (exists) {
               updateProjeto(projectWithEditor);
             } else {
