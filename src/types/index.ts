@@ -39,7 +39,7 @@ export interface CalendarEvent {
   isSingle?: boolean;
 }
 
-export type ViewMode = 'dashboard' | 'my-tasks' | 'calendar' | 'timeline' | 'list' | 'board';
+export type ViewMode = 'dashboard' | 'my-tasks' | 'admin-panel' | 'calendar' | 'timeline' | 'list' | 'board';
 
 export interface FilterState {
   fases: FaseType[];

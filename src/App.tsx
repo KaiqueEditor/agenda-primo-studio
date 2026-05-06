@@ -7,6 +7,7 @@ import { Sidebar } from './components/Sidebar/Filters';
 import { GlobalActions } from './components/Dashboard/GlobalActions';
 import { OverviewView } from './components/Dashboard/OverviewView';
 import { MyTasksView } from './components/Dashboard/MyTasksView';
+import { AdminPanelView } from './components/Dashboard/AdminPanelView';
 import { CalendarGrid } from './components/Calendar/CalendarGrid';
 import { TimelineView } from './components/Timeline/TimelineView';
 import { ProjectList } from './components/ListView/ProjectList';
@@ -163,6 +164,9 @@ function App() {
           )}
           {viewMode === 'my-tasks' && (
             <MyTasksView projetos={allProjetos} userName={user?.displayName || ''} onSelectProject={handleProjectClick} />
+          )}
+          {viewMode === 'admin-panel' && user?.email?.includes('kaique') && (
+            <AdminPanelView projetos={allProjetos} />
           )}
           {viewMode === 'calendar' && (
             <CalendarGrid 
