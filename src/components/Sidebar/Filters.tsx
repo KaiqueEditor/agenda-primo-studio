@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, CalendarDays, BarChart, List, LayoutGrid, ChevronRight, Moon, Sun, Plus, Users, Settings, Hash, FileText, ChevronDown, LayoutPanelLeft, LayoutDashboard, ClipboardList, ShieldAlert } from 'lucide-react';
+import { Search, CalendarDays, BarChart, List, LayoutGrid, Moon, Sun, Plus, Users, Settings, Hash, FileText, ChevronDown, LayoutPanelLeft, LayoutDashboard, ClipboardList, ShieldAlert, CheckSquare, Square } from 'lucide-react';
 import { type FaseType, FASE_CONFIG, type FilterState, type ViewMode } from '../../types';
 import type { AppUser } from '../../hooks/useAuth';
 import { getInitials } from '../../utils/displayHelpers';
@@ -196,10 +196,12 @@ export const Sidebar: React.FC<Props> = ({
         })}
       </div>
 
-      {/* 5. PRODUÇÃO */}
+      {/* 5. PRODUÇÃO (Filtros) */}
       <div style={{ padding: '0 10px 12px' }}>
-        <label style={sectionTitleStyle}>Produção</label>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', padding: '0 4px' }}>
+          <label style={{ ...sectionTitleStyle, margin: 0 }}>Filtros de Produção</label>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
           {faseKeys.map((fase) => {
             const config = FASE_CONFIG[fase];
             const isActive = filters.fases.includes(fase);
@@ -209,18 +211,21 @@ export const Sidebar: React.FC<Props> = ({
                 onClick={() => onToggleFase(fase)}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '6px 10px', border: 'none', outline: 'none', background: 'transparent', cursor: 'pointer', borderRadius: '8px',
+                  padding: '8px 10px', outline: 'none', background: isActive ? 'var(--bg-elevated)' : 'transparent', cursor: 'pointer', borderRadius: '8px',
                   color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                  fontWeight: isActive ? 600 : 500, fontSize: '13px', transition: 'background 0.15s ease'
+                  fontWeight: isActive ? 600 : 500, fontSize: '13px', transition: 'all 0.2s ease',
+                  border: isActive ? '1px solid var(--border)' : '1px solid transparent'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-main)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = 'var(--bg-main)'; }}
+                onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: config.color, opacity: isActive ? 1 : 0.4, boxShadow: isActive ? `0 0 8px ${config.color}66` : 'none' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: config.color, opacity: isActive ? 1 : 0.4, boxShadow: isActive ? `0 0 8px ${config.color}66` : 'none' }} />
                   {config.label}
                 </div>
-                <ChevronRight size={14} color={isActive ? "var(--text-secondary)" : "var(--border)"} />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: isActive ? 'var(--accent)' : 'var(--border)', transition: 'all 0.2s' }}>
+                  {isActive ? <CheckSquare size={16} /> : <Square size={16} />}
+                </div>
               </button>
             );
           })}
