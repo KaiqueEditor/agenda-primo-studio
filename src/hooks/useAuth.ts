@@ -62,6 +62,16 @@ export const useAuth = () => {
   const signUp = async (email: string, password: string, nick: string) => {
     setError(null);
     setLoading(true);
+
+    const isTimePrimo = email.toLowerCase().endsWith('@timeprimo.com');
+    const isAdmin = ADMIN_EMAILS.includes(email.toLowerCase());
+
+    if (!isTimePrimo && !isAdmin) {
+      setError('Apenas emails @timeprimo.com estão autorizados a criar conta.');
+      setLoading(false);
+      return;
+    }
+
     const { error } = await supabase.auth.signUp({ 
       email, 
       password,
@@ -84,16 +94,7 @@ export const useAuth = () => {
     setSession(null);
   };
 
-  const signInWithGoogle = async () => {
-    setError(null);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.origin,
-      },
-    });
-    if (error) setError(error.message);
-  };
+
 
   const signInWithMagicLink = async (email: string) => {
     setError(null);
@@ -125,7 +126,6 @@ export const useAuth = () => {
     signIn,
     signUp,
     signOut,
-    signInWithGoogle,
     signInWithMagicLink,
     isAdmin: user?.role === 'admin',
   };
